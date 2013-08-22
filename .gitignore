@@ -9,3 +9,5 @@
 /bin/
 /server/app/node_modules/
 /server/app/temp/
+/server/conf/worklight.properties
+/apps/myStore/android/native/assets/wlclient.properties

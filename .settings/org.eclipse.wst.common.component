@@ -3,6 +3,7 @@
         <wb-resource deploy-path="/" source-path="/apps/myStore/common"/>
         <wb-resource deploy-path="/" source-path="/apps/myStore/mobilewebapp"/>
         <wb-resource deploy-path="/" source-path="/apps/myStore/android"/>
+        <wb-resource deploy-path="/" source-path="/server/java"/>
         <property name="context-root" value="myStore"/>
     </wb-module>
 </project-modules>
