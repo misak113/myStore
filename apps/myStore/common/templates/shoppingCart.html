@@ -1,0 +1,27 @@
+
+<section route-ng-controller="ShoppingCartCtrl" class="container" id="shoppingCart-container">
+	
+	<h2>{{shoppingCart.name}}<span ng-hide="shoppingCart.name.length">{{'Nepojmenovaný seznam'|_}}</span></h2>
+
+	<div>
+		<ul class="shopping-cart-item-list">
+			<li ng-repeat="item in shoppingCart.items" ng-show="item.active" class="shopping-cart-item">
+				<label class="item input-prepend input-append" 
+					ng-class="getItemClass(item)">
+					<span class="check add-on">
+						<input type="checkbox" ng-model="item.checked" 
+							ng-change="save(item)" />
+					</span>
+					<span class="name add-on">
+						{{item.name}}
+					</span>
+					<span class="qty add-on">
+						{{item.qty}} x
+					</span>
+				</label>
+			</li>
+		</ul>
+
+	</div>
+
+</section>

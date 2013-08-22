@@ -1,0 +1,1 @@
+env NODE_MONGODB_URL="mongodb://nodejitsu:a2c0d1f7ef6d512453bd16042df1f8a3@dharma.mongohq.com:10051/nodejitsudb2661031873" node server\app\app.js

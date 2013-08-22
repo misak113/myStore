@@ -1,0 +1,17 @@
+# this is ignore for node jitsu (not npm)
+.externalToolBuilders/
+.git/
+.settings/
+adapters/
+bin/
+components/
+.classpath
+.project
+apps/myStore/android/
+apps/myStore/legal/
+apps/myStore/mobilewebapp/
+apps/myStore/application-descriptor.xml
+server/conf/
+server/java/
+server/lib/
+server/app/node_modules/
