@@ -1,0 +1,11 @@
+/package.json
+/apps/myStore/common/app.apk
+/apps/myStore/android/native/assets/www/default/
+/apps/myStore/android/native/bin/
+/apps/myStore/android/native/gen/
+/apps/myStore/android/native/res/
+/apps/myStore/android/native/.classpath
+/.settings/org.eclipse.core.resources.prefs
+/bin/
+/server/app/node_modules/
+/server/app/temp/
