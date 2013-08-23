@@ -11,6 +11,7 @@ public class myStore extends WLDroidGap {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		super.setIntegerProperty("loadUrlTimeoutValue", 20000);
 	}
 	
 	/**
@@ -18,9 +19,8 @@ public class myStore extends WLDroidGap {
      */
 	@Override
 	public void onWLInitCompleted(Bundle savedInstanceState){
+		super.onWLInitCompleted(savedInstanceState);
 		super.loadUrl(getWebMainFilePath());
-		// Add custom initialization code after this line
-		//super.setIntegerProperty("loadUrlTimeoutValue", 60000);
 	}
 	
 	/**

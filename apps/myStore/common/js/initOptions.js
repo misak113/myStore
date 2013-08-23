@@ -3,6 +3,9 @@ var wlInitOptions = {
     connectOnStartup : false,
     logger: {
     	enabled: true
+    },
+    onConnectionFailure: function () {
+    	alert('Připojení k serveru se nezdařilo.');
     }
 };
 

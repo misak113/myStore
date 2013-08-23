@@ -36,7 +36,7 @@ var OfflineStorage = function (shoppingCartModel, notificationModel, offerModel,
 		}
 	};
 
-	this.storeFunctions = function () {
+	this.storeAll = function () {
 		_.forEach(storedFunctions, function (cf) {
 			var fn = cf.class[cf.method];
 			cf.class[cf.method] = function () {

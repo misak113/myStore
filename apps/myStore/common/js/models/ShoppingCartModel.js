@@ -2,8 +2,9 @@
  * 
  */
 
-var ShoppingCartModel = function (socket, messageDisp, cache) {
+var ShoppingCartModel = function (socket, messageDisp, memoryCache) {
 	this.className = 'ShoppingCartModel';
+	var cache = memoryCache;
 
 	this.getShoppingCart = function (shoppingCartId, cb) {
         socket.on('/shopping-cart', function (data) {
@@ -58,7 +59,7 @@ var ShoppingCartModel = function (socket, messageDisp, cache) {
 	
 };
 
-myRetail.factory('shoppingCartModel', function (socket, messageDisp, cache) {
-	var model = new ShoppingCartModel(socket, messageDisp, cache);
+myRetail.factory('shoppingCartModel', function (socket, messageDisp, memoryCache) {
+	var model = new ShoppingCartModel(socket, messageDisp, memoryCache);
 	return model;
 });
