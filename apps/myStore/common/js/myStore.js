@@ -1,6 +1,4 @@
 
-// use jQuery
-
 /**
  * AngularJS setup
  * 	Routes
@@ -65,6 +63,9 @@ var myRetail = angular.module('myRetail', ['filters']
 			otherwise({redirectTo: '/login'});
 		//$locationProvider.html5Mode(true);
 	});
+
+// for chrome extension
+myRetail.config(function($compileProvider){ $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome-extension):/); });
 
 
 // init socket.io as angular service

@@ -1,6 +1,6 @@
 
 
-function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp) {
+function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage) {
 	$scope.loading = false;
 
 	$scope.login = function () {
@@ -27,8 +27,17 @@ function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp) {
 		});
 	}
 
-	$scope.username = 'franta';
-	$scope.$watch('username', function () {
-		//$cookies.username = $scope.username;
-	}, true);
+	var userLogin = offlineStorage.get('user-login', {});
+	$scope.username = userLogin.username ?userLogin.username :'';
+	$scope.remember = userLogin.remember ?true :false;
+	var changeUserLogin = function () {
+		var userLogin = offlineStorage.get('user-login', {});
+		userLogin.username = $scope.username;
+		userLogin.password = $scope.password;
+		userLogin.remember = $scope.remember;
+		offlineStorage.set('user-login', userLogin);
+	};
+	$scope.$watch('username', changeUserLogin, true);
+	$scope.$watch('password', changeUserLogin, true);
+	$scope.$watch('remember', changeUserLogin, true);
 };

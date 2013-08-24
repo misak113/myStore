@@ -76,14 +76,17 @@ var OfflineStorage = function (shoppingCartModel, notificationModel, offerModel,
 		});
 	};
 
-	this.get = function (name) {
+	this.get = function (name, defaultValue) {
+		if (typeof defaultValue === 'undefined')
+			defaultValue = null;
+
 		if (typeof storage[name] === 'undefined')
-			return null;
+			return defaultValue;
 		try {
 			var values = angular.fromJson(storage[name]);
 			return values.value;
 		} catch (e) {
-			return null;
+			return defaultValue;
 		}
 	};
 

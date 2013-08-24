@@ -1,5 +1,5 @@
 <!DOCTYPE html>		
-<html ng-app="myRetail">
+<html ng-app="myRetail" ng-csp="">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
@@ -78,7 +78,7 @@
 		<script type="text/javascript" src="js/config/config.local.js"></script>
 		<script type="text/javascript" src="js/config/config.js"></script>
 	</head>
-	<body ng-controller="AppCtrl" id="content" ng-class="'show'">
+	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()">
 
 		<div class="splash-screen"></div>
 

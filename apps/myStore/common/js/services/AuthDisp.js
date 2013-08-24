@@ -38,24 +38,25 @@ var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp) {
 
 
 	// zkontroluje, zda je přihlášen, pokud ne přesměruje
-	this.control = function (current, previous) {
- 		var previousCtrl = typeof previous !== 'undefined' 
-			&& typeof previous.$$route !== 'undefined' ?previous.$$route.controller ?previous.$$route.controller.name :null :null;
+	this.control = function (next, current) {
+ 		var nextCtrl = typeof next !== 'undefined' 
+			&& typeof next.$$route !== 'undefined' ?next.$$route.controller ?next.$$route.controller.name :null :null;
 		var currentCtrl = typeof current !== 'undefined' 
 			&& typeof current.$$route !== 'undefined' ?current.$$route.controller ?current.$$route.controller.name :null :null;
 		
 		var loggedIn = userModel.isLoggedIn();
 		if (loggedIn !== false) {
-			if (_.contains(loginCtrls, currentCtrl)) {
+			if (_.contains(loginCtrls, nextCtrl)) {
 				$location.path('/home');
 			}
 		} else {
-			if (_.contains(allowedCtrls, currentCtrl)) return;
+			if (_.contains(allowedCtrls, nextCtrl)) return;
 
+			// pokud jde na naoprávněnou stránku, přejde fallback na login
 			$location.path('/login');
-			if (_.contains(allowedCtrls, previousCtrl)) {
+			if (_.contains(allowedCtrls, currentCtrl)) {
 				messageDisp.flash('Není možné používat aplikaci, pokud nejste přihlášen.', 'warning');
-			} else if (!_.contains(allowedCtrls, currentCtrl)) {
+			} else if (!_.contains(allowedCtrls, nextCtrl)) {
 				messageDisp.flash('Byl jste automaticky odhlášen. Přihlaste se znovu.', 'warning');
 			}
 		}
