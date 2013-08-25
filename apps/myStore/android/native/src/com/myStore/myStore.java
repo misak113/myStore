@@ -19,22 +19,9 @@ public class myStore extends WLDroidGap {
      */
 	@Override
 	public void onWLInitCompleted(Bundle savedInstanceState){
-		super.onWLInitCompleted(savedInstanceState);
 		super.loadUrl(getWebMainFilePath());
 	}
-	
-	/**
-	 * Override this method if you are using worklight 6.x
-	 */
-	@Override
-	protected void bindBrowser(CordovaWebView appView, boolean clearCache) {
-
-	    super.bindBrowser(appView, clearCache);
-
-	    // attach web view to debugging service
-	    //DebugServiceClient.attachWebView(appView, this);
-	}
-	
+		
 }
 
 

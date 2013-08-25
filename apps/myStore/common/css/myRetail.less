@@ -15,6 +15,7 @@ a, abbr, address, article, aside, audio, b, blockquote, body, canvas, caption, c
 
 html {
 	height: 100%;
+	min-height: 600px;
 	background-color: @dark-shadow;
 }
 
@@ -32,7 +33,9 @@ html {
 	&.show {
 		//display: block;
 		.splash-screen {
-			display: none;
+			//display: none;
+			opacity: 0;
+			visibility: hidden;
 		}
 	}
 
@@ -47,6 +50,7 @@ html {
 		z-index: 2000;
 		top: 0;
 		left: 0;
+		transition: all ease 1s;
 	}
 }
 
@@ -135,16 +139,16 @@ h1, h2, h3 {
 
 		&.page-animation-enter-setup {
 			position: absolute;
-			left: 100%;
+			margin-left: 100%;
 			&.page-animation-enter-start {
-				left: 0;
+				margin-left: 5px;
 			}
 		}
 		&.page-animation-leave-setup {
 			position: absolute;
-			left: 0;
+			margin-left: 5px;
 			&.page-animation-leave-start {
-				left: -100%;
+				margin-left: -100%;
 			}
 		}
 		&.page-animation-enter-setup.page-animation-enter-start.page-animation-leave-setup.page-animation-leave-start {
@@ -540,6 +544,15 @@ h1, h2, h3 {
 
 
 
+/* desktop small */
+@media (min-width: 767px) {
+	.page-animation-container {
+		&> section.container {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+}
 
 /* Large desktop */
 @media (min-width: 1200px) {

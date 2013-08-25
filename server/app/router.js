@@ -29,6 +29,11 @@ exports.route = function (app) {
 		app.use(express.static(staticPath));
 	});
 
+	// Worklight doesnt allow index.html as main fail
+	app.get('/', function (req, res) {
+		res.sendfile(path.normalize(staticPath + '/myStore.html'));
+	});
+	
 	// @todo only for quick download app
 	app.get('/app.apk', function (req, res) {
 		res.sendfile(path.normalize(staticPath + '/../android/native/bin/myStoreMyStoreAndroid.apk'));

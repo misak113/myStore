@@ -60,6 +60,10 @@ var myRetail = angular.module('myRetail', ['filters']
 				templateUrl: 'templates/home.html', 
 				controller: LogoutCtrl
 			}).
+			when('/exit', {
+				templateUrl: 'templates/menu.html', 
+				controller: ExitCtrl
+			}).
 			otherwise({redirectTo: '/login'});
 		//$locationProvider.html5Mode(true);
 	});

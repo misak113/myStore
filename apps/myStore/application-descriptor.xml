@@ -11,7 +11,7 @@
         <homepage>http://mycompany.com</homepage>
         <copyright>Copyright My Company</copyright>
     </author>
-    <mainFile>index.html</mainFile>
+    <mainFile>myStore.html</mainFile>
     <features/>
     <thumbnailImage>common/images/thumbnail.png</thumbnailImage>
     <android version="1.1">
