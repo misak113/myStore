@@ -1,5 +1,5 @@
 <!DOCTYPE html>		
-<html ng-app="myRetail">
+<html ng-app="myRetail" ng-csp="">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
@@ -19,20 +19,21 @@
 		
 		<!-- JS Scripts -->
 		<!-- Libraries -->
-		<script type="text/javascript" src="js/libs/jquery-1.8.3.js"></script>
-		<script type="text/javascript" src="js/libs/bootstrap.js"></script>
+		<script type="text/javascript" src="js/libs/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/libs/angular.min.js"></script>
 		<script type="text/javascript" src="js/libs/moment.min.js"></script>
 		<script type="text/javascript" src="js/libs/underscore-min.js"></script>
 		<script type="text/javascript" src="js/libs/bootstrap.pull-down.js"></script>
-		<script type="text/javascript" src="js/libs/socketio.js"></script>
-		<script type="text/javascript" src="js/libs/mootools-core-1.4.5-full-nocompat.js"></script>
+		<script type="text/javascript" src="js/libs/socketio.min.js"></script>
+		<script type="text/javascript" src="js/libs/mootools-core-core.min.js"></script>
 		<script type="text/javascript" src="js/libs/EventEmitter.js"></script>
 		<script type="text/javascript" src="js/libs/cryptojs-md5.js"></script>
 
 		<!-- Configurations -->
-		<script type="text/javascript" src="js/initOptions.js"></script>
+		<script type="text/javascript" src="js/config/initOptions.js"></script>
 		<script type="text/javascript" src="js/messages.js"></script>
+		<script type="text/javascript" src="js/config/config.local.js"></script>
 		
 		<!-- AngularJS Scripts -->
 		<script type="text/javascript" src="js/myStore.js"></script>
@@ -53,6 +54,7 @@
 		<script type="text/javascript" src="js/controllers/NavCtrl.js"></script>
 		<script type="text/javascript" src="js/controllers/EditShoppingCartCtrl.js"></script>
 		<script type="text/javascript" src="js/controllers/ShoppingCartCtrl.js"></script>
+		<script type="text/javascript" src="js/controllers/ExitCtrl.js"></script>
 		
 		<!-- Models -->
 		<script type="text/javascript" src="js/models/OfferModel.js"></script>
@@ -67,17 +69,17 @@
 
 		<!-- Services -->
 		<script type="text/javascript" src="js/filters.js"></script>
-		<script type="text/javascript" src="js/services/Cache.js"></script>
+		<script type="text/javascript" src="js/services/MemoryCache.js"></script>
 		<script type="text/javascript" src="js/services/LoadingDisp.js"></script>
 		<script type="text/javascript" src="js/services/MessageDisp.js"></script>
 		<script type="text/javascript" src="js/services/Translator.js"></script>
 		<script type="text/javascript" src="js/services/OfflineStorage.js"></script>
+		<script type="text/javascript" src="js/services/AuthDisp.js"></script>
+		<script type="text/javascript" src="js/services/config.js"></script>
+		<script type="text/javascript" src="js/services/Native.js"></script>
 		
-		<!-- Configs -->
-		<script type="text/javascript" src="js/config/config.local.js"></script>
-		<script type="text/javascript" src="js/config/config.js"></script>
 	</head>
-	<body ng-controller="AppCtrl" id="content" ng-class="'show'">
+	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()">
 
 		<div class="splash-screen"></div>
 

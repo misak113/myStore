@@ -1,0 +1,25 @@
+{
+   "background": {
+      "scripts": [ ]
+   },
+   "browser_action": {
+      "default_icon": "apps/myStore/common/images/icon.png",
+      "default_title": "myStore",
+      "default_popup": "apps/myStore/common/myStore.html"
+   },
+   "content_security_policy": "script-src 'self'; object-src 'self';",
+   "description": "myStore",
+   "icons": {
+      "128": "apps/myStore/common/images/icon.png",
+      "16": "apps/myStore/common/images/icon.png",
+      "24": "apps/myStore/common/images/icon.png",
+      "32": "apps/myStore/common/images/icon.png",
+      "48": "apps/myStore/common/images/icon.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8vhXJnzE3Yzpt6Yd9mgJfP+Ef1kVUqp1lVmOaIeO65hBTCRmCkaB7N576OM4atwmGxX6Cb6NDlsVQ5RmzyKNIg+xxR4E4iYWj23mrHef2fnYavF2DZDh0hRSZH17sfyuWfFfomTdeZsFJCkbqS/SPVqquLz3A3nJQuqwEJuLZVQIDAQAB",
+   "manifest_version": 2,
+   "name": "myStore",
+   "permissions": [ "tabs", "http://myStore.ji.su/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.1"
+}

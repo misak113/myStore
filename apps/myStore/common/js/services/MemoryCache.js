@@ -1,5 +1,5 @@
 
-var Cache = function () {
+var MemoryCache = function () {
 
 	var DEFAULT_EXPIRE = 100;
 	// in ms
@@ -30,7 +30,7 @@ var Cache = function () {
 };
 
 
-myRetail.factory('cache', function () {
-	var instance = new Cache();
+myRetail.factory('memoryCache', function () {
+	var instance = new MemoryCache();
 	return instance;
 });

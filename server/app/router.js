@@ -27,13 +27,16 @@ exports.route = function (app) {
 		app.use(app.router);
 		// set static routing on mobile application frontend
 		app.use(express.static(staticPath));
-		// for mockups of mobile app @todo @debug 
-		app.use(express.static(path.normalize(staticPath+'/../../../diagrams/mockups')));
 	});
 
-	// redirect index.html to myRetail.html
+	// Worklight doesnt allow index.html as main fail
 	app.get('/', function (req, res) {
-	  res.sendfile(staticPath + 'myStore.html');
+		res.sendfile(path.normalize(staticPath + '/myStore.html'));
+	});
+	
+	// @todo only for quick download app
+	app.get('/app.apk', function (req, res) {
+		res.sendfile(path.normalize(staticPath + '/../android/native/bin/myStoreMyStoreAndroid.apk'));
 	});
 
 	// Websocket support

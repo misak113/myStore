@@ -3,10 +3,10 @@
  * 
  */
 
-var NotificationModel = function (socket, cache) {
+var NotificationModel = function (socket, memoryCache) {
 	this.className = 'NotificationModel';
 	this.socket = socket;
-	this.cache = cache;
+	this.cache = memoryCache;
 	this.notifications = [];
 };
 NotificationModel.prototype = Object.clone(EventEmitter.prototype);
@@ -110,7 +110,7 @@ NotificationModel.prototype = _.extend(NotificationModel.prototype, {
 
 });
 
-myRetail.factory('notificationModel', function (socket, cache) {
-	var notificationModel = new NotificationModel(socket, cache);
+myRetail.factory('notificationModel', function (socket, memoryCache) {
+	var notificationModel = new NotificationModel(socket, memoryCache);
 	return notificationModel;
 });

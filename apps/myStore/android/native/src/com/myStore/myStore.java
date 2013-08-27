@@ -11,6 +11,7 @@ public class myStore extends WLDroidGap {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		super.setIntegerProperty("loadUrlTimeoutValue", 20000);
 	}
 	
 	/**
@@ -19,22 +20,8 @@ public class myStore extends WLDroidGap {
 	@Override
 	public void onWLInitCompleted(Bundle savedInstanceState){
 		super.loadUrl(getWebMainFilePath());
-		// Add custom initialization code after this line
-		//super.setIntegerProperty("loadUrlTimeoutValue", 60000);
 	}
-	
-	/**
-	 * Override this method if you are using worklight 6.x
-	 */
-	@Override
-	protected void bindBrowser(CordovaWebView appView, boolean clearCache) {
-
-	    super.bindBrowser(appView, clearCache);
-
-	    // attach web view to debugging service
-	    //DebugServiceClient.attachWebView(appView, this);
-	}
-	
+		
 }
 
 

@@ -2,8 +2,9 @@
  * 
  */
 
-var OfferModel = function (socket, cache) {
+var OfferModel = function (socket, memoryCache) {
 	this.className = 'OfferModel';
+	var cache = memoryCache;
 	
 	this.markAsUnwanted = function (offer) {
 		//$http.get('/todo').success(function() {alert('Unwanted');}); // @todo
@@ -32,7 +33,7 @@ var OfferModel = function (socket, cache) {
 	};
 };
 
-myRetail.factory('offerModel', function (socket, cache) {
-	var offerModel = new OfferModel(socket, cache);
+myRetail.factory('offerModel', function (socket, memoryCache) {
+	var offerModel = new OfferModel(socket, memoryCache);
 	return offerModel;
 });
