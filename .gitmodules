@@ -1,0 +1,8 @@
+
+[submodule "myStore-client"]
+        path = apps/myStore/common
+        url = git@github.com:misak113/myStore.git
+
+[submodule "myStore-server"]
+        path = server/app
+        url = git@github.com:misak113/myStore.git
