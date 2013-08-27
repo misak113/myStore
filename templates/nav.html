@@ -1,0 +1,18 @@
+
+<section ng-controller="NavCtrl" id="navigation" class="navbar navbar-fixed-top">
+	<div class="btn-group navbar-inner container">
+		<a ng-href="#" ng-click="goBack($event)" class="btn btn-inverse btn-large back"><i class="icon-large icon-navigation-back"></i></a>
+		<a ng-href="#/home" class="btn btn-inverse btn-large home"><i class="icon-large icon-collections-view-as-list"></i> <span class="title">{{'myStore'|_}}</span></a>
+		<a ng-href="#/messages" class="btn btn-inverse btn-large messages"><i class="icon-large icon-location-web-site"></i>
+			<span class="badge count" ng-show="countNotReadMessages > 0"
+				ng-class="{'badge-success': typeMessagesInfo, 'badge-important': typeMessagesError, 'badge-warning': typeMessagesWarning, 'badge-info': !typeMessagesWarning && !typeMessagesError && !typeMessagesInfo}">{{countNotReadMessages}}</span>
+		</a>
+		<a ng-href="#/menu" class="btn btn-inverse btn-large menu"><i class="icon-large icon-collections-view-as-grid"></i></a>
+	</div>
+
+	<div ng-repeat="message in newMessages" class="alert new-message" ng-class="{'alert-error': message.isError, 'alert-info': message.isInfo, 'alert-success': message.isSuccess}">
+		<button type="button" class="close" data-dismiss="alert"
+			ng-click="setMessageAsOld(message)">×</button>
+		<strong>{{message.title}}</strong> {{message.text}}
+	</div>
+</section>

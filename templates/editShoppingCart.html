@@ -1,0 +1,57 @@
+
+<section route-ng-controller="EditShoppingCartCtrl" class="container" id="editShoppingCart-container">
+	
+	<h2>{{shoppingCart.name}}<span ng-hide="shoppingCart.name.length">{{'Nový seznam nákupu'|_}}</span></h2>
+
+	<div>
+		<form ng-submit="addItem()">
+			<div class="input-append">
+				<input type="text" class="span2" ng-model="newItem.name" placeholder="{{'Nová položka seznamu'|_}}" />
+				<button class="btn" type="button" ng-disabled="!newItem.name.length" ng-click="addItem()"><i class="icon-chevron-right"></i></button>
+			</div>
+		</form>
+
+		<ul class="shopping-cart-item-list">
+			<li ng-repeat="item in shoppingCart.items" 
+				class="shopping-cart-item" ng-show="item.active">
+				<div class="item input-prepend input-append">
+					<button type="button" class="btn btn-danger" 
+						ng-click="removeItem(item)">
+						<i class="icon-remove"></i></button>
+					<span class="name add-on">
+						{{item.name}}
+					</span>
+					<button class="btn" type="button" ng-click="countSub(item)" 
+						ng-disabled="item.qty <= 0" min="0">
+						<i class="icon-minus-sign"></i></button>
+					<input type="number" class="qty" ng-model="item.qty" 
+						ng-change="save()" />
+					<button class="btn" type="button" ng-click="countAdd(item)">
+						<i class="icon-plus-sign"></i></button>
+				</div>
+			</li>
+		</ul>
+
+		<label>
+			{{'Název seznamu'|_}}
+			<input type="text" class="input-block-level" ng-model="shoppingCart.name" ng-change="save()" placeholder="{{'Název seznamu'|_}}" />
+		</label>
+
+		<h3>{{'Smazané položky'|_}}</h3>
+		<ul class="shopping-cart-item-list">
+			<li ng-repeat="item in shoppingCart.items"
+				class="shopping-cart-item removed" ng-hide="item.active">
+				<div class="item input-prepend input-append">
+					<button type="button" class="btn btn-inverse" 
+						ng-click="unremoveItem(item)">
+						<i class="icon-new icon-unshare"></i></button>
+					<span class="name add-on">
+						{{item.name}}
+					</span>
+					<span class="qty add-on">{{item.qty}}x</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+</section>

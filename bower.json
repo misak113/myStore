@@ -1,0 +1,35 @@
+{
+  "name": "myStore-client",
+  "version": "1.1.4",
+  "homepage": "https://github.com/misak113/myStore",
+  "authors": [
+    "Michael Zabka <zabka.michael@seznam.cz>"
+  ],
+  "description": "application for retail users",
+  "main": "myStore.html",
+  "keywords": [
+    "myStore",
+    "retail",
+    "myRetail",
+    "retail-analytics"
+  ],
+  "license": "EULA",
+  "repository": "git@github.com:misak113/myStore.git",
+  "dependencies": {
+    "crypto-js": "~3.1.2",
+    "momentjs": "~2.1.0",
+    "angular-1.1.6": "~1.1.5",
+    "mootools": "~1.4.5",
+    "socket.io-client": "~0.9.16",
+    "underscore": "~1.5.1",
+    "bootstrap": "2.*",
+    "eventEmitter": "~4.2.3"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
