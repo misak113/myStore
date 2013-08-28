@@ -25,7 +25,7 @@
     "bootstrap": "2.*",
     "eventEmitter": "~4.2.3",
     "bootstrap.icon": "~0.1.0",
-    "bootstrap.pull-down": "~0.0.8"
+    "bootstrap.pull-down": "~0.1.0"
   },
   "ignore": [
     "**/.*",
