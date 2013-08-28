@@ -4,78 +4,30 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
 		<title>myStore</title>
-		
 		<!-- Icons -->
 		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
-		
 		<!-- Libraries -->
-		<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
-		<script type="text/javascript" src="bower_components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="build/bower_components.js"></script>
 		<link rel="stylesheet" href="bower_components/bootstrap/docs/assets/css/bootstrap.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap.icon/build/css/bootstrap.icon.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap.icon/build/css/android-iconography-medium.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap.icon/build/css/android-iconography-large.css" />
-		<script type="text/javascript" src="bower_components/bootstrap.pull-down/build/js/bootstrap.pull-down.js"></script>
 		<link rel="stylesheet" href="bower_components/bootstrap.pull-down/build/css/bootstrap.pull-down.css" />
-		<script type="text/javascript" src="bower_components/angular-1.1.6/build/angular.min.js"></script>
-		<script type="text/javascript" src="bower_components/momentjs/min/moment.min.js"></script>
-		<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
-		<script type="text/javascript" src="bower_components/socket.io-client/dist/socket.io.min.js"></script>
-		<script type="text/javascript" src="bower_components/mootools/Source/Core/Core.js"></script>
-		<script type="text/javascript" src="bower_components/eventEmitter/EventEmitter.min.js"></script>
-		<script type="text/javascript" src="bower_components/crypto-js/build/rollups/md5.js"></script>
-
 		<!-- CSS stylesheet -->
 		<link rel="stylesheet" href="css/myRetail.css" />
-
 		<!-- Configurations -->
-		<script type="text/javascript" src="js/config/initOptions.js"></script>
+		<script type="text/javascript" src="build/configs.js"></script>
 		<script type="text/javascript" src="js/messages.js"></script>
-		<script type="text/javascript" src="js/config/config.local.js"></script>
-		
 		<!-- AngularJS Scripts -->
 		<script type="text/javascript" src="js/myStore.js"></script>
-		
 		<!-- Controllers -->
-		<script type="text/javascript" src="js/controllers/AppCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/HomeCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/MenuCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/OfferListCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/PurchaseListCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/OfferCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/MessagesCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/PurchaseCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/ProductCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/ShoppingCartListCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/LoginCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/LogoutCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/NavCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/EditShoppingCartCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/ShoppingCartCtrl.js"></script>
-		<script type="text/javascript" src="js/controllers/ExitCtrl.js"></script>
-		
+		<script type="text/javascript" src="build/controllers.js"></script>
 		<!-- Models -->
-		<script type="text/javascript" src="js/models/OfferModel.js"></script>
-		<script type="text/javascript" src="js/models/PurchaseModel.js"></script>
-		<script type="text/javascript" src="js/models/ProductModel.js"></script>
-		<script type="text/javascript" src="js/models/ShoppingCartModel.js"></script>
-		<script type="text/javascript" src="js/models/UserModel.js"></script>
-		<script type="text/javascript" src="js/models/LoyaltyModel.js"></script>
-		<script type="text/javascript" src="js/models/NotificationModel.js"></script>
-
-		<script type="text/javascript" src="js/models/entities/ShoppingCart.js"></script>
-
+		<script type="text/javascript" src="build/models.js"></script>
 		<!-- Services -->
 		<script type="text/javascript" src="js/filters.js"></script>
-		<script type="text/javascript" src="js/services/MemoryCache.js"></script>
-		<script type="text/javascript" src="js/services/LoadingDisp.js"></script>
-		<script type="text/javascript" src="js/services/MessageDisp.js"></script>
-		<script type="text/javascript" src="js/services/Translator.js"></script>
-		<script type="text/javascript" src="js/services/OfflineStorage.js"></script>
-		<script type="text/javascript" src="js/services/AuthDisp.js"></script>
-		<script type="text/javascript" src="js/services/config.js"></script>
-		<script type="text/javascript" src="js/services/Native.js"></script>
+		<script type="text/javascript" src="build/services.js"></script>
 		
 	</head>
 	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()">
