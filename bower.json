@@ -23,7 +23,9 @@
     "socket.io-client": "~0.9.16",
     "underscore": "~1.5.1",
     "bootstrap": "2.*",
-    "eventEmitter": "~4.2.3"
+    "eventEmitter": "~4.2.3",
+    "bootstrap.icon": "~0.1.0",
+    "bootstrap.pull-down": "~0.1.0"
   },
   "ignore": [
     "**/.*",
