@@ -4,7 +4,7 @@
 var LoadingDisp = function (pullDown) {
 	var loading = false;
 	
-	this.loading = function (status, abortCallback) {
+	this.loading = function (status, abortCallback) {return;
 		if (status === true) {
 			if (loading === true) return abortCallback();
 			
@@ -21,7 +21,7 @@ var LoadingDisp = function (pullDown) {
 		}
 	};
 
-	this.onReload = function (callback) {
+	this.onReload = function (callback) {return;
 		pullDown.container.off('pullDown').on('pullDown', function (ev) {
 			callback();
 		});
@@ -29,7 +29,7 @@ var LoadingDisp = function (pullDown) {
 
 };
 
-myRetail.factory('loadingDisp', function (pullDown) {
-	var loadingDisp = new LoadingDisp(pullDown);
+myRetail.factory('loadingDisp', function () {
+	var loadingDisp = new LoadingDisp();
 	return loadingDisp;
 });

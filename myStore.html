@@ -16,9 +16,8 @@
 		<link rel="stylesheet" href="bower_components/bootstrap.icon/build/css/bootstrap.icon.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap.icon/build/css/android-iconography-medium.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap.icon/build/css/android-iconography-large.css" />
-		<script type="text/javascript" src="bower_components/bootstrap.pull-down/build/js/bootstrap.pull-down.js"></script>
-		<link rel="stylesheet" href="bower_components/bootstrap.pull-down/build/css/bootstrap.pull-down.css" />
 		<script type="text/javascript" src="bower_components/angular-1.1.6/build/angular.min.js"></script>
+		<script type="text/javascript" src="bower_components/angular-pull-to-refresh/dist/pull-to-refresh.min.js"></script>
 		<script type="text/javascript" src="bower_components/momentjs/min/moment.min.js"></script>
 		<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
 		<script type="text/javascript" src="bower_components/socket.io-client/dist/socket.io.min.js"></script>
@@ -78,14 +77,12 @@
 		<script type="text/javascript" src="js/services/Native.js"></script>
 		
 	</head>
-	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()">
+	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()" pull-to-refresh="refresh()">
 
 		<div class="splash-screen"></div>
 
 		<div class="navbar-outer" ng-include="navTemplate"></div>
-		
-		<div class="pull-down" ng-include="pulldownTemplate"></div>
-		
+				
 		<div class="ng-view page-animation-container" ng-view 
 			ng-animate="{enter: 'page-animation-enter', leave: 'page-animation-leave'}"></div>
 	

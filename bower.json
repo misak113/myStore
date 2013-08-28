@@ -24,8 +24,7 @@
     "underscore": "~1.5.1",
     "bootstrap": "2.*",
     "eventEmitter": "~4.2.3",
-    "bootstrap.icon": "~0.1.0",
-    "bootstrap.pull-down": "~0.0.8"
+    "angular-pull-to-refresh": "~0.2.2"
   },
   "ignore": [
     "**/.*",

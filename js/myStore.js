@@ -77,10 +77,6 @@ myRetail.factory('socket', function (config) {
 	var socket = io.connect(config.serverUrl);
 	return socket;
 });
-// pullDown service
-myRetail.factory('pullDown', function () {
-	return jQuery.pullDown.start({container: jQuery('.ng-view')});
-});
 
 // logging + debuging
 var l = {
