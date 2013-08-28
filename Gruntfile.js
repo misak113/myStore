@@ -11,6 +11,7 @@ module.exports = function(grunt) {
         mangle: false
       },
       bower_components: {
+        options: {},
         files: {
           'build/bower_components.js': [
             "bower_components/jquery/jquery.min.js",
@@ -34,6 +35,7 @@ module.exports = function(grunt) {
         }
       },
       configs: {
+        options: {},
         files: {
           'build/configs.js': [
             "js/config/*.js",
@@ -57,13 +59,66 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+    cssmin: {
+      options: {
+        banner: '/*! <%= pkg.name %>, version: <%= pkg.version %>, <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+      },
+      myStore: {
+        files: {
+          'build/myStore.css': [
+            'css/*.css'
+          ]
+        }
+      },
+      bower_components: {
+        files: {
+          'build/bower_components.css': [
+            "bower_components/bootstrap/docs/assets/css/bootstrap.css",
+            "bower_components/bootstrap.icon/build/css/bootstrap.icon.css",
+            "bower_components/bootstrap.icon/build/css/android-iconography-medium.css",
+            "bower_components/bootstrap.icon/build/css/android-iconography-large.css",
+            "bower_components/bootstrap.pull-down/build/css/bootstrap.pull-down.css"
+          ]
+        }
+      }
+    },
+    copy: {
+      bower_components_img: {
+        files: [{
+            expand: true,
+            dest: 'img',
+            flatten: true,
+            src: [
+              "bower_components/bootstrap/docs/assets/img/*",
+              "bower_components/bootstrap.icon/build/img/*",
+              "bower_components/bootstrap.icon/build/img/*",
+              "bower_components/bootstrap.icon/build/img/*",
+              "bower_components/bootstrap.pull-down/build/img/*"
+            ]
+        }]
+      },
+      fonts: {
+        files: [{
+            expand: true,
+            dest: 'build',
+            cwd: 'css',
+            src: 'fonts/*'
+        }]
+      }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
+  // Load the plugin that provides the "uglify" task and other.
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', [
+    'uglify', 
+    'cssmin', 
+    'copy'
+  ]);
 
 };
