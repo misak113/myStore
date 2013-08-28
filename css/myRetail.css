@@ -163,8 +163,8 @@ h3 {
 }
 /* Page transition */
 
-.page-animation-leave-setup,
-.page-animation-enter-setup {
+.page-animation-leave,
+.page-animation-enter {
   -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
   -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
   -ms-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
@@ -175,21 +175,21 @@ h3 {
   margin-left: 5px;
   margin-right: 5px;
 }
-.page-animation-container > section.container.page-animation-enter-setup {
+.page-animation-container > section.container.page-animation-enter {
   position: absolute;
   margin-left: 100%;
 }
-.page-animation-container > section.container.page-animation-enter-setup.page-animation-enter-start {
+.page-animation-container > section.container.page-animation-enter.page-animation-enter-active {
   margin-left: 5px;
 }
-.page-animation-container > section.container.page-animation-leave-setup {
+.page-animation-container > section.container.page-animation-leave {
   position: absolute;
   margin-left: 5px;
 }
-.page-animation-container > section.container.page-animation-leave-setup.page-animation-leave-start {
+.page-animation-container > section.container.page-animation-leave.page-animation-leave-active {
   margin-left: -100%;
 }
-.page-animation-container > section.container.page-animation-enter-setup.page-animation-enter-start.page-animation-leave-setup.page-animation-leave-start {
+.page-animation-container > section.container.page-animation-enter.page-animation-enter-active.page-animation-leave.page-animation-leave-active {
   display: none;
 }
 /* Navbar */
