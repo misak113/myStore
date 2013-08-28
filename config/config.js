@@ -25,7 +25,7 @@ var config = {
 
 // AppFog envirnoment
 var envConfig = {};
-if (process.env.VCAP_SERVICES) {
+if (typeof process.env.VCAP_SERVICES !== 'undefined') {
 	var env = JSON.parse(process.env.VCAP_SERVICES);
 	var envConfig = {
 		db: env['mongodb-1.8'][0]['credentials'],
@@ -33,18 +33,21 @@ if (process.env.VCAP_SERVICES) {
 			port: process.env.VCAP_APP_PORT
 		}
 	};
-} 
+	l.log('loaded AppFog VCAP environment', envConfig);
+}
 // node environment
-if (process.env.NODE_CONFIG) {
+if (typeof process.env.NODE_CONFIG !== 'undefined') {
 	var envConfig = JSON.parse(process.env.NODE_CONFIG);
 	l.log('loaded NODE_CONFIG', envConfig);
 } 
 config = _.extend(config, configLocal, envConfig);
-if (process.env.NODE_MONGODB_URL) {
+if (typeof process.env.NODE_MONGODB_URL !== 'undefined') {
 	config.db.url = process.env.NODE_MONGODB_URL;
+	l.log('loaded NODE_MONGODB_URL', config.db.url);
 }
-if (process.env.NODE_PORT) {
-	config.server.port = process.env.NODE_PORT;
+if (typeof process.env.NODE_PORT !== 'undefined') {
+	config.server.port = parseInt(process.env.NODE_PORT);
+	l.log('loaded NODE_PORT', config.server.port);
 }
 
 module.exports = config;

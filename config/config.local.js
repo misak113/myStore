@@ -1,5 +1,2 @@
-module.exports = {
-	server: {
-		//port: 80
-	}
-};
+
+//module.exports.server.port = 80;
