@@ -16,7 +16,7 @@
       "32": "images/icon.png",
       "48": "images/icon.png"
    },
-   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8vhXJnzE3Yzpt6Yd9mgJfP+Ef1kVUqp1lVmOaIeO65hBTCRmCkaB7N576OM4atwmGxX6Cb6NDlsVQ5RmzyKNIg+xxR4E4iYWj23mrHef2fnYavF2DZDh0hRSZH17sfyuWfFfomTdeZsFJCkbqS/SPVqquLz3A3nJQuqwEJuLZVQIDAQAB",
+   "key": "test",
    "manifest_version": 2,
    "name": "myStore",
    "permissions": [ "tabs", "http://myStore.ji.su/*" ],
