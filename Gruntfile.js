@@ -29,59 +29,31 @@ module.exports = function(grunt) {
       controllers: {
         files: {
           'build/controllers.js': [
-            "js/controllers/AppCtrl.js",
-            "js/controllers/HomeCtrl.js",
-            "js/controllers/MenuCtrl.js",
-            "js/controllers/OfferListCtrl.js",
-            "js/controllers/PurchaseListCtrl.js",
-            "js/controllers/OfferCtrl.js",
-            "js/controllers/MessagesCtrl.js",
-            "js/controllers/PurchaseCtrl.js",
-            "js/controllers/ProductCtrl.js",
-            "js/controllers/ShoppingCartListCtrl.js",
-            "js/controllers/LoginCtrl.js",
-            "js/controllers/LogoutCtrl.js",
-            "js/controllers/NavCtrl.js",
-            "js/controllers/EditShoppingCartCtrl.js",
-            "js/controllers/ShoppingCartCtrl.js",
-            "js/controllers/ExitCtrl.js"
+            "js/controllers/*.js"
           ]
         }
       },
       configs: {
         files: {
           'build/configs.js': [
-            "js/config/initOptions.js",
-            "js/config/config.local.js"
+            "js/config/*.js",
+            "js/myStore.js"
           ]
         }
       },
       models: {
         files: {
           'build/models.js': [
-            "js/models/OfferModel.js",
-            "js/models/PurchaseModel.js",
-            "js/models/ProductModel.js",
-            "js/models/ShoppingCartModel.js",
-            "js/models/UserModel.js",
-            "js/models/LoyaltyModel.js",
-            "js/models/NotificationModel.js",
+            "js/models/*.js",
             // model entities
-            "js/models/entities/ShoppingCart.js"
+            "js/models/entities/*.js"
           ]
         }
       },
       services: {
         files: {
           'build/services.js': [
-            "js/services/MemoryCache.js",
-            "js/services/LoadingDisp.js",
-            "js/services/MessageDisp.js",
-            "js/services/Translator.js",
-            "js/services/OfflineStorage.js",
-            "js/services/AuthDisp.js",
-            "js/services/config.js",
-            "js/services/Native.js"
+            "js/services/*.js"
           ]
         }
       }
