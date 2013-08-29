@@ -75,9 +75,8 @@ module.exports = function(grunt) {
         files: {
           'build/bower_components.css': [
             "bower_components/bootstrap/docs/assets/css/bootstrap.css",
-            "bower_components/bootstrap.icon/build/css/bootstrap.icon.css",
-            "bower_components/bootstrap.icon/build/css/android-iconography-medium.css",
-            "bower_components/bootstrap.icon/build/css/android-iconography-large.css",
+            "bower_components/bootstrap.icon/build/css/glyphicon-medium.css",
+            "bower_components/bootstrap.icon/build/css/android-iconography-large-light.css",
             "bower_components/bootstrap.pull-down/build/css/bootstrap.pull-down.css"
           ]
         }
@@ -91,8 +90,6 @@ module.exports = function(grunt) {
             flatten: true,
             src: [
               "bower_components/bootstrap/docs/assets/img/*",
-              "bower_components/bootstrap.icon/build/img/*",
-              "bower_components/bootstrap.icon/build/img/*",
               "bower_components/bootstrap.icon/build/img/*",
               "bower_components/bootstrap.pull-down/build/img/*"
             ]
