@@ -1,0 +1,45 @@
+
+
+
+/** create shoppingCart */
+#editShoppingCart-container {
+
+	.shopping-cart-item-list {
+		.shopping-cart-item {
+			&.removed {
+				.item {
+					.name {
+						color: @dark-shadow;
+						text-decoration: line-through;
+						width: 74%;
+					}
+					.qty {
+						background-color: @dark-shadow;
+						border-color: @shadow;
+					}
+				}
+			}
+			.item {
+				width: 100%;
+				.qty {
+					width: 15%;
+					padding-left: 0;
+					padding-right: 0;
+					text-align: center;
+				}
+				.btn {
+					width: 11%;
+					padding-left: 0;
+					padding-right: 0;
+				}
+				.name {
+					width: 52%;
+					padding-left: 0;
+					padding-right: 0;
+					background-color: @dark-shadow;
+					border-color: @shadow;
+				}
+			}
+		}
+	}
+}

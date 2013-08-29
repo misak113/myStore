@@ -1,0 +1,35 @@
+
+
+/** Offer */
+#offer-container {
+	.offer {
+		.image-wrapper {
+			text-align: center;
+		}
+
+		.offer-image {
+			width: 100%;
+			max-width: 300px;
+		}
+	}
+}
+/** Categories of offers */
+.category-label {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 90px;
+	height: 90px;
+}
+.offer {
+	&.common .category-label {
+		background-image: url('../images/offers/category-label-common.png');
+	}
+	&.personal .category-label {
+		background-image: url('../images/offers/category-label-personal.png');
+	}
+	&.segment .category-label {
+		background-image: url('../images/offers/category-label-segment.png');
+	}
+}
+

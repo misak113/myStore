@@ -1,0 +1,52 @@
+
+/* Navbar */
+.navbar {
+	.navbar-inner.btn-group {
+		margin: 0;
+		width: 100%;
+		border-width: 0;
+
+		.btn {
+			padding-left: 0;
+			padding-right: 0;
+			padding-top: 8px;
+			padding-bottom: 8px;
+			border-radius: 0;
+
+			&.home {
+				width: 52%;
+			}
+			&.messages, &.back {
+				width: 15%;
+			}
+			&.menu {
+				width: 18%;
+			}
+			&.messages {
+				.count {
+					position: absolute;
+					top: 6px;
+					right: 6px;
+					font-size: 8px;
+					padding-left: 5px;
+					padding-right: 5px;
+					padding-bottom: 1px;
+					padding-top: 1px;
+				}
+			}
+		}
+		.title {
+			font-size: 20px;
+			font-weight: bold;
+			display: inline-block;
+			height: 24px;
+			vertical-align: bottom;
+			line-height: 13px;
+		}
+	}
+	.new-message {
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-bottom: 5px;
+	}
+}

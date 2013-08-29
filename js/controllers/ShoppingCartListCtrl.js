@@ -35,4 +35,5 @@ function ShoppingCartListCtrl($scope, shoppingCartModel, ShoppingCart, messageDi
 			messageDisp.flash('Nákupní seznam byl znovu obnoven.', 'info');
 		});
 	};
+
 };

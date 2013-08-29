@@ -1,0 +1,34 @@
+
+/** shoppingCart */
+#shoppingCart-container {
+
+	.shopping-cart-item-list {
+		.shopping-cart-item {
+			.item {
+				width: 100%;
+			}
+			span {
+				background-color: @dark-shadow;
+				border-color: @shadow;
+				padding-left: 0;
+				padding-right: 0;
+				&.check {
+					width: 10%;
+				}
+				&.name {
+					width: 70%;
+				}
+				&.qty {
+					width: 20%;
+				}
+			}
+
+			.checked {
+				span {
+					text-decoration: line-through;
+					color: @shadow;
+				}
+			}
+		}
+	}
+}
