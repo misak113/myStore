@@ -10,6 +10,7 @@ module.exports = function(grunt) {
         //beautify: true,
         mangle: false
       },
+      /* comment for quick * /
       bower_components: {
         options: {},
         files: {
@@ -26,7 +27,7 @@ module.exports = function(grunt) {
             "bower_components/crypto-js/build/rollups/md5.js"
           ]
         }
-      },
+      },/**/
       controllers: {
         files: {
           'build/controllers.js': [
@@ -60,22 +61,33 @@ module.exports = function(grunt) {
         }
       }
     },
+    less: {
+      myStore: {
+        options: {
+          yuicompress: true
+        },
+        files: {
+          "build/myStore.css": "css/myStore.less"
+        }
+      }
+    },
     cssmin: {
       options: {
         banner: '/*! <%= pkg.name %>, version: <%= pkg.version %>, <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
-      myStore: {
+      /*myStore: {
         files: {
           'build/myStore.css': [
             'css/*.css'
           ]
         }
-      },
+      },*/
       bower_components: {
         files: {
           'build/bower_components.css': [
             "bower_components/bootstrap/docs/assets/css/bootstrap.css",
             "bower_components/bootstrap.icon/build/css/glyphicon-medium.css",
+            "bower_components/bootstrap.icon/build/css/glyphicon-large.css",
             "bower_components/bootstrap.icon/build/css/android-iconography-large-light.css",
             "bower_components/bootstrap.pull-down/build/css/bootstrap.pull-down.css"
           ]
@@ -89,9 +101,10 @@ module.exports = function(grunt) {
             dest: 'img',
             flatten: true,
             src: [
-              "bower_components/bootstrap/docs/assets/img/*",
-              "bower_components/bootstrap.icon/build/img/*",
-              "bower_components/bootstrap.pull-down/build/img/*"
+              "bower_components/bootstrap/docs/assets/img/glyphicons-halflings*.png",
+              "bower_components/bootstrap.icon/build/img/glyphicon-medium.png",
+              "bower_components/bootstrap.icon/build/img/glyphicon-large.png",
+              "bower_components/bootstrap.icon/build/img/android-iconography-large-light.png"
             ]
         }]
       },
@@ -107,12 +120,14 @@ module.exports = function(grunt) {
   });
 
   // Load the plugin that provides the "uglify" task and other.
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task(s).
   grunt.registerTask('default', [
+    'less',
     'uglify', 
     'cssmin', 
     'copy'

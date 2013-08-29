@@ -69,7 +69,7 @@ html {
 	
 section.container {
 	position: relative;
-	width: 97%;
+	width: 100%;
 	max-width: 760px;
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -81,6 +81,11 @@ h1, h2, h3 {
 
 .ng-view {
 	height: 100%;
+	max-width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 
@@ -134,21 +139,20 @@ h1, h2, h3 {
 
 .page-animation-container { 
 	&> section.container {
-	 	margin-left: 5px;
-	 	margin-right: 5px;
+	 	margin-left: 0;
+	 	margin-right: 0;
 
 		&.page-animation-enter {
-			position: absolute;
 			margin-left: 100%;
 			&.page-animation-enter-active {
-				margin-left: 5px;
+				margin-left: 0;
 			}
 		}
 		&.page-animation-leave {
 			position: absolute;
-			margin-left: 5px;
+			margin-left: 0;
 			&.page-animation-leave-active {
-				margin-left: -100%;
+				margin-left: -105%;
 			}
 		}
 		&.page-animation-enter.page-animation-enter-active.page-animation-leave.page-animation-leave-active {
