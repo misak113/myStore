@@ -15,7 +15,7 @@ if (typeof WLJSX !== 'undefined') {
     WLJSX.bind(window, "load", function() {
         WL.Client.init(wlInitOptions);
     });
-    configLocal.serverUrl = 'http://mystore.jit.su:80';
+    configLocal.serverUrl = 'http://localhost:80';
 
     function wlCommonInit(){
         // Common initialization code goes here
@@ -23,6 +23,6 @@ if (typeof WLJSX !== 'undefined') {
 }
 
 if (window.location.href.indexOf('chrome-extension') !== -1) {
-    configLocal.serverUrl = 'http://mystore.jit.su:80';
+    configLocal.serverUrl = 'http://localhost:80';
     jQuery('html').width('400px').height('800px');
 }

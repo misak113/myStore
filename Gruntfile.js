@@ -39,7 +39,9 @@ module.exports = function(grunt) {
         options: {},
         files: {
           'build/configs.js': [
-            "js/config/*.js",
+            "js/config/initOptions.js",
+            "js/config/messages.js",
+            "js/config/config.local.js",
             "js/myStore.js"
           ]
         }
