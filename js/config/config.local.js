@@ -1,3 +1,3 @@
 
-configLocal.serverUrl = 'http://kitbox.vse.cz:3001';
+configLocal.serverUrl = 'http://localhost:80';
 //configLocal.baseUrl = '';

@@ -1,0 +1,38 @@
+
+<section route-ng-controller="BargainingCtrl" class="container" id="bargaining-container">
+
+	<div>
+		<div class="input-append">
+			<form ng-submit="findCustomer()">
+				<input type="text"
+					   class="span2"
+					   ng-model="customerId"/>
+				<button class="btn btn-inverse">{{'Vložit'|_}}</button>
+			</form>
+		</div>
+	</div>
+
+	<div ng-show="customer">
+		<h2>
+			{{'Identifikace zákazníka'|_}}
+		</h2>
+		<table class="table">
+			<tr>
+				<td>{{'Jméno a příjmení'|_}}</td>
+				<td>
+					<span ng-bind="customer.firstName"></span>
+					<span ng-bind="customer.lastName"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>{{'Hodnota zákazníka'|_}}</td>
+				<td><span class="badge badge-info" ng-bind="customer.customerValue"></span></td>
+			</tr>
+			<tr>
+				<td>{{'Typ členství'|_}}</td>
+				<td><span class="label {{ getClassByMembershipLevel() }}"
+					  ng-bind="customer.membershipLevel.name"></span></td>
+			</tr>
+		</table>
+	</div>
+</section>

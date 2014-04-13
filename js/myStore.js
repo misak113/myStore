@@ -64,6 +64,10 @@ var myRetail = angular.module('myRetail', ['filters']
 				templateUrl: 'templates/menu.html', 
 				controller: ExitCtrl
 			}).
+			when('/bargaining', {
+				templateUrl: 'templates/bargaining.html',
+				controller: BargainingCtrl
+			}).
 			otherwise({redirectTo: '/login'});
 		//$locationProvider.html5Mode(true);
 	});

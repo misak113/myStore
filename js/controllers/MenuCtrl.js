@@ -16,6 +16,11 @@ function MenuCtrl($scope, native) {
 			url: '/purchase-list',
 			icon: 'shopping-cart'
 		},{
+			name: 'Smlouvání',
+			controller: 'BargainingCtrl',
+			url: '/bargaining',
+			icon: 'coins'
+		},{
 			name: 'Skupina',
 			controller: 'GroupCtrl',
 			url: '/group',
