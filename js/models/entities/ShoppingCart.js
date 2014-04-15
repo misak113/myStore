@@ -32,6 +32,26 @@ ShoppingCart.prototype.activeItems = function () {
 		return item.active;
 	});
 };
+ShoppingCart.prototype.getTotalPrice = function () {
+	return _.reduce(this.activeItems(), function (memo, item) {
+		return memo + item.product.price * item.qty;
+	}, 0);
+};
+ShoppingCart.prototype.getTotalAcquisitionPrice = function () {
+	return _.reduce(this.activeItems(), function (memo, item) {
+		return memo + item.product.acquisitionPrice * item.qty;
+	}, 0);
+};
+ShoppingCart.prototype.getTotalAskingPrice = function () {
+	return _.reduce(this.activeItems(), function (memo, item) {
+		return memo + item.askingPrice * item.qty;
+	}, 0);
+};
+ShoppingCart.prototype.getTotalQty = function () {
+	return _.reduce(this.activeItems(), function (memo, item) {
+		return memo + item.qty;
+	}, 0);
+};
 ShoppingCart.prototype.toObject = function () {
 	var obj = angular.copy(this);
 	// clear other props
@@ -62,7 +82,14 @@ ShoppingCart.Item = function (data) {
 		checked: false,
 		check_date: null,
 		qty: 1,
-		active: true
+		active: true,
+		askingPrice: 0,
+		product: {
+			id: null,
+			name: '',
+			price: 0,
+			acquisitionPrice: 0
+		}
 	};
 	data = _.extend(self.defaultData, data);
 	_.extend(self, data);

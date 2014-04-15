@@ -30,6 +30,5 @@ var LoadingDisp = function (pullDown) {
 };
 
 myRetail.factory('loadingDisp', function (pullDown) {
-	var loadingDisp = new LoadingDisp(pullDown);
-	return loadingDisp;
+	return new LoadingDisp(pullDown);
 });

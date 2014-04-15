@@ -11,10 +11,21 @@ var ShoppingCartModel = function (socket, messageDisp, memoryCache) {
         	cb(data);
         });
 
-		var cached = cache.get('getShoppingCart-called');
+		var cached = cache.get('getShoppingCart-id-called-'+shoppingCartId);
 		if (cached) return;
-        cache.set('getShoppingCart-called', true);
+        cache.set('getShoppingCart-id-called-'+shoppingCartId, true);
 		socket.emit('/shopping-cart', {shoppingCartId: shoppingCartId});
+	};
+
+	this.getByCustomerId = function (customerId, cb) {
+		socket.on('/shopping-cart', function (data) {
+			cb(data);
+		});
+
+		var cached = cache.get('getShoppingCart-customerId-called-'+customerId);
+		if (cached) return;
+		cache.set('getShoppingCart-customerId-called-'+customerId, true);
+		socket.emit('/shopping-cart', {customerId: customerId});
 	};
 	
 	this.getShoppingCarts = function (cb) {
@@ -34,6 +45,35 @@ var ShoppingCartModel = function (socket, messageDisp, memoryCache) {
 				return cb(null, data.shoppingCart);
 			
 			messageDisp.flash('Při ukládání nákupního seznamu nastala chyba.', 'error');
+			cb(new Error('Error while editing'));
+		});
+	};
+
+	this.addByProductId = function (shoppingCart, productId, cb) {
+		socket.emit('/add-shopping-cart-item-by-product-id', {
+			shoppingCart: shoppingCart,
+			productId: productId
+		}, function (data) {
+			if (data.status === 'ok') {
+				cb(null, data.shoppingCart);
+				return;
+			}
+
+			messageDisp.flash('Při vkládání produktu do nákupního seznamu nastala chyba.', 'error');
+			cb(new Error('Error while editing'));
+		});
+	};
+
+	this.addComplement = function (shoppingCart, cb) {
+		socket.emit('/add-shopping-cart-complement', {
+			shoppingCart: shoppingCart
+		}, function (data) {
+			if (data.status === 'ok') {
+				cb(null, data.shoppingCart);
+				return;
+			}
+
+			messageDisp.flash('Při vkládání komplementů do nákupního seznamu nastala chyba.', 'error');
 			cb(new Error('Error while editing'));
 		});
 	};

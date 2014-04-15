@@ -2,14 +2,16 @@
 <section route-ng-controller="BargainingCtrl" class="container" id="bargaining-container">
 
 	<div>
-		<div class="input-append">
-			<form ng-submit="findCustomer()">
+		<form ng-submit="findCustomer()">
+			<div class="input-append input-prepend">
+				<span class="add-on">{{'Kód zákazníka'|_}}</span>
 				<input type="text"
+					   placeholder="customerId"
 					   class="span2"
 					   ng-model="customerId"/>
-				<button class="btn btn-inverse">{{'Vložit'|_}}</button>
-			</form>
-		</div>
+				<button class="btn btn-inverse">{{'Načíst'|_}}</button>
+			</div>
+		</form>
 	</div>
 
 	<div ng-show="customer">
@@ -34,5 +36,73 @@
 					  ng-bind="customer.membershipLevel.name"></span></td>
 			</tr>
 		</table>
+
+		<h2>{{'Nákupní košík'|_}}</h2>
+		<table class="table" ng-show="shoppingCart">
+			<thead>
+				<tr>
+					<td colspan="7">
+						<form ng-submit="addProduct()">
+							<div class="input-append input-prepend">
+								<span class="add-on">{{'Kód produktu'|_}}</span>
+								<input type="text"
+									   placeholder="productId"
+									   class="span2"
+									   ng-model="productId"/>
+								<button class="btn btn-inverse">{{'Vložit'|_}}</button>
+							</div>
+						</form>
+					</td>
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<td colspan="7">{{'Položky v nákupním košíku:'|_}}</td>
+				</tr>
+				<tr>
+					<th>{{'Kód produktu'|_}}</th>
+					<th>{{'Název'|_}}</th>
+					<th>{{'Prodejní cena'|_}}</th>
+					<th>{{'Dolní cenový limit'|_}}</th>
+					<th>{{'Požadavek zákazníka'|_}}</th>
+					<th>{{'Počet'|_}}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in shoppingCart.activeItems()">
+					<td ng-bind="item.product.id"></td>
+					<td ng-bind="item.product.name"></td>
+					<td ng-bind="item.product.price"></td>
+					<td ng-bind="item.product.acquisitionPrice"></td>
+					<td><input type="number" class="span1" min="0" ng-model="item.askingPrice" ng-change="save()" /></td>
+					<td><input type="number" class="span1" min="0" ng-model="item.qty" ng-change="save()" /></td>
+					<td><button class="btn btn-danger" ng-click="removeItem(item)"><i class="icon-remove"></i></button></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>{{'Celkem'|_}}</td>
+					<td></td>
+					<td ng-bind="shoppingCart.getTotalPrice() |price:shoppingCart.currency"></td>
+					<td ng-bind="shoppingCart.getTotalAcquisitionPrice() |price:shoppingCart.currency"></td>
+					<td ng-bind="shoppingCart.getTotalAskingPrice() |price:shoppingCart.currency"></td>
+					<td ng-bind="shoppingCart.getTotalQty()"></td>
+					<td><span ng-bind="getTotalEarningPrice() |price:shoppingCart.currency"
+						class="badge {{ getClassByShoppingCartPrice() }}"></span></td>
+				</tr>
+				<tr>
+					<td colspan="7">
+						<button class="btn btn-info" ng-click="addComplement()">{{'Vložit komplement'|_}}</button>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<div class="right">
+			<button class="btn btn-success" ng-disabled="getTotalEarningPrice() < 0"
+					ng-click="approve()">{{'Schválit'|_}}</button>
+			<button class="btn btn-danger" ng-click="customer = null">{{'Zrušit smlouvání'|_}}</button>
+		</div>
 	</div>
 </section>
