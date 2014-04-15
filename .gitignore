@@ -13,3 +13,5 @@ bower_components
 /bin/
 /server/conf/worklight.properties
 /apps/myStore/android/native/assets/wlclient.properties
+
+.idea/
