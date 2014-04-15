@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var l = require('log-dispatch');
 
 var schema = mongoose.Schema({
+	customerId: Number,
 	name: String, 
 	date: Date,
 	totalPrice: Number,
@@ -15,7 +16,14 @@ var schema = mongoose.Schema({
 		checked: Boolean,
 		check_date: Date,
 		qty: Number,
-		active: Boolean
+		active: Boolean,
+		askingPrice: Number,
+		product: {
+			id: Number,
+			name: String,
+			price: Number,
+			acquisitionPrice: Number
+		}
 	}],
 	active: Boolean
 });
@@ -41,6 +49,15 @@ ShoppingCart.getShoppingCarts = function (cb) {
 
 ShoppingCart.getShoppingCart = function (id, cb) {
 	ShoppingCart.findOne({_id: id, active: true}, function (e, shoppingCart) {
+		if (e) return cb(e);
+
+		var shoppingCartData = shoppingCart.toObject();
+		cb(null, shoppingCartData);
+	});
+};
+
+ShoppingCart.getLastByCustomerId = function (customerId, cb) {
+	ShoppingCart.findOne({customerId: customerId, active: true}, null, {sort: '-date'}, function (e, shoppingCart) {
 		if (e) return cb(e);
 
 		var shoppingCartData = shoppingCart.toObject();

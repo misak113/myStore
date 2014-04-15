@@ -1,8 +1,10 @@
 
 var l = require('log-dispatch');
 var _ = require('underscore');
+var moment = require('moment');
 
 var ShoppingCart = require('../models/ShoppingCart');
+var Product = require('../models/Product');
 
 module.exports = exports = function (socket) {
 	return new ShoppingCartCtrl(socket);
@@ -42,6 +44,8 @@ var ShoppingCartCtrl = function (socket) {
 	socket.on('/save-shopping-cart', put(self.saveShoppingCart));
 	socket.on('/remove-shopping-cart', put(self.removeShoppingCart));
 	socket.on('/unremove-shopping-cart', put(self.unremoveShoppingCart));
+	socket.on('/add-shopping-cart-item-by-product-id', put(self.addShoppingCartItemByProductId));
+	socket.on('/add-shopping-cart-complement', put(self.addShoppingCartComplement));
 };
 
 ShoppingCartCtrl.prototype.shoppingCarts = function (data, cb) {
@@ -56,11 +60,22 @@ ShoppingCartCtrl.prototype.shoppingCarts = function (data, cb) {
 ShoppingCartCtrl.prototype.shoppingCart = function (data, cb) {
 	var self = this;
 	l.d('returned shoppingCart');
-	ShoppingCart.getShoppingCart(data.shoppingCartId, function (e, shoppingCart) {
-		if (e) return cb({ status: 'error', error: e.message });
+	var callback = function (e, shoppingCart) {
+		if (e) {
+			cb({ status: 'error', error: e.message });
+			return;
+		}
 
 		self.emit('/shopping-cart', shoppingCart);
-	});
+	};
+	switch (true) {
+		case typeof data.shoppingCartId !== 'undefined':
+			ShoppingCart.getShoppingCart(data.shoppingCartId, callback);
+			break;
+		case typeof data.customerId !== 'undefined':
+			ShoppingCart.getLastByCustomerId(data.customerId, callback);
+			break;
+	}
 };
 
 ShoppingCartCtrl.prototype.saveShoppingCart = function (shoppingCart, cb) {
@@ -73,6 +88,75 @@ ShoppingCartCtrl.prototype.saveShoppingCart = function (shoppingCart, cb) {
 
 		cb({ status: 'ok', shoppingCart: shoppingCart });
 	});
+};
+
+ShoppingCartCtrl.prototype.addShoppingCartItemByProductId = function (data, cb) {
+	var shoppingCart = data.shoppingCart;
+	var productId = data.productId;
+	l.d('add shoppingCart.Item '+shoppingCart._id+' by productId '+productId);
+	Product.getProduct(productId, function (e, product) {
+		if (e) {
+			cb({ status: 'error', error: e.message });
+			return;
+		}
+
+		addItemByProduct(shoppingCart, product);
+		ShoppingCart.save(shoppingCart, function (e, shoppingCart) {
+			if (e) {
+				cb({ status: 'error', error: e.message });
+				return;
+			}
+
+			cb({ status: 'ok', shoppingCart: shoppingCart });
+		});
+	});
+};
+
+ShoppingCartCtrl.prototype.addShoppingCartComplement = function (data, cb) {
+	var shoppingCart = data.shoppingCart;
+	l.d('add complement '+shoppingCart._id);
+	Product.getProducts(function (e, products) {
+		if (e) {
+			cb({ status: 'error', error: e.message });
+			return;
+		}
+
+		products.forEach(function (product) {
+			// @TODO do not add all products, but add by association rules
+			addItemByProduct(shoppingCart, product);
+		});
+		ShoppingCart.save(shoppingCart, function (e, shoppingCart) {
+			if (e) {
+				cb({ status: 'error', error: e.message });
+				return;
+			}
+
+			cb({ status: 'ok', shoppingCart: shoppingCart });
+		});
+	});
+};
+
+var addItemByProduct = function (shoppingCart, product) {
+	var existingItem = _.find(shoppingCart.items, function (item) {
+		return item.product.id == product.id;
+	});
+	if (existingItem) {
+		existingItem.qty++;
+		existingItem.active = true;
+		existingItem.product = product;
+	} else {
+		var item = {
+			name: product.name,
+			date: moment().toDate(),
+			checked: false,
+			check_date: null,
+			qty: 1,
+			active: true,
+			askingPrice: product.price,
+			product: product
+		};
+		shoppingCart.items.push(item);
+	}
 };
 
 ShoppingCartCtrl.prototype.removeShoppingCart = function (shoppingCartId, cb) {

@@ -14,6 +14,7 @@ var OfferCtrl = require('./controllers/OfferCtrl');
 var PurchaseCtrl = require('./controllers/PurchaseCtrl');
 var ShoppingCartCtrl = require('./controllers/ShoppingCartCtrl');
 var NotificationCtrl = require('./controllers/NotificationCtrl');
+var CustomerCtrl = require('./controllers/CustomerCtrl');
 
 
 exports.route = function (app) {
@@ -48,6 +49,7 @@ exports.route = function (app) {
 		var shoppingCartCtrl = ShoppingCartCtrl(socket);
 		var notificationCtrl = NotificationCtrl(socket);
 		var offerCtrl = OfferCtrl(socket);
+		var customerCtrl = CustomerCtrl(socket);
 	});
 
 	// nastaví server a socket.io do globálníh kontextu app
