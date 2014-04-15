@@ -1,3 +1,3 @@
 
-configLocal.serverUrl = 'http://localhost:80';
+//configLocal.serverUrl = 'http://10.0.0.3:80';
 //configLocal.baseUrl = '';
