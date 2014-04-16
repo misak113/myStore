@@ -50,7 +50,7 @@ if (typeof process.env.NODE_PORT !== 'undefined') {
 	l.log('loaded NODE_PORT', config.server.port);
 }
 if (typeof process.env.PORT !== 'undefined') {
-	config.server.port = parseInt(process.env.PORT);
+	config.server.port = process.env.PORT; // not number maybe azure
 	l.log('loaded PORT', config.server.port);
 }
 

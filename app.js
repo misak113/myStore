@@ -83,3 +83,5 @@ process.on('uncaughtException', function(err) {
     // handle the error safely
     l.error(err);
 });
+
+startServer();
