@@ -16,7 +16,7 @@ var config = {
 		port: 80
 	},
 	path: {
-		frontendBasePath: __dirname+'/../../../apps/myStore/common/'
+		frontendBasePath: __dirname+'/../client/'
 	},
 	debug: {
 		logLevel: 2

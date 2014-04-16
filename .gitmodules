@@ -1,0 +1,4 @@
+
+[submodule "myStore-client"]
+        path = client
+        url = git@github.com:misak113/myStore.git
