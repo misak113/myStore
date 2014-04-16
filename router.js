@@ -20,15 +20,13 @@ var CustomerCtrl = require('./controllers/CustomerCtrl');
 exports.route = function (app) {
 
 	var staticPath = path.normalize(config.path.frontendBasePath);
-	
-	app.configure(function () {
-		// Allow cross domain requests by AJAX (server is on other domain)
-		app.use(allowCrossDomain);
-		// set simple routing from express
-		app.use(app.router);
-		// set static routing on mobile application frontend
-		app.use(express.static(staticPath));
-	});
+
+	// Allow cross domain requests by AJAX (server is on other domain)
+	app.use(allowCrossDomain);
+	// set simple routing from express
+	//app.use(app.router);
+	// set static routing on mobile application frontend
+	app.use(express.static(staticPath));
 
 	// Worklight doesnt allow index.html as main fail
 	app.get('/', function (req, res) {
