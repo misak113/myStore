@@ -16,7 +16,6 @@
   "license": "EULA",
   "repository": "git@github.com:misak113/myStore.git",
   "dependencies": {
-    "crypto-js": "~3.1.2",
     "momentjs": "~2.1.0",
     "angular-1.1.6": "~1.1.5",
     "mootools": "~1.4.5",
@@ -25,7 +24,8 @@
     "bootstrap": "2.*",
     "eventEmitter": "~4.2.3",
     "bootstrap.icon": "~0.1.0",
-    "bootstrap.pull-down": "~0.1.0"
+    "bootstrap.pull-down": "~0.1.0",
+    "cryptojslib": "*"
   },
   "ignore": [
     "**/.*",

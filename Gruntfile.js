@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         //beautify: true,
         mangle: false
       },
-      /* comment for quick * /
+      /* comment for quick */
       bower_components: {
         options: {},
         files: {
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
             "bower_components/socket.io-client/dist/socket.io.min.js",
             "bower_components/mootools/Source/Core/Core.js",
             "bower_components/eventEmitter/EventEmitter.min.js",
-            "bower_components/crypto-js/build/rollups/md5.js"
+            "bower_components/cryptojslib/rollups/md5.js"
           ]
         }
       },/**/
