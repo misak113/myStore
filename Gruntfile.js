@@ -18,7 +18,7 @@ module.exports = function(grunt) {
             "bower_components/jquery/jquery.min.js",
             "bower_components/bootstrap/docs/assets/js/bootstrap.min.js",
             "bower_components/bootstrap.pull-down/build/js/bootstrap.pull-down.js",
-            "bower_components/angular-1.1.6/build/angular.min.js",
+            "bower_components/angular-1.1.6/build/angular.js",
             "bower_components/momentjs/min/moment.min.js",
             "bower_components/underscore/underscore-min.js",
             "bower_components/socket.io-client/dist/socket.io.min.js",
