@@ -29,6 +29,7 @@ function BargainingCtrl($scope, customerModel, loadingDisp, messageDisp, shoppin
 				}
 				loadingDisp.loading(false);
 				$scope.shoppingCart = new ShoppingCart(shoppingCart);
+				$scope.shoppingCart = $scope.customer.id;
 				$scope.$apply();
 			});
 		});
