@@ -58,8 +58,14 @@ ShoppingCart.getShoppingCart = function (id, cb) {
 
 ShoppingCart.getLastByCustomerId = function (customerId, cb) {
 	ShoppingCart.findOne({customerId: customerId, active: true}, null, {sort: '-date'}, function (e, shoppingCart) {
-		if (e) return cb(e);
-
+		if (e) {
+			cb(e);
+			return;
+		}
+		if (!shoppingCart) {
+			cb(null, null);
+			return;
+		}
 		var shoppingCartData = shoppingCart.toObject();
 		cb(null, shoppingCartData);
 	});
