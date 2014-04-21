@@ -7,6 +7,7 @@ function ShoppingCart(data) {
 	var self = this;
 	self.defaultData = {
 		_id: null,
+		customerId: null,
 		name: '',
 		date: moment().format('YYYY-MM-DD HH:mm:ss'),
 		totalPrice: 0,
