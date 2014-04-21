@@ -1,6 +1,9 @@
 
 
 function ShoppingCart(data) {
+	if (!data) {
+		data = {};
+	}
 	var self = this;
 	self.defaultData = {
 		_id: null,
