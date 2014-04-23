@@ -22,7 +22,8 @@ var schema = mongoose.Schema({
 			id: Number,
 			name: String,
 			price: Number,
-			acquisitionPrice: Number
+			acquisitionPrice: Number,
+			priceChange: Number
 		}
 	}],
 	active: Boolean
