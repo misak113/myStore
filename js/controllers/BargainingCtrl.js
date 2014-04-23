@@ -73,8 +73,8 @@ function BargainingCtrl($scope, customerModel, loadingDisp, messageDisp, shoppin
 		});
 	};
 
-	$scope.getTotalEarningPrice = function () {
-		return $scope.shoppingCart.getTotalAskingPrice() - $scope.shoppingCart.getTotalAcquisitionPrice();
+	$scope.getTotalEarningPrice = function (membershipLevelId) {
+		return $scope.shoppingCart.getTotalAskingPrice() - $scope.shoppingCart.getTotalAcquisitionPrice(membershipLevelId);
 	};
 
 	$scope.getClassByMembershipLevel = function () {
@@ -100,12 +100,11 @@ function BargainingCtrl($scope, customerModel, loadingDisp, messageDisp, shoppin
 	};
 
 	$scope.getClassByShoppingCartPrice = function () {
-		var totalAsking = $scope.shoppingCart.getTotalAskingPrice();
-		var totalAcquisition = $scope.shoppingCart.getTotalAcquisitionPrice();
-		if (totalAsking < totalAcquisition) {
+		var totalEarningPrice = $scope.getTotalEarningPrice($scope.customer.membershipLevel.id);
+		if (totalEarningPrice < 0) {
 			return 'badge-important';
 		}
-		if (totalAsking > totalAcquisition) {
+		if (totalEarningPrice > 0) {
 			return 'badge-success';
 		}
 		return '';

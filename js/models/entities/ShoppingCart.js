@@ -41,9 +41,9 @@ ShoppingCart.prototype.getTotalPrice = function () {
 		return memo + item.product.price * item.qty;
 	}, 0);
 };
-ShoppingCart.prototype.getTotalAcquisitionPrice = function () {
+ShoppingCart.prototype.getTotalAcquisitionPrice = function (membershipLevelId) {
 	return _.reduce(this.activeItems(), function (memo, item) {
-		return memo + item.product.acquisitionPrice * item.qty;
+		return memo + item.product.getAcquisitionPrice(membershipLevelId) * item.qty;
 	}, 0);
 };
 ShoppingCart.prototype.getTotalAskingPrice = function () {
@@ -88,14 +88,10 @@ ShoppingCart.Item = function (data) {
 		qty: 1,
 		active: true,
 		askingPrice: 0,
-		product: {
-			id: null,
-			name: '',
-			price: 0,
-			acquisitionPrice: 0
-		}
+		product: new Product({})
 	};
 	data = _.extend(self.defaultData, data);
+	data.product = new Product(data.product);
 	_.extend(self, data);
 };
 ShoppingCart.Item.prototype.toObject = function () {
