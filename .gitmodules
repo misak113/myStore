@@ -1,0 +1,3 @@
+[submodule "myStore-client"]
+        path = apps/myStore/common
+        url = git@github.com:misak113/myStore.git
