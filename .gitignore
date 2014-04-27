@@ -1,6 +1,6 @@
 
 bower_components
 node_modules
-/build/
-/img/
+#/build/
+#/img/
 /css/*.css
