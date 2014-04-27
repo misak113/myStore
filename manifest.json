@@ -5,7 +5,7 @@
    "browser_action": {
       "default_icon": "images/icon.png",
       "default_title": "myStore",
-      "default_popup": "myStore.html"
+      "default_popup": "index.html"
    },
    "content_security_policy": "script-src 'self'; object-src 'self';",
    "description": "myStore",

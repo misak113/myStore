@@ -6,7 +6,7 @@
     "Michael Zabka <zabka.michael@seznam.cz>"
   ],
   "description": "application for retail users",
-  "main": "myStore.html",
+  "main": "index.html",
   "keywords": [
     "myStore",
     "retail",
@@ -16,7 +16,6 @@
   "license": "EULA",
   "repository": "git@github.com:misak113/myStore.git",
   "dependencies": {
-    "cryptojs": "~3.1.2",
     "momentjs": "~2.1.0",
     "angular-1.1.6": "~1.1.5",
     "mootools": "~1.4.5",

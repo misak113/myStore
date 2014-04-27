@@ -6,7 +6,7 @@
     "Michael Zabka <zabka.michael@seznam.cz>"
   ],
   "description": "application for retail users",
-  "main": "myStore.html",
+  "main": "index.html",
   "keywords": [
     "myStore",
     "retail",
