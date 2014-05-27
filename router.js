@@ -35,7 +35,7 @@ exports.route = function (app) {
 	
 	// @todo only for quick download app
 	app.get('/app.apk', function (req, res) {
-		res.sendfile(path.normalize(staticPath + '/../android/native/bin/myStoreMyStoreAndroid.apk'));
+		res.sendfile(path.normalize(staticPath + '/../dist/app.apk'));
 	});
 
 	// Websocket support
