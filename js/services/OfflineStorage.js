@@ -3,13 +3,13 @@ var OfflineStorage = function (shoppingCartModel, notificationModel, offerModel,
 	var self = this;
 
 	var storedFunctions = [
-		{class: shoppingCartModel, method: 'getShoppingCart'},
-		{class: shoppingCartModel, method: 'getShoppingCarts'},
-		{class: notificationModel, method: 'getNotifications'},
-		{class: offerModel, method: 'getOffers'},
-		{class: offerModel, method: 'getOffer'},
-		{class: purchaseModel, method: 'getPurchases'},
-		{class: purchaseModel, method: 'getPurchase'}
+		{'class': shoppingCartModel, method: 'getShoppingCart'},
+		{'class': shoppingCartModel, method: 'getShoppingCarts'},
+		{'class': notificationModel, method: 'getNotifications'},
+		{'class': offerModel, method: 'getOffers'},
+		{'class': offerModel, method: 'getOffer'},
+		{'class': purchaseModel, method: 'getPurchases'},
+		{'class': purchaseModel, method: 'getPurchase'}
 	];
 
 	var getClassName = function (obj) {
@@ -38,12 +38,12 @@ var OfflineStorage = function (shoppingCartModel, notificationModel, offerModel,
 
 	this.storeAll = function () {
 		_.forEach(storedFunctions, function (cf) {
-			var fn = cf.class[cf.method];
-			cf.class[cf.method] = function () {
+			var fn = cf['class'][cf.method];
+			cf['class'][cf.method] = function () {
 				var args = Array.prototype.slice.call(arguments, 0);
 				var key = 'store-function-arguments-'
 					// @todo class by name
-					+getClassName(cf.class)+'-'+cf.method;
+					+getClassName(cf['class'])+'-'+cf.method;
 				angular.forEach(args, function (arg) {
 					key+= '-'+ (typeof arg === 'string' 
 						?arg :CryptoJS.MD5(arg.toString()));
