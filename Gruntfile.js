@@ -21,7 +21,7 @@ module.exports = function(grunt) {
             "bower_components/angular-1.1.6/build/angular.js",
             "bower_components/momentjs/min/moment.min.js",
             "bower_components/underscore/underscore-min.js",
-            "bower_components/socket.io-client/dist/socket.io.min.js",
+            "bower_components/socket.io-client/socket.io.js",
             "bower_components/mootools/Source/Core/Core.js",
             "bower_components/eventEmitter/EventEmitter.min.js",
             "bower_components/cryptojslib/rollups/md5.js"

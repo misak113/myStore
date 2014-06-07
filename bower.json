@@ -19,7 +19,7 @@
     "momentjs": "~2.1.0",
     "angular-1.1.6": "~1.1.5",
     "mootools": "~1.4.5",
-    "socket.io-client": "~0.9.16",
+    "socket.io-client": ">=1.0.0",
     "underscore": "~1.5.1",
     "bootstrap": "2.*",
     "eventEmitter": "~4.2.3",
