@@ -1,34 +1,10 @@
-<!DOCTYPE html>		
-<html ng-app="myRetail" ng-csp="">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
-		<title>myStore</title>
-		<!-- Icons -->
-		<link rel="shortcut icon" href="images/favicon.ico" />
-		<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
-		<!-- CSS stylesheet -->
-		<link rel="stylesheet" href="build/bower_components.css" />
-		<link rel="stylesheet" href="build/myStore.css" />
-		<!-- Libraries -->
-		<script type="text/javascript" src="build/bower_components.js"></script>
-		<!-- Scripts -->
-		<script type="text/javascript" src="build/configs.js"></script>
-		<script type="text/javascript" src="build/controllers.js"></script>
-		<script type="text/javascript" src="build/models.js"></script>
-		<script type="text/javascript" src="build/services.js"></script>
-		
-	</head>
-	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()">
-
-		<div class="splash-screen"></div>
-
-		<div class="navbar-outer" ng-include="navTemplate"></div>
-		
-		<div class="pull-down" ng-include="pulldownTemplate"></div>
-		
-		<div class="ng-view page-animation-container" ng-view 
-			ng-animate="{enter: 'page-animation-enter', leave: 'page-animation-leave'}"></div>
-	
-	</body>
+<!doctype html>
+<html>
+  <head>
+   <title>myStore</title>
+   <script>
+     window.location='./main.html';
+   </script>
+  <body>
+  </body>
 </html>
