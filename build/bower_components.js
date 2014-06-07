@@ -9204,1290 +9204,1962 @@
             return this._wrapped;
         }
     });
-}.call(this);
-
-var io = "undefined" == typeof module ? {} : module.exports;
-
-!function() {
-    if (function(a, b) {
-        var c = a;
-        c.version = "0.9.16", c.protocol = 1, c.transports = [], c.j = [], c.sockets = {}, 
-        c.connect = function(a, d) {
-            var f, g, e = c.util.parseUri(a);
-            b && b.location && (e.protocol = e.protocol || b.location.protocol.slice(0, -1), 
-            e.host = e.host || (b.document ? b.document.domain : b.location.hostname), e.port = e.port || b.location.port), 
-            f = c.util.uniqueUri(e);
-            var h = {
-                host: e.host,
-                secure: "https" == e.protocol,
-                port: e.port || ("https" == e.protocol ? 443 : 80),
-                query: e.query || ""
-            };
-            return c.util.merge(h, d), (h["force new connection"] || !c.sockets[f]) && (g = new c.Socket(h)), 
-            !h["force new connection"] && g && (c.sockets[f] = g), g = g || c.sockets[f], g.of(e.path.length > 1 ? e.path : "");
-        };
-    }("object" == typeof module ? module.exports : this.io = {}, this), function(a, b) {
-        var c = a.util = {}, d = /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, e = [ "source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor" ];
-        c.parseUri = function(a) {
-            for (var b = d.exec(a || ""), c = {}, f = 14; f--; ) c[e[f]] = b[f] || "";
-            return c;
-        }, c.uniqueUri = function(a) {
-            var c = a.protocol, d = a.host, e = a.port;
-            return "document" in b ? (d = d || document.domain, e = e || ("https" == c && "https:" !== document.location.protocol ? 443 : document.location.port)) : (d = d || "localhost", 
-            !e && "https" == c && (e = 443)), (c || "http") + "://" + d + ":" + (e || 80);
-        }, c.query = function(a, b) {
-            var d = c.chunkQuery(a || ""), e = [];
-            c.merge(d, c.chunkQuery(b || ""));
-            for (var f in d) d.hasOwnProperty(f) && e.push(f + "=" + d[f]);
-            return e.length ? "?" + e.join("&") : "";
-        }, c.chunkQuery = function(a) {
-            for (var f, b = {}, c = a.split("&"), d = 0, e = c.length; e > d; ++d) f = c[d].split("="), 
-            f[0] && (b[f[0]] = f[1]);
-            return b;
-        };
-        var f = !1;
-        c.load = function(a) {
-            return "document" in b && "complete" === document.readyState || f ? a() : void c.on(b, "load", a, !1);
-        }, c.on = function(a, b, c, d) {
-            a.attachEvent ? a.attachEvent("on" + b, c) : a.addEventListener && a.addEventListener(b, c, d);
-        }, c.request = function(a) {
-            if (a && "undefined" != typeof XDomainRequest && !c.ua.hasCORS) return new XDomainRequest();
-            if ("undefined" != typeof XMLHttpRequest && (!a || c.ua.hasCORS)) return new XMLHttpRequest();
-            if (!a) try {
-                return new (window[[ "Active" ].concat("Object").join("X")])("Microsoft.XMLHTTP");
-            } catch (b) {}
-            return null;
-        }, "undefined" != typeof window && c.load(function() {
-            f = !0;
-        }), c.defer = function(a) {
-            return c.ua.webkit && "undefined" == typeof importScripts ? void c.load(function() {
-                setTimeout(a, 100);
-            }) : a();
-        }, c.merge = function(b, d, e, f) {
-            var i, g = f || [], h = "undefined" == typeof e ? 2 : e;
-            for (i in d) d.hasOwnProperty(i) && c.indexOf(g, i) < 0 && ("object" == typeof b[i] && h ? c.merge(b[i], d[i], h - 1, g) : (b[i] = d[i], 
-            g.push(d[i])));
-            return b;
-        }, c.mixin = function(a, b) {
-            c.merge(a.prototype, b.prototype);
-        }, c.inherit = function(a, b) {
-            function c() {}
-            c.prototype = b.prototype, a.prototype = new c();
-        }, c.isArray = Array.isArray || function(a) {
-            return "[object Array]" === Object.prototype.toString.call(a);
-        }, c.intersect = function(a, b) {
-            for (var d = [], e = a.length > b.length ? a : b, f = a.length > b.length ? b : a, g = 0, h = f.length; h > g; g++) ~c.indexOf(e, f[g]) && d.push(f[g]);
-            return d;
-        }, c.indexOf = function(a, b, c) {
-            for (var d = a.length, c = 0 > c ? 0 > c + d ? 0 : c + d : c || 0; d > c && a[c] !== b; c++) ;
-            return c >= d ? -1 : c;
-        }, c.toArray = function(a) {
-            for (var b = [], c = 0, d = a.length; d > c; c++) b.push(a[c]);
-            return b;
-        }, c.ua = {}, c.ua.hasCORS = "undefined" != typeof XMLHttpRequest && function() {
-            try {
-                var a = new XMLHttpRequest();
-            } catch (b) {
-                return !1;
+}.call(this), !function(e) {
+    "object" == typeof exports ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : "undefined" != typeof window ? window.io = e() : "undefined" != typeof global ? global.io = e() : "undefined" != typeof self && (self.io = e());
+}(function() {
+    var define;
+    return function e(t, n, r) {
+        function s(o, u) {
+            if (!n[o]) {
+                if (!t[o]) {
+                    var a = "function" == typeof require && require;
+                    if (!u && a) return a(o, !0);
+                    if (i) return i(o, !0);
+                    throw new Error("Cannot find module '" + o + "'");
+                }
+                var f = n[o] = {
+                    exports: {}
+                };
+                t[o][0].call(f.exports, function(e) {
+                    var n = t[o][1][e];
+                    return s(n ? n : e);
+                }, f, f.exports, e, t, n, r);
             }
-            return void 0 != a.withCredentials;
-        }(), c.ua.webkit = "undefined" != typeof navigator && /webkit/i.test(navigator.userAgent), 
-        c.ua.iDevice = "undefined" != typeof navigator && /iPad|iPhone|iPod/i.test(navigator.userAgent);
-    }("undefined" != typeof io ? io : module.exports, this), function(a, b) {
-        function c() {}
-        a.EventEmitter = c, c.prototype.on = function(a, c) {
-            return this.$events || (this.$events = {}), this.$events[a] ? b.util.isArray(this.$events[a]) ? this.$events[a].push(c) : this.$events[a] = [ this.$events[a], c ] : this.$events[a] = c, 
-            this;
-        }, c.prototype.addListener = c.prototype.on, c.prototype.once = function(a, b) {
-            function d() {
-                c.removeListener(a, d), b.apply(this, arguments);
+            return n[o].exports;
+        }
+        for (var i = "function" == typeof require && require, o = 0; o < r.length; o++) s(r[o]);
+        return s;
+    }({
+        1: [ function(require, module) {
+            module.exports = require("./lib/");
+        }, {
+            "./lib/": 2
+        } ],
+        2: [ function(require, module, exports) {
+            function lookup(uri, opts) {
+                "object" == typeof uri && (opts = uri, uri = void 0), opts = opts || {};
+                var io, parsed = url(uri), source = parsed.source, id = parsed.id;
+                return opts.forceNew || !1 === opts.multiplex ? (debug("ignoring socket cache for %s", source), 
+                io = Manager(source, opts)) : (cache[id] || (debug("new io instance for %s", source), 
+                cache[id] = Manager(source, opts)), io = cache[id]), io.socket(parsed.path);
             }
-            var c = this;
-            return d.listener = b, this.on(a, d), this;
-        }, c.prototype.removeListener = function(a, c) {
-            if (this.$events && this.$events[a]) {
-                var d = this.$events[a];
-                if (b.util.isArray(d)) {
-                    for (var e = -1, f = 0, g = d.length; g > f; f++) if (d[f] === c || d[f].listener && d[f].listener === c) {
-                        e = f;
-                        break;
+            var url = require("./url"), parser = require("socket.io-parser"), Manager = require("./manager"), debug = require("debug")("socket.io-client");
+            module.exports = exports = lookup;
+            var cache = exports.managers = {};
+            exports.protocol = parser.protocol, exports.connect = lookup, exports.Manager = require("./manager"), 
+            exports.Socket = require("./socket");
+        }, {
+            "./manager": 3,
+            "./socket": 5,
+            "./url": 6,
+            debug: 8,
+            "socket.io-parser": 39
+        } ],
+        3: [ function(require, module) {
+            function Manager(uri, opts) {
+                return this instanceof Manager ? ("object" == typeof uri && (opts = uri, uri = void 0), 
+                opts = opts || {}, opts.path = opts.path || "/socket.io", this.nsps = {}, this.subs = [], 
+                this.opts = opts, this.reconnection(opts.reconnection !== !1), this.reconnectionAttempts(opts.reconnectionAttempts || 1/0), 
+                this.reconnectionDelay(opts.reconnectionDelay || 1e3), this.reconnectionDelayMax(opts.reconnectionDelayMax || 5e3), 
+                this.timeout(null == opts.timeout ? 2e4 : opts.timeout), this.readyState = "closed", 
+                this.uri = uri, this.connected = 0, this.attempts = 0, this.encoding = !1, this.packetBuffer = [], 
+                this.encoder = new parser.Encoder(), this.decoder = new parser.Decoder(), void this.open()) : new Manager(uri, opts);
+            }
+            var eio = (require("./url"), require("engine.io-client")), Socket = require("./socket"), Emitter = require("emitter"), parser = require("socket.io-parser"), on = require("./on"), bind = require("bind"), debug = (require("object-component"), 
+            require("debug")("socket.io-client:manager"));
+            module.exports = Manager, Emitter(Manager.prototype), Manager.prototype.reconnection = function(v) {
+                return arguments.length ? (this._reconnection = !!v, this) : this._reconnection;
+            }, Manager.prototype.reconnectionAttempts = function(v) {
+                return arguments.length ? (this._reconnectionAttempts = v, this) : this._reconnectionAttempts;
+            }, Manager.prototype.reconnectionDelay = function(v) {
+                return arguments.length ? (this._reconnectionDelay = v, this) : this._reconnectionDelay;
+            }, Manager.prototype.reconnectionDelayMax = function(v) {
+                return arguments.length ? (this._reconnectionDelayMax = v, this) : this._reconnectionDelayMax;
+            }, Manager.prototype.timeout = function(v) {
+                return arguments.length ? (this._timeout = v, this) : this._timeout;
+            }, Manager.prototype.maybeReconnectOnOpen = function() {
+                this.openReconnect || this.reconnecting || !this._reconnection || (this.openReconnect = !0, 
+                this.reconnect());
+            }, Manager.prototype.open = Manager.prototype.connect = function(fn) {
+                if (debug("readyState %s", this.readyState), ~this.readyState.indexOf("open")) return this;
+                debug("opening %s", this.uri), this.engine = eio(this.uri, this.opts);
+                var socket = this.engine, self = this;
+                this.readyState = "opening";
+                var openSub = on(socket, "open", function() {
+                    self.onopen(), fn && fn();
+                }), errorSub = on(socket, "error", function(data) {
+                    if (debug("connect_error"), self.cleanup(), self.readyState = "closed", self.emit("connect_error", data), 
+                    fn) {
+                        var err = new Error("Connection error");
+                        err.data = data, fn(err);
                     }
-                    if (0 > e) return this;
-                    d.splice(e, 1), d.length || delete this.$events[a];
-                } else (d === c || d.listener && d.listener === c) && delete this.$events[a];
-            }
-            return this;
-        }, c.prototype.removeAllListeners = function(a) {
-            return void 0 === a ? (this.$events = {}, this) : (this.$events && this.$events[a] && (this.$events[a] = null), 
-            this);
-        }, c.prototype.listeners = function(a) {
-            return this.$events || (this.$events = {}), this.$events[a] || (this.$events[a] = []), 
-            b.util.isArray(this.$events[a]) || (this.$events[a] = [ this.$events[a] ]), this.$events[a];
-        }, c.prototype.emit = function(a) {
-            if (!this.$events) return !1;
-            var c = this.$events[a];
-            if (!c) return !1;
-            var d = Array.prototype.slice.call(arguments, 1);
-            if ("function" == typeof c) c.apply(this, d); else {
-                if (!b.util.isArray(c)) return !1;
-                for (var e = c.slice(), f = 0, g = e.length; g > f; f++) e[f].apply(this, d);
-            }
-            return !0;
-        };
-    }("undefined" != typeof io ? io : module.exports, "undefined" != typeof io ? io : module.parent.exports), 
-    function(exports, nativeJSON) {
-        function f(a) {
-            return 10 > a ? "0" + a : a;
-        }
-        function date(a) {
-            return isFinite(a.valueOf()) ? a.getUTCFullYear() + "-" + f(a.getUTCMonth() + 1) + "-" + f(a.getUTCDate()) + "T" + f(a.getUTCHours()) + ":" + f(a.getUTCMinutes()) + ":" + f(a.getUTCSeconds()) + "Z" : null;
-        }
-        function quote(a) {
-            return escapable.lastIndex = 0, escapable.test(a) ? '"' + a.replace(escapable, function(a) {
-                var b = meta[a];
-                return "string" == typeof b ? b : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
-            }) + '"' : '"' + a + '"';
-        }
-        function str(a, b) {
-            var c, d, e, f, h, g = gap, i = b[a];
-            switch (i instanceof Date && (i = date(a)), "function" == typeof rep && (i = rep.call(b, a, i)), 
-            typeof i) {
-              case "string":
-                return quote(i);
-
-              case "number":
-                return isFinite(i) ? String(i) : "null";
-
-              case "boolean":
-              case "null":
-                return String(i);
-
-              case "object":
-                if (!i) return "null";
-                if (gap += indent, h = [], "[object Array]" === Object.prototype.toString.apply(i)) {
-                    for (f = i.length, c = 0; f > c; c += 1) h[c] = str(c, i) || "null";
-                    return e = 0 === h.length ? "[]" : gap ? "[\n" + gap + h.join(",\n" + gap) + "\n" + g + "]" : "[" + h.join(",") + "]", 
-                    gap = g, e;
-                }
-                if (rep && "object" == typeof rep) for (f = rep.length, c = 0; f > c; c += 1) "string" == typeof rep[c] && (d = rep[c], 
-                e = str(d, i), e && h.push(quote(d) + (gap ? ": " : ":") + e)); else for (d in i) Object.prototype.hasOwnProperty.call(i, d) && (e = str(d, i), 
-                e && h.push(quote(d) + (gap ? ": " : ":") + e));
-                return e = 0 === h.length ? "{}" : gap ? "{\n" + gap + h.join(",\n" + gap) + "\n" + g + "}" : "{" + h.join(",") + "}", 
-                gap = g, e;
-            }
-        }
-        if (nativeJSON && nativeJSON.parse) return exports.JSON = {
-            parse: nativeJSON.parse,
-            stringify: nativeJSON.stringify
-        };
-        var JSON = exports.JSON = {}, cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, gap, indent, meta = {
-            "\b": "\\b",
-            "	": "\\t",
-            "\n": "\\n",
-            "\f": "\\f",
-            "\r": "\\r",
-            '"': '\\"',
-            "\\": "\\\\"
-        }, rep;
-        JSON.stringify = function(a, b, c) {
-            var d;
-            if (gap = "", indent = "", "number" == typeof c) for (d = 0; c > d; d += 1) indent += " "; else "string" == typeof c && (indent = c);
-            if (rep = b, !b || "function" == typeof b || "object" == typeof b && "number" == typeof b.length) return str("", {
-                "": a
-            });
-            throw new Error("JSON.stringify");
-        }, JSON.parse = function(text, reviver) {
-            function walk(a, b) {
-                var c, d, e = a[b];
-                if (e && "object" == typeof e) for (c in e) Object.prototype.hasOwnProperty.call(e, c) && (d = walk(e, c), 
-                void 0 !== d ? e[c] = d : delete e[c]);
-                return reviver.call(a, b, e);
-            }
-            var j;
-            if (text = String(text), cx.lastIndex = 0, cx.test(text) && (text = text.replace(cx, function(a) {
-                return "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
-            })), /^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]").replace(/(?:^|:|,)(?:\s*\[)+/g, ""))) return j = eval("(" + text + ")"), 
-            "function" == typeof reviver ? walk({
-                "": j
-            }, "") : j;
-            throw new SyntaxError("JSON.parse");
-        };
-    }("undefined" != typeof io ? io : module.exports, "undefined" != typeof JSON ? JSON : void 0), 
-    function(a, b) {
-        var c = a.parser = {}, d = c.packets = [ "disconnect", "connect", "heartbeat", "message", "json", "event", "ack", "error", "noop" ], e = c.reasons = [ "transport not supported", "client not handshaken", "unauthorized" ], f = c.advice = [ "reconnect" ], g = b.JSON, h = b.util.indexOf;
-        c.encodePacket = function(a) {
-            var b = h(d, a.type), c = a.id || "", i = a.endpoint || "", j = a.ack, k = null;
-            switch (a.type) {
-              case "error":
-                var l = a.reason ? h(e, a.reason) : "", m = a.advice ? h(f, a.advice) : "";
-                ("" !== l || "" !== m) && (k = l + ("" !== m ? "+" + m : ""));
-                break;
-
-              case "message":
-                "" !== a.data && (k = a.data);
-                break;
-
-              case "event":
-                var n = {
-                    name: a.name
-                };
-                a.args && a.args.length && (n.args = a.args), k = g.stringify(n);
-                break;
-
-              case "json":
-                k = g.stringify(a.data);
-                break;
-
-              case "connect":
-                a.qs && (k = a.qs);
-                break;
-
-              case "ack":
-                k = a.ackId + (a.args && a.args.length ? "+" + g.stringify(a.args) : "");
-            }
-            var o = [ b, c + ("data" == j ? "+" : ""), i ];
-            return null !== k && void 0 !== k && o.push(k), o.join(":");
-        }, c.encodePayload = function(a) {
-            var b = "";
-            if (1 == a.length) return a[0];
-            for (var c = 0, d = a.length; d > c; c++) {
-                var e = a[c];
-                b += "�" + e.length + "�" + a[c];
-            }
-            return b;
-        };
-        var i = /([^:]+):([0-9]+)?(\+)?:([^:]+)?:?([\s\S]*)?/;
-        c.decodePacket = function(a) {
-            var b = a.match(i);
-            if (!b) return {};
-            var c = b[2] || "", a = b[5] || "", h = {
-                type: d[b[1]],
-                endpoint: b[4] || ""
-            };
-            switch (c && (h.id = c, h.ack = b[3] ? "data" : !0), h.type) {
-              case "error":
-                var b = a.split("+");
-                h.reason = e[b[0]] || "", h.advice = f[b[1]] || "";
-                break;
-
-              case "message":
-                h.data = a || "";
-                break;
-
-              case "event":
-                try {
-                    var j = g.parse(a);
-                    h.name = j.name, h.args = j.args;
-                } catch (k) {}
-                h.args = h.args || [];
-                break;
-
-              case "json":
-                try {
-                    h.data = g.parse(a);
-                } catch (k) {}
-                break;
-
-              case "connect":
-                h.qs = a || "";
-                break;
-
-              case "ack":
-                var b = a.match(/^([0-9]+)(\+)?(.*)/);
-                if (b && (h.ackId = b[1], h.args = [], b[3])) try {
-                    h.args = b[3] ? g.parse(b[3]) : [];
-                } catch (k) {}
-                break;
-
-              case "disconnect":
-              case "heartbeat":            }
-            return h;
-        }, c.decodePayload = function(a) {
-            if ("�" == a.charAt(0)) {
-                for (var b = [], d = 1, e = ""; d < a.length; d++) "�" == a.charAt(d) ? (b.push(c.decodePacket(a.substr(d + 1).substr(0, e))), 
-                d += Number(e) + 1, e = "") : e += a.charAt(d);
-                return b;
-            }
-            return [ c.decodePacket(a) ];
-        };
-    }("undefined" != typeof io ? io : module.exports, "undefined" != typeof io ? io : module.parent.exports), 
-    function(a, b) {
-        function c(a, b) {
-            this.socket = a, this.sessid = b;
-        }
-        a.Transport = c, b.util.mixin(c, b.EventEmitter), c.prototype.heartbeats = function() {
-            return !0;
-        }, c.prototype.onData = function(a) {
-            if (this.clearCloseTimeout(), (this.socket.connected || this.socket.connecting || this.socket.reconnecting) && this.setCloseTimeout(), 
-            "" !== a) {
-                var c = b.parser.decodePayload(a);
-                if (c && c.length) for (var d = 0, e = c.length; e > d; d++) this.onPacket(c[d]);
-            }
-            return this;
-        }, c.prototype.onPacket = function(a) {
-            return this.socket.setHeartbeatTimeout(), "heartbeat" == a.type ? this.onHeartbeat() : ("connect" == a.type && "" == a.endpoint && this.onConnect(), 
-            "error" == a.type && "reconnect" == a.advice && (this.isOpen = !1), this.socket.onPacket(a), 
-            this);
-        }, c.prototype.setCloseTimeout = function() {
-            if (!this.closeTimeout) {
-                var a = this;
-                this.closeTimeout = setTimeout(function() {
-                    a.onDisconnect();
-                }, this.socket.closeTimeout);
-            }
-        }, c.prototype.onDisconnect = function() {
-            return this.isOpen && this.close(), this.clearTimeouts(), this.socket.onDisconnect(), 
-            this;
-        }, c.prototype.onConnect = function() {
-            return this.socket.onConnect(), this;
-        }, c.prototype.clearCloseTimeout = function() {
-            this.closeTimeout && (clearTimeout(this.closeTimeout), this.closeTimeout = null);
-        }, c.prototype.clearTimeouts = function() {
-            this.clearCloseTimeout(), this.reopenTimeout && clearTimeout(this.reopenTimeout);
-        }, c.prototype.packet = function(a) {
-            this.send(b.parser.encodePacket(a));
-        }, c.prototype.onHeartbeat = function() {
-            this.packet({
-                type: "heartbeat"
-            });
-        }, c.prototype.onOpen = function() {
-            this.isOpen = !0, this.clearCloseTimeout(), this.socket.onOpen();
-        }, c.prototype.onClose = function() {
-            this.isOpen = !1, this.socket.onClose(), this.onDisconnect();
-        }, c.prototype.prepareUrl = function() {
-            var a = this.socket.options;
-            return this.scheme() + "://" + a.host + ":" + a.port + "/" + a.resource + "/" + b.protocol + "/" + this.name + "/" + this.sessid;
-        }, c.prototype.ready = function(a, b) {
-            b.call(this);
-        };
-    }("undefined" != typeof io ? io : module.exports, "undefined" != typeof io ? io : module.parent.exports), 
-    function(a, b, c) {
-        function d(a) {
-            if (this.options = {
-                port: 80,
-                secure: !1,
-                document: "document" in c ? document : !1,
-                resource: "socket.io",
-                transports: b.transports,
-                "connect timeout": 1e4,
-                "try multiple transports": !0,
-                reconnect: !0,
-                "reconnection delay": 500,
-                "reconnection limit": 1/0,
-                "reopen delay": 3e3,
-                "max reconnection attempts": 10,
-                "sync disconnect on unload": !1,
-                "auto connect": !0,
-                "flash policy port": 10843,
-                manualFlush: !1
-            }, b.util.merge(this.options, a), this.connected = !1, this.open = !1, this.connecting = !1, 
-            this.reconnecting = !1, this.namespaces = {}, this.buffer = [], this.doBuffer = !1, 
-            this.options["sync disconnect on unload"] && (!this.isXDomain() || b.util.ua.hasCORS)) {
-                var d = this;
-                b.util.on(c, "beforeunload", function() {
-                    d.disconnectSync();
-                }, !1);
-            }
-            this.options["auto connect"] && this.connect();
-        }
-        function e() {}
-        a.Socket = d, b.util.mixin(d, b.EventEmitter), d.prototype.of = function(a) {
-            return this.namespaces[a] || (this.namespaces[a] = new b.SocketNamespace(this, a), 
-            "" !== a && this.namespaces[a].packet({
-                type: "connect"
-            })), this.namespaces[a];
-        }, d.prototype.publish = function() {
-            this.emit.apply(this, arguments);
-            var a;
-            for (var b in this.namespaces) this.namespaces.hasOwnProperty(b) && (a = this.of(b), 
-            a.$emit.apply(a, arguments));
-        }, d.prototype.handshake = function(a) {
-            function f(b) {
-                b instanceof Error ? (c.connecting = !1, c.onError(b.message)) : a.apply(null, b.split(":"));
-            }
-            var c = this, d = this.options, g = [ "http" + (d.secure ? "s" : "") + ":/", d.host + ":" + d.port, d.resource, b.protocol, b.util.query(this.options.query, "t=" + +new Date()) ].join("/");
-            if (this.isXDomain() && !b.util.ua.hasCORS) {
-                var h = document.getElementsByTagName("script")[0], i = document.createElement("script");
-                i.src = g + "&jsonp=" + b.j.length, h.parentNode.insertBefore(i, h), b.j.push(function(a) {
-                    f(a), i.parentNode.removeChild(i);
+                    self.maybeReconnectOnOpen();
                 });
-            } else {
-                var j = b.util.request();
-                j.open("GET", g, !0), this.isXDomain() && (j.withCredentials = !0), j.onreadystatechange = function() {
-                    4 == j.readyState && (j.onreadystatechange = e, 200 == j.status ? f(j.responseText) : 403 == j.status ? c.onError(j.responseText) : (c.connecting = !1, 
-                    !c.reconnecting && c.onError(j.responseText)));
-                }, j.send(null);
-            }
-        }, d.prototype.getTransport = function(a) {
-            for (var f, c = a || this.transports, e = 0; f = c[e]; e++) if (b.Transport[f] && b.Transport[f].check(this) && (!this.isXDomain() || b.Transport[f].xdomainCheck(this))) return new b.Transport[f](this, this.sessionid);
-            return null;
-        }, d.prototype.connect = function(a) {
-            if (this.connecting) return this;
-            var c = this;
-            return c.connecting = !0, this.handshake(function(d, e, f, g) {
-                function h(a) {
-                    return c.transport && c.transport.clearTimeouts(), c.transport = c.getTransport(a), 
-                    c.transport ? void c.transport.ready(c, function() {
-                        c.connecting = !0, c.publish("connecting", c.transport.name), c.transport.open(), 
-                        c.options["connect timeout"] && (c.connectTimeoutTimer = setTimeout(function() {
-                            if (!c.connected && (c.connecting = !1, c.options["try multiple transports"])) {
-                                for (var a = c.transports; a.length > 0 && a.splice(0, 1)[0] != c.transport.name; ) ;
-                                a.length ? h(a) : c.publish("connect_failed");
-                            }
-                        }, c.options["connect timeout"]));
-                    }) : c.publish("connect_failed");
-                }
-                c.sessionid = d, c.closeTimeout = 1e3 * f, c.heartbeatTimeout = 1e3 * e, c.transports || (c.transports = c.origTransports = g ? b.util.intersect(g.split(","), c.options.transports) : c.options.transports), 
-                c.setHeartbeatTimeout(), h(c.transports), c.once("connect", function() {
-                    clearTimeout(c.connectTimeoutTimer), a && "function" == typeof a && a();
-                });
-            }), this;
-        }, d.prototype.setHeartbeatTimeout = function() {
-            if (clearTimeout(this.heartbeatTimeoutTimer), !this.transport || this.transport.heartbeats()) {
-                var a = this;
-                this.heartbeatTimeoutTimer = setTimeout(function() {
-                    a.transport.onClose();
-                }, this.heartbeatTimeout);
-            }
-        }, d.prototype.packet = function(a) {
-            return this.connected && !this.doBuffer ? this.transport.packet(a) : this.buffer.push(a), 
-            this;
-        }, d.prototype.setBuffer = function(a) {
-            this.doBuffer = a, !a && this.connected && this.buffer.length && (this.options.manualFlush || this.flushBuffer());
-        }, d.prototype.flushBuffer = function() {
-            this.transport.payload(this.buffer), this.buffer = [];
-        }, d.prototype.disconnect = function() {
-            return (this.connected || this.connecting) && (this.open && this.of("").packet({
-                type: "disconnect"
-            }), this.onDisconnect("booted")), this;
-        }, d.prototype.disconnectSync = function() {
-            var a = b.util.request(), c = [ "http" + (this.options.secure ? "s" : "") + ":/", this.options.host + ":" + this.options.port, this.options.resource, b.protocol, "", this.sessionid ].join("/") + "/?disconnect=1";
-            a.open("GET", c, !1), a.send(null), this.onDisconnect("booted");
-        }, d.prototype.isXDomain = function() {
-            var a = c.location.port || ("https:" == c.location.protocol ? 443 : 80);
-            return this.options.host !== c.location.hostname || this.options.port != a;
-        }, d.prototype.onConnect = function() {
-            this.connected || (this.connected = !0, this.connecting = !1, this.doBuffer || this.setBuffer(!1), 
-            this.emit("connect"));
-        }, d.prototype.onOpen = function() {
-            this.open = !0;
-        }, d.prototype.onClose = function() {
-            this.open = !1, clearTimeout(this.heartbeatTimeoutTimer);
-        }, d.prototype.onPacket = function(a) {
-            this.of(a.endpoint).onPacket(a);
-        }, d.prototype.onError = function(a) {
-            a && a.advice && "reconnect" === a.advice && (this.connected || this.connecting) && (this.disconnect(), 
-            this.options.reconnect && this.reconnect()), this.publish("error", a && a.reason ? a.reason : a);
-        }, d.prototype.onDisconnect = function(a) {
-            var b = this.connected, c = this.connecting;
-            this.connected = !1, this.connecting = !1, this.open = !1, (b || c) && (this.transport.close(), 
-            this.transport.clearTimeouts(), b && (this.publish("disconnect", a), "booted" != a && this.options.reconnect && !this.reconnecting && this.reconnect()));
-        }, d.prototype.reconnect = function() {
-            function e() {
-                if (a.connected) {
-                    for (var b in a.namespaces) a.namespaces.hasOwnProperty(b) && "" !== b && a.namespaces[b].packet({
-                        type: "connect"
-                    });
-                    a.publish("reconnect", a.transport.name, a.reconnectionAttempts);
-                }
-                clearTimeout(a.reconnectionTimer), a.removeListener("connect_failed", f), a.removeListener("connect", f), 
-                a.reconnecting = !1, delete a.reconnectionAttempts, delete a.reconnectionDelay, 
-                delete a.reconnectionTimer, delete a.redoTransports, a.options["try multiple transports"] = c;
-            }
-            function f() {
-                return a.reconnecting ? a.connected ? e() : a.connecting && a.reconnecting ? a.reconnectionTimer = setTimeout(f, 1e3) : void (a.reconnectionAttempts++ >= b ? a.redoTransports ? (a.publish("reconnect_failed"), 
-                e()) : (a.on("connect_failed", f), a.options["try multiple transports"] = !0, a.transports = a.origTransports, 
-                a.transport = a.getTransport(), a.redoTransports = !0, a.connect()) : (a.reconnectionDelay < d && (a.reconnectionDelay *= 2), 
-                a.connect(), a.publish("reconnecting", a.reconnectionDelay, a.reconnectionAttempts), 
-                a.reconnectionTimer = setTimeout(f, a.reconnectionDelay))) : void 0;
-            }
-            this.reconnecting = !0, this.reconnectionAttempts = 0, this.reconnectionDelay = this.options["reconnection delay"];
-            var a = this, b = this.options["max reconnection attempts"], c = this.options["try multiple transports"], d = this.options["reconnection limit"];
-            this.options["try multiple transports"] = !1, this.reconnectionTimer = setTimeout(f, this.reconnectionDelay), 
-            this.on("connect", f);
-        };
-    }("undefined" != typeof io ? io : module.exports, "undefined" != typeof io ? io : module.parent.exports, this), 
-    function(a, b) {
-        function c(a, b) {
-            this.socket = a, this.name = b || "", this.flags = {}, this.json = new d(this, "json"), 
-            this.ackPackets = 0, this.acks = {};
-        }
-        function d(a, b) {
-            this.namespace = a, this.name = b;
-        }
-        a.SocketNamespace = c, b.util.mixin(c, b.EventEmitter), c.prototype.$emit = b.EventEmitter.prototype.emit, 
-        c.prototype.of = function() {
-            return this.socket.of.apply(this.socket, arguments);
-        }, c.prototype.packet = function(a) {
-            return a.endpoint = this.name, this.socket.packet(a), this.flags = {}, this;
-        }, c.prototype.send = function(a, b) {
-            var c = {
-                type: this.flags.json ? "json" : "message",
-                data: a
-            };
-            return "function" == typeof b && (c.id = ++this.ackPackets, c.ack = !0, this.acks[c.id] = b), 
-            this.packet(c);
-        }, c.prototype.emit = function(a) {
-            var b = Array.prototype.slice.call(arguments, 1), c = b[b.length - 1], d = {
-                type: "event",
-                name: a
-            };
-            return "function" == typeof c && (d.id = ++this.ackPackets, d.ack = "data", this.acks[d.id] = c, 
-            b = b.slice(0, b.length - 1)), d.args = b, this.packet(d);
-        }, c.prototype.disconnect = function() {
-            return "" === this.name ? this.socket.disconnect() : (this.packet({
-                type: "disconnect"
-            }), this.$emit("disconnect")), this;
-        }, c.prototype.onPacket = function(a) {
-            function d() {
-                c.packet({
-                    type: "ack",
-                    args: b.util.toArray(arguments),
-                    ackId: a.id
-                });
-            }
-            var c = this;
-            switch (a.type) {
-              case "connect":
-                this.$emit("connect");
-                break;
-
-              case "disconnect":
-                "" === this.name ? this.socket.onDisconnect(a.reason || "booted") : this.$emit("disconnect", a.reason);
-                break;
-
-              case "message":
-              case "json":
-                var e = [ "message", a.data ];
-                "data" == a.ack ? e.push(d) : a.ack && this.packet({
-                    type: "ack",
-                    ackId: a.id
-                }), this.$emit.apply(this, e);
-                break;
-
-              case "event":
-                var e = [ a.name ].concat(a.args);
-                "data" == a.ack && e.push(d), this.$emit.apply(this, e);
-                break;
-
-              case "ack":
-                this.acks[a.ackId] && (this.acks[a.ackId].apply(this, a.args), delete this.acks[a.ackId]);
-                break;
-
-              case "error":
-                a.advice ? this.socket.onError(a) : "unauthorized" == a.reason ? this.$emit("connect_failed", a.reason) : this.$emit("error", a.reason);
-            }
-        }, d.prototype.send = function() {
-            this.namespace.flags[this.name] = !0, this.namespace.send.apply(this.namespace, arguments);
-        }, d.prototype.emit = function() {
-            this.namespace.flags[this.name] = !0, this.namespace.emit.apply(this.namespace, arguments);
-        };
-    }("undefined" != typeof io ? io : module.exports, "undefined" != typeof io ? io : module.parent.exports), 
-    function(a, b, c) {
-        function d() {
-            b.Transport.apply(this, arguments);
-        }
-        a.websocket = d, b.util.inherit(d, b.Transport), d.prototype.name = "websocket", 
-        d.prototype.open = function() {
-            var e, a = b.util.query(this.socket.options.query), d = this;
-            return e || (e = c.MozWebSocket || c.WebSocket), this.websocket = new e(this.prepareUrl() + a), 
-            this.websocket.onopen = function() {
-                d.onOpen(), d.socket.setBuffer(!1);
-            }, this.websocket.onmessage = function(a) {
-                d.onData(a.data);
-            }, this.websocket.onclose = function() {
-                d.onClose(), d.socket.setBuffer(!0);
-            }, this.websocket.onerror = function(a) {
-                d.onError(a);
-            }, this;
-        }, d.prototype.send = b.util.ua.iDevice ? function(a) {
-            var b = this;
-            return setTimeout(function() {
-                b.websocket.send(a);
-            }, 0), this;
-        } : function(a) {
-            return this.websocket.send(a), this;
-        }, d.prototype.payload = function(a) {
-            for (var b = 0, c = a.length; c > b; b++) this.packet(a[b]);
-            return this;
-        }, d.prototype.close = function() {
-            return this.websocket.close(), this;
-        }, d.prototype.onError = function(a) {
-            this.socket.onError(a);
-        }, d.prototype.scheme = function() {
-            return this.socket.options.secure ? "wss" : "ws";
-        }, d.check = function() {
-            return "WebSocket" in c && !("__addTask" in WebSocket) || "MozWebSocket" in c;
-        }, d.xdomainCheck = function() {
-            return !0;
-        }, b.transports.push("websocket");
-    }("undefined" != typeof io ? io.Transport : module.exports, "undefined" != typeof io ? io : module.parent.exports, this), 
-    function(a, b) {
-        function c() {
-            b.Transport.websocket.apply(this, arguments);
-        }
-        a.flashsocket = c, b.util.inherit(c, b.Transport.websocket), c.prototype.name = "flashsocket", 
-        c.prototype.open = function() {
-            var a = this, c = arguments;
-            return WebSocket.__addTask(function() {
-                b.Transport.websocket.prototype.open.apply(a, c);
-            }), this;
-        }, c.prototype.send = function() {
-            var a = this, c = arguments;
-            return WebSocket.__addTask(function() {
-                b.Transport.websocket.prototype.send.apply(a, c);
-            }), this;
-        }, c.prototype.close = function() {
-            return WebSocket.__tasks.length = 0, b.Transport.websocket.prototype.close.call(this), 
-            this;
-        }, c.prototype.ready = function(a, d) {
-            function e() {
-                var b = a.options, e = b["flash policy port"], g = [ "http" + (b.secure ? "s" : "") + ":/", b.host + ":" + b.port, b.resource, "static/flashsocket", "WebSocketMain" + (a.isXDomain() ? "Insecure" : "") + ".swf" ];
-                c.loaded || ("undefined" == typeof WEB_SOCKET_SWF_LOCATION && (WEB_SOCKET_SWF_LOCATION = g.join("/")), 
-                843 !== e && WebSocket.loadFlashPolicyFile("xmlsocket://" + b.host + ":" + e), WebSocket.__initialize(), 
-                c.loaded = !0), d.call(f);
-            }
-            var f = this;
-            return document.body ? e() : void b.util.load(e);
-        }, c.check = function() {
-            return "undefined" != typeof WebSocket && "__initialize" in WebSocket && swfobject ? swfobject.getFlashPlayerVersion().major >= 10 : !1;
-        }, c.xdomainCheck = function() {
-            return !0;
-        }, "undefined" != typeof window && (WEB_SOCKET_DISABLE_AUTO_INITIALIZATION = !0), 
-        b.transports.push("flashsocket");
-    }("undefined" != typeof io ? io.Transport : module.exports, "undefined" != typeof io ? io : module.parent.exports), 
-    "undefined" != typeof window) var swfobject = function() {
-        function A() {
-            if (!t) {
-                try {
-                    var a = i.getElementsByTagName("body")[0].appendChild(Q("span"));
-                    a.parentNode.removeChild(a);
-                } catch (b) {
-                    return;
-                }
-                t = !0;
-                for (var c = l.length, d = 0; c > d; d++) l[d]();
-            }
-        }
-        function B(a) {
-            t ? a() : l[l.length] = a;
-        }
-        function C(b) {
-            if (typeof h.addEventListener != a) h.addEventListener("load", b, !1); else if (typeof i.addEventListener != a) i.addEventListener("load", b, !1); else if (typeof h.attachEvent != a) R(h, "onload", b); else if ("function" == typeof h.onload) {
-                var c = h.onload;
-                h.onload = function() {
-                    c(), b();
-                };
-            } else h.onload = b;
-        }
-        function D() {
-            k ? E() : F();
-        }
-        function E() {
-            var c = i.getElementsByTagName("body")[0], d = Q(b);
-            d.setAttribute("type", e);
-            var f = c.appendChild(d);
-            if (f) {
-                var g = 0;
-                !function() {
-                    if (typeof f.GetVariable != a) {
-                        var b = f.GetVariable("$version");
-                        b && (b = b.split(" ")[1].split(","), y.pv = [ parseInt(b[0], 10), parseInt(b[1], 10), parseInt(b[2], 10) ]);
-                    } else if (10 > g) return g++, void setTimeout(arguments.callee, 10);
-                    c.removeChild(d), f = null, F();
-                }();
-            } else F();
-        }
-        function F() {
-            var b = m.length;
-            if (b > 0) for (var c = 0; b > c; c++) {
-                var d = m[c].id, e = m[c].callbackFn, f = {
-                    success: !1,
-                    id: d
-                };
-                if (y.pv[0] > 0) {
-                    var g = P(d);
-                    if (g) if (!S(m[c].swfVersion) || y.wk && y.wk < 312) if (m[c].expressInstall && H()) {
-                        var h = {};
-                        h.data = m[c].expressInstall, h.width = g.getAttribute("width") || "0", h.height = g.getAttribute("height") || "0", 
-                        g.getAttribute("class") && (h.styleclass = g.getAttribute("class")), g.getAttribute("align") && (h.align = g.getAttribute("align"));
-                        for (var i = {}, j = g.getElementsByTagName("param"), k = j.length, l = 0; k > l; l++) "movie" != j[l].getAttribute("name").toLowerCase() && (i[j[l].getAttribute("name")] = j[l].getAttribute("value"));
-                        I(h, i, d, e);
-                    } else J(g), e && e(f); else U(d, !0), e && (f.success = !0, f.ref = G(d), e(f));
-                } else if (U(d, !0), e) {
-                    var n = G(d);
-                    n && typeof n.SetVariable != a && (f.success = !0, f.ref = n), e(f);
-                }
-            }
-        }
-        function G(c) {
-            var d = null, e = P(c);
-            if (e && "OBJECT" == e.nodeName) if (typeof e.SetVariable != a) d = e; else {
-                var f = e.getElementsByTagName(b)[0];
-                f && (d = f);
-            }
-            return d;
-        }
-        function H() {
-            return !u && S("6.0.65") && (y.win || y.mac) && !(y.wk && y.wk < 312);
-        }
-        function I(b, c, d, e) {
-            u = !0, r = e || null, s = {
-                success: !1,
-                id: d
-            };
-            var g = P(d);
-            if (g) {
-                "OBJECT" == g.nodeName ? (p = K(g), q = null) : (p = g, q = d), b.id = f, (typeof b.width == a || !/%$/.test(b.width) && parseInt(b.width, 10) < 310) && (b.width = "310"), 
-                (typeof b.height == a || !/%$/.test(b.height) && parseInt(b.height, 10) < 137) && (b.height = "137"), 
-                i.title = i.title.slice(0, 47) + " - Flash Player Installation";
-                var j = y.ie && y.win ? [ "Active" ].concat("").join("X") : "PlugIn", k = "MMredirectURL=" + h.location.toString().replace(/&/g, "%26") + "&MMplayerType=" + j + "&MMdoctitle=" + i.title;
-                if (typeof c.flashvars != a ? c.flashvars += "&" + k : c.flashvars = k, y.ie && y.win && 4 != g.readyState) {
-                    var l = Q("div");
-                    d += "SWFObjectNew", l.setAttribute("id", d), g.parentNode.insertBefore(l, g), g.style.display = "none", 
-                    function() {
-                        4 == g.readyState ? g.parentNode.removeChild(g) : setTimeout(arguments.callee, 10);
-                    }();
-                }
-                L(b, c, d);
-            }
-        }
-        function J(a) {
-            if (y.ie && y.win && 4 != a.readyState) {
-                var b = Q("div");
-                a.parentNode.insertBefore(b, a), b.parentNode.replaceChild(K(a), b), a.style.display = "none", 
-                function() {
-                    4 == a.readyState ? a.parentNode.removeChild(a) : setTimeout(arguments.callee, 10);
-                }();
-            } else a.parentNode.replaceChild(K(a), a);
-        }
-        function K(a) {
-            var c = Q("div");
-            if (y.win && y.ie) c.innerHTML = a.innerHTML; else {
-                var d = a.getElementsByTagName(b)[0];
-                if (d) {
-                    var e = d.childNodes;
-                    if (e) for (var f = e.length, g = 0; f > g; g++) (1 != e[g].nodeType || "PARAM" != e[g].nodeName) && 8 != e[g].nodeType && c.appendChild(e[g].cloneNode(!0));
-                }
-            }
-            return c;
-        }
-        function L(c, d, f) {
-            var g, h = P(f);
-            if (y.wk && y.wk < 312) return g;
-            if (h) if (typeof c.id == a && (c.id = f), y.ie && y.win) {
-                var i = "";
-                for (var j in c) c[j] != Object.prototype[j] && ("data" == j.toLowerCase() ? d.movie = c[j] : "styleclass" == j.toLowerCase() ? i += ' class="' + c[j] + '"' : "classid" != j.toLowerCase() && (i += " " + j + '="' + c[j] + '"'));
-                var k = "";
-                for (var l in d) d[l] != Object.prototype[l] && (k += '<param name="' + l + '" value="' + d[l] + '" />');
-                h.outerHTML = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' + i + ">" + k + "</object>", 
-                n[n.length] = c.id, g = P(c.id);
-            } else {
-                var m = Q(b);
-                m.setAttribute("type", e);
-                for (var o in c) c[o] != Object.prototype[o] && ("styleclass" == o.toLowerCase() ? m.setAttribute("class", c[o]) : "classid" != o.toLowerCase() && m.setAttribute(o, c[o]));
-                for (var p in d) d[p] != Object.prototype[p] && "movie" != p.toLowerCase() && M(m, p, d[p]);
-                h.parentNode.replaceChild(m, h), g = m;
-            }
-            return g;
-        }
-        function M(a, b, c) {
-            var d = Q("param");
-            d.setAttribute("name", b), d.setAttribute("value", c), a.appendChild(d);
-        }
-        function N(a) {
-            var b = P(a);
-            b && "OBJECT" == b.nodeName && (y.ie && y.win ? (b.style.display = "none", function() {
-                4 == b.readyState ? O(a) : setTimeout(arguments.callee, 10);
-            }()) : b.parentNode.removeChild(b));
-        }
-        function O(a) {
-            var b = P(a);
-            if (b) {
-                for (var c in b) "function" == typeof b[c] && (b[c] = null);
-                b.parentNode.removeChild(b);
-            }
-        }
-        function P(a) {
-            var b = null;
-            try {
-                b = i.getElementById(a);
-            } catch (c) {}
-            return b;
-        }
-        function Q(a) {
-            return i.createElement(a);
-        }
-        function R(a, b, c) {
-            a.attachEvent(b, c), o[o.length] = [ a, b, c ];
-        }
-        function S(a) {
-            var b = y.pv, c = a.split(".");
-            return c[0] = parseInt(c[0], 10), c[1] = parseInt(c[1], 10) || 0, c[2] = parseInt(c[2], 10) || 0, 
-            b[0] > c[0] || b[0] == c[0] && b[1] > c[1] || b[0] == c[0] && b[1] == c[1] && b[2] >= c[2] ? !0 : !1;
-        }
-        function T(c, d, e, f) {
-            if (!y.ie || !y.mac) {
-                var g = i.getElementsByTagName("head")[0];
-                if (g) {
-                    var h = e && "string" == typeof e ? e : "screen";
-                    if (f && (v = null, w = null), !v || w != h) {
-                        var j = Q("style");
-                        j.setAttribute("type", "text/css"), j.setAttribute("media", h), v = g.appendChild(j), 
-                        y.ie && y.win && typeof i.styleSheets != a && i.styleSheets.length > 0 && (v = i.styleSheets[i.styleSheets.length - 1]), 
-                        w = h;
-                    }
-                    y.ie && y.win ? v && typeof v.addRule == b && v.addRule(c, d) : v && typeof i.createTextNode != a && v.appendChild(i.createTextNode(c + " {" + d + "}"));
-                }
-            }
-        }
-        function U(a, b) {
-            if (x) {
-                var c = b ? "visible" : "hidden";
-                t && P(a) ? P(a).style.visibility = c : T("#" + a, "visibility:" + c);
-            }
-        }
-        function V(b) {
-            var c = /[\\\"<>\.;]/, d = null != c.exec(b);
-            return d && typeof encodeURIComponent != a ? encodeURIComponent(b) : b;
-        }
-        {
-            var p, q, r, s, v, w, a = "undefined", b = "object", c = "Shockwave Flash", d = "ShockwaveFlash.ShockwaveFlash", e = "application/x-shockwave-flash", f = "SWFObjectExprInst", g = "onreadystatechange", h = window, i = document, j = navigator, k = !1, l = [ D ], m = [], n = [], o = [], t = !1, u = !1, x = !0, y = function() {
-                var f = typeof i.getElementById != a && typeof i.getElementsByTagName != a && typeof i.createElement != a, g = j.userAgent.toLowerCase(), l = j.platform.toLowerCase(), m = /win/.test(l ? l : g), n = /mac/.test(l ? l : g), o = /webkit/.test(g) ? parseFloat(g.replace(/^.*webkit\/(\d+(\.\d+)?).*$/, "$1")) : !1, p = !1, q = [ 0, 0, 0 ], r = null;
-                if (typeof j.plugins != a && typeof j.plugins[c] == b) r = j.plugins[c].description, 
-                r && (typeof j.mimeTypes == a || !j.mimeTypes[e] || !!j.mimeTypes[e].enabledPlugin) && (k = !0, 
-                p = !1, r = r.replace(/^.*\s+(\S+\s+\S+$)/, "$1"), q[0] = parseInt(r.replace(/^(.*)\..*$/, "$1"), 10), 
-                q[1] = parseInt(r.replace(/^.*\.(.*)\s.*$/, "$1"), 10), q[2] = /[a-zA-Z]/.test(r) ? parseInt(r.replace(/^.*[a-zA-Z]+(.*)$/, "$1"), 10) : 0); else if (typeof h[[ "Active" ].concat("Object").join("X")] != a) try {
-                    var s = new (window[[ "Active" ].concat("Object").join("X")])(d);
-                    s && (r = s.GetVariable("$version"), r && (p = !0, r = r.split(" ")[1].split(","), 
-                    q = [ parseInt(r[0], 10), parseInt(r[1], 10), parseInt(r[2], 10) ]));
-                } catch (t) {}
-                return {
-                    w3: f,
-                    pv: q,
-                    wk: o,
-                    ie: p,
-                    win: m,
-                    mac: n
-                };
-            }();
-            !function() {
-                y.w3 && ((typeof i.readyState != a && "complete" == i.readyState || typeof i.readyState == a && (i.getElementsByTagName("body")[0] || i.body)) && A(), 
-                t || (typeof i.addEventListener != a && i.addEventListener("DOMContentLoaded", A, !1), 
-                y.ie && y.win && (i.attachEvent(g, function() {
-                    "complete" == i.readyState && (i.detachEvent(g, arguments.callee), A());
-                }), h == top && function() {
-                    if (!t) {
-                        try {
-                            i.documentElement.doScroll("left");
-                        } catch (a) {
-                            return void setTimeout(arguments.callee, 0);
+                if (!1 !== this._timeout) {
+                    var timeout = this._timeout;
+                    debug("connect attempt will timeout after %d", timeout);
+                    var timer = setTimeout(function() {
+                        debug("connect attempt timed out after %d", timeout), openSub.destroy(), socket.close(), 
+                        socket.emit("error", "timeout"), self.emit("connect_timeout", timeout);
+                    }, timeout);
+                    this.subs.push({
+                        destroy: function() {
+                            clearTimeout(timer);
                         }
-                        A();
-                    }
-                }()), y.wk && function() {
-                    return t ? void 0 : /loaded|complete/.test(i.readyState) ? void A() : void setTimeout(arguments.callee, 0);
-                }(), C(A)));
-            }(), function() {
-                y.ie && y.win && window.attachEvent("onunload", function() {
-                    for (var a = o.length, b = 0; a > b; b++) o[b][0].detachEvent(o[b][1], o[b][2]);
-                    for (var c = n.length, d = 0; c > d; d++) N(n[d]);
-                    for (var e in y) y[e] = null;
-                    y = null;
-                    for (var f in swfobject) swfobject[f] = null;
-                    swfobject = null;
-                });
-            }();
-        }
-        return {
-            registerObject: function(a, b, c, d) {
-                if (y.w3 && a && b) {
-                    var e = {};
-                    e.id = a, e.swfVersion = b, e.expressInstall = c, e.callbackFn = d, m[m.length] = e, 
-                    U(a, !1);
-                } else d && d({
-                    success: !1,
-                    id: a
-                });
-            },
-            getObjectById: function(a) {
-                return y.w3 ? G(a) : void 0;
-            },
-            embedSWF: function(c, d, e, f, g, h, i, j, k, l) {
-                var m = {
-                    success: !1,
-                    id: d
-                };
-                y.w3 && !(y.wk && y.wk < 312) && c && d && e && f && g ? (U(d, !1), B(function() {
-                    e += "", f += "";
-                    var n = {};
-                    if (k && typeof k === b) for (var o in k) n[o] = k[o];
-                    n.data = c, n.width = e, n.height = f;
-                    var p = {};
-                    if (j && typeof j === b) for (var q in j) p[q] = j[q];
-                    if (i && typeof i === b) for (var r in i) typeof p.flashvars != a ? p.flashvars += "&" + r + "=" + i[r] : p.flashvars = r + "=" + i[r];
-                    if (S(g)) {
-                        var s = L(n, p, d);
-                        n.id == d && U(d, !0), m.success = !0, m.ref = s;
-                    } else {
-                        if (h && H()) return n.data = h, void I(n, p, d, l);
-                        U(d, !0);
-                    }
-                    l && l(m);
-                })) : l && l(m);
-            },
-            switchOffAutoHideShow: function() {
-                x = !1;
-            },
-            ua: y,
-            getFlashPlayerVersion: function() {
-                return {
-                    major: y.pv[0],
-                    minor: y.pv[1],
-                    release: y.pv[2]
-                };
-            },
-            hasFlashPlayerVersion: S,
-            createSWF: function(a, b, c) {
-                return y.w3 ? L(a, b, c) : void 0;
-            },
-            showExpressInstall: function(a, b, c, d) {
-                y.w3 && H() && I(a, b, c, d);
-            },
-            removeSWF: function(a) {
-                y.w3 && N(a);
-            },
-            createCSS: function(a, b, c, d) {
-                y.w3 && T(a, b, c, d);
-            },
-            addDomLoadEvent: B,
-            addLoadEvent: C,
-            getQueryParamValue: function(a) {
-                var b = i.location.search || i.location.hash;
-                if (b) {
-                    if (/\?/.test(b) && (b = b.split("?")[1]), null == a) return V(b);
-                    for (var c = b.split("&"), d = 0; d < c.length; d++) if (c[d].substring(0, c[d].indexOf("=")) == a) return V(c[d].substring(c[d].indexOf("=") + 1));
-                }
-                return "";
-            },
-            expressInstallCallback: function() {
-                if (u) {
-                    var a = P(f);
-                    a && p && (a.parentNode.replaceChild(p, a), q && (U(q, !0), y.ie && y.win && (p.style.display = "block")), 
-                    r && r(s)), u = !1;
-                }
-            }
-        };
-    }();
-    !function() {
-        if ("undefined" != typeof window && !window.WebSocket) {
-            var a = window.console;
-            return a && a.log && a.error || (a = {
-                log: function() {},
-                error: function() {}
-            }), swfobject.hasFlashPlayerVersion("10.0.0") ? ("file:" == location.protocol && a.error("WARNING: web-socket-js doesn't work in file:///... URL unless you set Flash Security Settings properly. Open the page via Web server i.e. http://..."), 
-            WebSocket = function(a, b, c, d, e) {
-                var f = this;
-                f.__id = WebSocket.__nextId++, WebSocket.__instances[f.__id] = f, f.readyState = WebSocket.CONNECTING, 
-                f.bufferedAmount = 0, f.__events = {}, b ? "string" == typeof b && (b = [ b ]) : b = [], 
-                setTimeout(function() {
-                    WebSocket.__addTask(function() {
-                        WebSocket.__flash.create(f.__id, a, b, c || null, d || 0, e || null);
-                    });
-                }, 0);
-            }, WebSocket.prototype.send = function(a) {
-                if (this.readyState == WebSocket.CONNECTING) throw "INVALID_STATE_ERR: Web Socket connection has not been established";
-                var b = WebSocket.__flash.send(this.__id, encodeURIComponent(a));
-                return 0 > b ? !0 : (this.bufferedAmount += b, !1);
-            }, WebSocket.prototype.close = function() {
-                this.readyState != WebSocket.CLOSED && this.readyState != WebSocket.CLOSING && (this.readyState = WebSocket.CLOSING, 
-                WebSocket.__flash.close(this.__id));
-            }, WebSocket.prototype.addEventListener = function(a, b) {
-                a in this.__events || (this.__events[a] = []), this.__events[a].push(b);
-            }, WebSocket.prototype.removeEventListener = function(a, b) {
-                if (a in this.__events) for (var d = this.__events[a], e = d.length - 1; e >= 0; --e) if (d[e] === b) {
-                    d.splice(e, 1);
-                    break;
-                }
-            }, WebSocket.prototype.dispatchEvent = function(a) {
-                for (var b = this.__events[a.type] || [], c = 0; c < b.length; ++c) b[c](a);
-                var d = this["on" + a.type];
-                d && d(a);
-            }, WebSocket.prototype.__handleEvent = function(a) {
-                "readyState" in a && (this.readyState = a.readyState), "protocol" in a && (this.protocol = a.protocol);
-                var b;
-                if ("open" == a.type || "error" == a.type) b = this.__createSimpleEvent(a.type); else if ("close" == a.type) b = this.__createSimpleEvent("close"); else {
-                    if ("message" != a.type) throw "unknown event type: " + a.type;
-                    var c = decodeURIComponent(a.message);
-                    b = this.__createMessageEvent("message", c);
-                }
-                this.dispatchEvent(b);
-            }, WebSocket.prototype.__createSimpleEvent = function(a) {
-                if (document.createEvent && window.Event) {
-                    var b = document.createEvent("Event");
-                    return b.initEvent(a, !1, !1), b;
-                }
-                return {
-                    type: a,
-                    bubbles: !1,
-                    cancelable: !1
-                };
-            }, WebSocket.prototype.__createMessageEvent = function(a, b) {
-                if (document.createEvent && window.MessageEvent && !window.opera) {
-                    var c = document.createEvent("MessageEvent");
-                    return c.initMessageEvent("message", !1, !1, b, null, null, window, null), c;
-                }
-                return {
-                    type: a,
-                    data: b,
-                    bubbles: !1,
-                    cancelable: !1
-                };
-            }, WebSocket.CONNECTING = 0, WebSocket.OPEN = 1, WebSocket.CLOSING = 2, WebSocket.CLOSED = 3, 
-            WebSocket.__flash = null, WebSocket.__instances = {}, WebSocket.__tasks = [], WebSocket.__nextId = 0, 
-            WebSocket.loadFlashPolicyFile = function(a) {
-                WebSocket.__addTask(function() {
-                    WebSocket.__flash.loadManualPolicyFile(a);
-                });
-            }, WebSocket.__initialize = function() {
-                if (!WebSocket.__flash) {
-                    if (WebSocket.__swfLocation && (window.WEB_SOCKET_SWF_LOCATION = WebSocket.__swfLocation), 
-                    !window.WEB_SOCKET_SWF_LOCATION) return void a.error("[WebSocket] set WEB_SOCKET_SWF_LOCATION to location of WebSocketMain.swf");
-                    var b = document.createElement("div");
-                    b.id = "webSocketContainer", b.style.position = "absolute", WebSocket.__isFlashLite() ? (b.style.left = "0px", 
-                    b.style.top = "0px") : (b.style.left = "-100px", b.style.top = "-100px");
-                    var c = document.createElement("div");
-                    c.id = "webSocketFlash", b.appendChild(c), document.body.appendChild(b), swfobject.embedSWF(WEB_SOCKET_SWF_LOCATION, "webSocketFlash", "1", "1", "10.0.0", null, null, {
-                        hasPriority: !0,
-                        swliveconnect: !0,
-                        allowScriptAccess: "always"
-                    }, null, function(b) {
-                        b.success || a.error("[WebSocket] swfobject.embedSWF failed");
                     });
                 }
-            }, WebSocket.__onFlashInitialized = function() {
-                setTimeout(function() {
-                    WebSocket.__flash = document.getElementById("webSocketFlash"), WebSocket.__flash.setCallerUrl(location.href), 
-                    WebSocket.__flash.setDebug(!!window.WEB_SOCKET_DEBUG);
-                    for (var a = 0; a < WebSocket.__tasks.length; ++a) WebSocket.__tasks[a]();
-                    WebSocket.__tasks = [];
-                }, 0);
-            }, WebSocket.__onFlashEvent = function() {
-                return setTimeout(function() {
-                    try {
-                        for (var b = WebSocket.__flash.receiveEvents(), c = 0; c < b.length; ++c) WebSocket.__instances[b[c].webSocketId].__handleEvent(b[c]);
-                    } catch (d) {
-                        a.error(d);
-                    }
-                }, 0), !0;
-            }, WebSocket.__log = function(b) {
-                a.log(decodeURIComponent(b));
-            }, WebSocket.__error = function(b) {
-                a.error(decodeURIComponent(b));
-            }, WebSocket.__addTask = function(a) {
-                WebSocket.__flash ? a() : WebSocket.__tasks.push(a);
-            }, WebSocket.__isFlashLite = function() {
-                if (!window.navigator || !window.navigator.mimeTypes) return !1;
-                var a = window.navigator.mimeTypes["application/x-shockwave-flash"];
-                return a && a.enabledPlugin && a.enabledPlugin.filename && a.enabledPlugin.filename.match(/flashlite/i) ? !0 : !1;
-            }, window.WEB_SOCKET_DISABLE_AUTO_INITIALIZATION || (window.addEventListener ? window.addEventListener("load", function() {
-                WebSocket.__initialize();
-            }, !1) : window.attachEvent("onload", function() {
-                WebSocket.__initialize();
-            })), void 0) : void a.error("Flash Player >= 10.0.0 is required.");
-        }
-    }(), function(a, b, c) {
-        function d(a) {
-            a && (b.Transport.apply(this, arguments), this.sendBuffer = []);
-        }
-        function e() {}
-        a.XHR = d, b.util.inherit(d, b.Transport), d.prototype.open = function() {
-            return this.socket.setBuffer(!1), this.onOpen(), this.get(), this.setCloseTimeout(), 
-            this;
-        }, d.prototype.payload = function(a) {
-            for (var c = [], d = 0, e = a.length; e > d; d++) c.push(b.parser.encodePacket(a[d]));
-            this.send(b.parser.encodePayload(c));
-        }, d.prototype.send = function(a) {
-            return this.post(a), this;
-        }, d.prototype.post = function(a) {
-            function d() {
-                4 == this.readyState && (this.onreadystatechange = e, b.posting = !1, 200 == this.status ? b.socket.setBuffer(!1) : b.onClose());
-            }
-            function f() {
-                this.onload = e, b.socket.setBuffer(!1);
-            }
-            var b = this;
-            this.socket.setBuffer(!0), this.sendXHR = this.request("POST"), c.XDomainRequest && this.sendXHR instanceof XDomainRequest ? this.sendXHR.onload = this.sendXHR.onerror = f : this.sendXHR.onreadystatechange = d, 
-            this.sendXHR.send(a);
-        }, d.prototype.close = function() {
-            return this.onClose(), this;
-        }, d.prototype.request = function(a) {
-            var c = b.util.request(this.socket.isXDomain()), d = b.util.query(this.socket.options.query, "t=" + +new Date());
-            if (c.open(a || "GET", this.prepareUrl() + d, !0), "POST" == a) try {
-                c.setRequestHeader ? c.setRequestHeader("Content-type", "text/plain;charset=UTF-8") : c.contentType = "text/plain";
-            } catch (e) {}
-            return c;
-        }, d.prototype.scheme = function() {
-            return this.socket.options.secure ? "https" : "http";
-        }, d.check = function(a, d) {
-            try {
-                var e = b.util.request(d), f = c.XDomainRequest && e instanceof XDomainRequest, g = a && a.options && a.options.secure ? "https:" : "http:", h = c.location && g != c.location.protocol;
-                if (e && (!f || !h)) return !0;
-            } catch (i) {}
-            return !1;
-        }, d.xdomainCheck = function(a) {
-            return d.check(a, !0);
-        };
-    }("undefined" != typeof io ? io.Transport : module.exports, "undefined" != typeof io ? io : module.parent.exports, this), 
-    function(a, b) {
-        function c() {
-            b.Transport.XHR.apply(this, arguments);
-        }
-        a.htmlfile = c, b.util.inherit(c, b.Transport.XHR), c.prototype.name = "htmlfile", 
-        c.prototype.get = function() {
-            this.doc = new (window[[ "Active" ].concat("Object").join("X")])("htmlfile"), this.doc.open(), 
-            this.doc.write("<html></html>"), this.doc.close(), this.doc.parentWindow.s = this;
-            var a = this.doc.createElement("div");
-            a.className = "socketio", this.doc.body.appendChild(a), this.iframe = this.doc.createElement("iframe"), 
-            a.appendChild(this.iframe);
-            var c = this, d = b.util.query(this.socket.options.query, "t=" + +new Date());
-            this.iframe.src = this.prepareUrl() + d, b.util.on(window, "unload", function() {
-                c.destroy();
-            });
-        }, c.prototype._ = function(a, b) {
-            a = a.replace(/\\\//g, "/"), this.onData(a);
-            try {
-                var c = b.getElementsByTagName("script")[0];
-                c.parentNode.removeChild(c);
-            } catch (d) {}
-        }, c.prototype.destroy = function() {
-            if (this.iframe) {
-                try {
-                    this.iframe.src = "about:blank";
-                } catch (a) {}
-                this.doc = null, this.iframe.parentNode.removeChild(this.iframe), this.iframe = null, 
-                CollectGarbage();
-            }
-        }, c.prototype.close = function() {
-            return this.destroy(), b.Transport.XHR.prototype.close.call(this);
-        }, c.check = function(a) {
-            if ("undefined" != typeof window && [ "Active" ].concat("Object").join("X") in window) try {
-                var c = new (window[[ "Active" ].concat("Object").join("X")])("htmlfile");
-                return c && b.Transport.XHR.check(a);
-            } catch (d) {}
-            return !1;
-        }, c.xdomainCheck = function() {
-            return !1;
-        }, b.transports.push("htmlfile");
-    }("undefined" != typeof io ? io.Transport : module.exports, "undefined" != typeof io ? io : module.parent.exports), 
-    function(a, b, c) {
-        function d() {
-            b.Transport.XHR.apply(this, arguments);
-        }
-        function e() {}
-        a["xhr-polling"] = d, b.util.inherit(d, b.Transport.XHR), b.util.merge(d, b.Transport.XHR), 
-        d.prototype.name = "xhr-polling", d.prototype.heartbeats = function() {
-            return !1;
-        }, d.prototype.open = function() {
-            var a = this;
-            return b.Transport.XHR.prototype.open.call(a), !1;
-        }, d.prototype.get = function() {
-            function b() {
-                4 == this.readyState && (this.onreadystatechange = e, 200 == this.status ? (a.onData(this.responseText), 
-                a.get()) : a.onClose());
-            }
-            function d() {
-                this.onload = e, this.onerror = e, a.retryCounter = 1, a.onData(this.responseText), 
-                a.get();
-            }
-            function f() {
-                a.retryCounter++, !a.retryCounter || a.retryCounter > 3 ? a.onClose() : a.get();
-            }
-            if (this.isOpen) {
-                var a = this;
-                this.xhr = this.request(), c.XDomainRequest && this.xhr instanceof XDomainRequest ? (this.xhr.onload = d, 
-                this.xhr.onerror = f) : this.xhr.onreadystatechange = b, this.xhr.send(null);
-            }
-        }, d.prototype.onClose = function() {
-            if (b.Transport.XHR.prototype.onClose.call(this), this.xhr) {
-                this.xhr.onreadystatechange = this.xhr.onload = this.xhr.onerror = e;
-                try {
-                    this.xhr.abort();
-                } catch (a) {}
-                this.xhr = null;
-            }
-        }, d.prototype.ready = function(a, c) {
-            var d = this;
-            b.util.defer(function() {
-                c.call(d);
-            });
-        }, b.transports.push("xhr-polling");
-    }("undefined" != typeof io ? io.Transport : module.exports, "undefined" != typeof io ? io : module.parent.exports, this), 
-    function(a, b, c) {
-        function e() {
-            b.Transport["xhr-polling"].apply(this, arguments), this.index = b.j.length;
-            var c = this;
-            b.j.push(function(a) {
-                c._(a);
-            });
-        }
-        var d = c.document && "MozAppearance" in c.document.documentElement.style;
-        a["jsonp-polling"] = e, b.util.inherit(e, b.Transport["xhr-polling"]), e.prototype.name = "jsonp-polling", 
-        e.prototype.post = function(a) {
-            function i() {
-                j(), c.socket.setBuffer(!1);
-            }
-            function j() {
-                c.iframe && c.form.removeChild(c.iframe);
-                try {
-                    h = document.createElement('<iframe name="' + c.iframeId + '">');
-                } catch (a) {
-                    h = document.createElement("iframe"), h.name = c.iframeId;
+                return this.subs.push(openSub), this.subs.push(errorSub), this;
+            }, Manager.prototype.onopen = function() {
+                debug("open"), this.cleanup(), this.readyState = "open", this.emit("open");
+                var socket = this.engine;
+                this.subs.push(on(socket, "data", bind(this, "ondata"))), this.subs.push(on(this.decoder, "decoded", bind(this, "ondecoded"))), 
+                this.subs.push(on(socket, "error", bind(this, "onerror"))), this.subs.push(on(socket, "close", bind(this, "onclose")));
+            }, Manager.prototype.ondata = function(data) {
+                this.decoder.add(data);
+            }, Manager.prototype.ondecoded = function(packet) {
+                this.emit("packet", packet);
+            }, Manager.prototype.onerror = function(err) {
+                debug("error", err), this.emit("error", err);
+            }, Manager.prototype.socket = function(nsp) {
+                var socket = this.nsps[nsp];
+                if (!socket) {
+                    socket = new Socket(this, nsp), this.nsps[nsp] = socket;
+                    var self = this;
+                    socket.on("connect", function() {
+                        self.connected++;
+                    });
                 }
-                h.id = c.iframeId, c.form.appendChild(h), c.iframe = h;
-            }
-            var c = this, d = b.util.query(this.socket.options.query, "t=" + +new Date() + "&i=" + this.index);
-            if (!this.form) {
-                var h, e = document.createElement("form"), f = document.createElement("textarea"), g = this.iframeId = "socketio_iframe_" + this.index;
-                e.className = "socketio", e.style.position = "absolute", e.style.top = "0px", e.style.left = "0px", 
-                e.style.display = "none", e.target = g, e.method = "POST", e.setAttribute("accept-charset", "utf-8"), 
-                f.name = "d", e.appendChild(f), document.body.appendChild(e), this.form = e, this.area = f;
-            }
-            this.form.action = this.prepareUrl() + d, j(), this.area.value = b.JSON.stringify(a);
-            try {
-                this.form.submit();
-            } catch (k) {}
-            this.iframe.attachEvent ? h.onreadystatechange = function() {
-                "complete" == c.iframe.readyState && i();
-            } : this.iframe.onload = i, this.socket.setBuffer(!0);
-        }, e.prototype.get = function() {
-            var a = this, c = document.createElement("script"), e = b.util.query(this.socket.options.query, "t=" + +new Date() + "&i=" + this.index);
-            this.script && (this.script.parentNode.removeChild(this.script), this.script = null), 
-            c.async = !0, c.src = this.prepareUrl() + e, c.onerror = function() {
-                a.onClose();
+                return socket;
+            }, Manager.prototype.destroy = function() {
+                --this.connected || this.close();
+            }, Manager.prototype.packet = function(packet) {
+                debug("writing packet %j", packet);
+                var self = this;
+                self.encoding ? self.packetBuffer.push(packet) : (self.encoding = !0, this.encoder.encode(packet, function(encodedPackets) {
+                    for (var i = 0; i < encodedPackets.length; i++) self.engine.write(encodedPackets[i]);
+                    self.encoding = !1, self.processPacketQueue();
+                }));
+            }, Manager.prototype.processPacketQueue = function() {
+                if (this.packetBuffer.length > 0 && !this.encoding) {
+                    var pack = this.packetBuffer.shift();
+                    this.packet(pack);
+                }
+            }, Manager.prototype.cleanup = function() {
+                for (var sub; sub = this.subs.shift(); ) sub.destroy();
+                this.packetBuffer = [], this.encoding = !1, this.decoder.destroy();
+            }, Manager.prototype.close = Manager.prototype.disconnect = function() {
+                this.skipReconnect = !0, this.engine.close();
+            }, Manager.prototype.onclose = function(reason) {
+                debug("close"), this.cleanup(), this.readyState = "closed", this.emit("close", reason), 
+                this._reconnection && !this.skipReconnect && this.reconnect();
+            }, Manager.prototype.reconnect = function() {
+                if (this.reconnecting) return this;
+                var self = this;
+                if (this.attempts++, this.attempts > this._reconnectionAttempts) debug("reconnect failed"), 
+                this.emit("reconnect_failed"), this.reconnecting = !1; else {
+                    var delay = this.attempts * this.reconnectionDelay();
+                    delay = Math.min(delay, this.reconnectionDelayMax()), debug("will wait %dms before reconnect attempt", delay), 
+                    this.reconnecting = !0;
+                    var timer = setTimeout(function() {
+                        debug("attempting reconnect"), self.emit("reconnect_attempt"), self.open(function(err) {
+                            err ? (debug("reconnect attempt error"), self.reconnecting = !1, self.reconnect(), 
+                            self.emit("reconnect_error", err.data)) : (debug("reconnect success"), self.onreconnect());
+                        });
+                    }, delay);
+                    this.subs.push({
+                        destroy: function() {
+                            clearTimeout(timer);
+                        }
+                    });
+                }
+            }, Manager.prototype.onreconnect = function() {
+                var attempt = this.attempts;
+                this.attempts = 0, this.reconnecting = !1, this.emit("reconnect", attempt);
             };
-            var f = document.getElementsByTagName("script")[0];
-            f.parentNode.insertBefore(c, f), this.script = c, d && setTimeout(function() {
-                var a = document.createElement("iframe");
-                document.body.appendChild(a), document.body.removeChild(a);
-            }, 100);
-        }, e.prototype._ = function(a) {
-            return this.onData(a), this.isOpen && this.get(), this;
-        }, e.prototype.ready = function(a, c) {
-            var e = this;
-            return d ? void b.util.load(function() {
-                c.call(e);
-            }) : c.call(this);
-        }, e.check = function() {
-            return "document" in c;
-        }, e.xdomainCheck = function() {
-            return !0;
-        }, b.transports.push("jsonp-polling");
-    }("undefined" != typeof io ? io.Transport : module.exports, "undefined" != typeof io ? io : module.parent.exports, this), 
-    "function" == typeof define && define.amd && define([], function() {
-        return io;
-    });
-}(), function() {
+        }, {
+            "./on": 4,
+            "./socket": 5,
+            "./url": 6,
+            bind: 7,
+            debug: 8,
+            emitter: 9,
+            "engine.io-client": 10,
+            "object-component": 36,
+            "socket.io-parser": 39
+        } ],
+        4: [ function(require, module) {
+            function on(obj, ev, fn) {
+                return obj.on(ev, fn), {
+                    destroy: function() {
+                        obj.removeListener(ev, fn);
+                    }
+                };
+            }
+            module.exports = on;
+        }, {} ],
+        5: [ function(require, module, exports) {
+            function Socket(io, nsp) {
+                this.io = io, this.nsp = nsp, this.json = this, this.ids = 0, this.acks = {}, this.open(), 
+                this.buffer = [], this.connected = !1, this.disconnected = !0;
+            }
+            {
+                var parser = require("socket.io-parser"), Emitter = require("emitter"), toArray = require("to-array"), on = require("./on"), bind = require("bind"), debug = require("debug")("socket.io-client:socket"), hasBin = require("has-binary-data");
+                require("indexof");
+            }
+            module.exports = exports = Socket;
+            var events = {
+                connect: 1,
+                disconnect: 1,
+                error: 1
+            }, emit = Emitter.prototype.emit;
+            Emitter(Socket.prototype), Socket.prototype.open = Socket.prototype.connect = function() {
+                if (this.connected) return this;
+                var io = this.io;
+                return io.open(), this.subs = [ on(io, "open", bind(this, "onopen")), on(io, "error", bind(this, "onerror")), on(io, "packet", bind(this, "onpacket")), on(io, "close", bind(this, "onclose")) ], 
+                "open" == this.io.readyState && this.onopen(), this;
+            }, Socket.prototype.send = function() {
+                var args = toArray(arguments);
+                return args.unshift("message"), this.emit.apply(this, args), this;
+            }, Socket.prototype.emit = function(ev) {
+                if (events.hasOwnProperty(ev)) return emit.apply(this, arguments), this;
+                var args = toArray(arguments), parserType = parser.EVENT;
+                hasBin(args) && (parserType = parser.BINARY_EVENT);
+                var packet = {
+                    type: parserType,
+                    data: args
+                };
+                return "function" == typeof args[args.length - 1] && (debug("emitting packet with ack id %d", this.ids), 
+                this.acks[this.ids] = args.pop(), packet.id = this.ids++), this.packet(packet), 
+                this;
+            }, Socket.prototype.packet = function(packet) {
+                packet.nsp = this.nsp, this.io.packet(packet);
+            }, Socket.prototype.onerror = function(data) {
+                this.emit("error", data);
+            }, Socket.prototype.onopen = function() {
+                debug("transport is open - connecting"), "/" != this.nsp && this.packet({
+                    type: parser.CONNECT
+                });
+            }, Socket.prototype.onclose = function(reason) {
+                debug("close (%s)", reason), this.connected = !1, this.disconnected = !0, this.emit("disconnect", reason);
+            }, Socket.prototype.onpacket = function(packet) {
+                if (packet.nsp == this.nsp) switch (packet.type) {
+                  case parser.CONNECT:
+                    this.onconnect();
+                    break;
+
+                  case parser.EVENT:
+                    this.onevent(packet);
+                    break;
+
+                  case parser.BINARY_EVENT:
+                    this.onevent(packet);
+                    break;
+
+                  case parser.ACK:
+                    this.onack(packet);
+                    break;
+
+                  case parser.BINARY_ACK:
+                    this.onack(packet);
+                    break;
+
+                  case parser.DISCONNECT:
+                    this.ondisconnect();
+                    break;
+
+                  case parser.ERROR:
+                    this.emit("error", packet.data);
+                }
+            }, Socket.prototype.onevent = function(packet) {
+                var args = packet.data || [];
+                debug("emitting event %j", args), null != packet.id && (debug("attaching ack callback to event"), 
+                args.push(this.ack(packet.id))), this.connected ? emit.apply(this, args) : this.buffer.push(args);
+            }, Socket.prototype.ack = function(id) {
+                var self = this, sent = !1;
+                return function() {
+                    if (!sent) {
+                        sent = !0;
+                        var args = toArray(arguments);
+                        debug("sending ack %j", args);
+                        var type = hasBin(args) ? parser.BINARY_ACK : parser.ACK;
+                        self.packet({
+                            type: type,
+                            id: id,
+                            data: args
+                        });
+                    }
+                };
+            }, Socket.prototype.onack = function(packet) {
+                debug("calling ack %s with %j", packet.id, packet.data);
+                var fn = this.acks[packet.id];
+                fn.apply(this, packet.data), delete this.acks[packet.id];
+            }, Socket.prototype.onconnect = function() {
+                this.connected = !0, this.disconnected = !1, this.emit("connect"), this.emitBuffered();
+            }, Socket.prototype.emitBuffered = function() {
+                for (var i = 0; i < this.buffer.length; i++) emit.apply(this, this.buffer[i]);
+                this.buffer = [];
+            }, Socket.prototype.ondisconnect = function() {
+                debug("server disconnect (%s)", this.nsp), this.destroy(), this.onclose("io server disconnect");
+            }, Socket.prototype.destroy = function() {
+                for (var i = 0; i < this.subs.length; i++) this.subs[i].destroy();
+                this.io.destroy(this);
+            }, Socket.prototype.close = Socket.prototype.disconnect = function() {
+                return this.connected ? (debug("performing disconnect (%s)", this.nsp), this.packet({
+                    type: parser.DISCONNECT
+                }), this.destroy(), this.onclose("io client disconnect"), this) : this;
+            };
+        }, {
+            "./on": 4,
+            bind: 7,
+            debug: 8,
+            emitter: 9,
+            "has-binary-data": 31,
+            indexof: 35,
+            "socket.io-parser": 39,
+            "to-array": 42
+        } ],
+        6: [ function(require, module) {
+            function url(uri, loc) {
+                var obj = uri, loc = loc || global.location;
+                return null == uri && (uri = loc.protocol + "//" + loc.hostname), "string" == typeof uri && ("/" == uri.charAt(0) && "undefined" != typeof loc && (uri = loc.hostname + uri), 
+                /^(https?|wss?):\/\//.test(uri) || (debug("protocol-less url %s", uri), uri = "undefined" != typeof loc ? loc.protocol + "//" + uri : "https://" + uri), 
+                debug("parse %s", uri), obj = parseuri(uri)), (/(http|ws)/.test(obj.protocol) && 80 == obj.port || /(http|ws)s/.test(obj.protocol) && 443 == obj.port) && delete obj.port, 
+                obj.path = obj.path || "/", obj.id = obj.protocol + obj.host + (obj.port ? ":" + obj.port : ""), 
+                obj.href = obj.protocol + "://" + obj.host + (obj.port ? ":" + obj.port : ""), obj;
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, parseuri = require("parseuri"), debug = require("debug")("socket.io-client:url");
+            module.exports = url;
+        }, {
+            debug: 8,
+            parseuri: 37
+        } ],
+        7: [ function(require, module) {
+            var slice = [].slice;
+            module.exports = function(obj, fn) {
+                if ("string" == typeof fn && (fn = obj[fn]), "function" != typeof fn) throw new Error("bind() requires a function");
+                var args = [].slice.call(arguments, 2);
+                return function() {
+                    return fn.apply(obj, args.concat(slice.call(arguments)));
+                };
+            };
+        }, {} ],
+        8: [ function(require, module) {
+            function debug(name) {
+                return debug.enabled(name) ? function(fmt) {
+                    fmt = coerce(fmt);
+                    var curr = new Date(), ms = curr - (debug[name] || curr);
+                    debug[name] = curr, fmt = name + " " + fmt + " +" + debug.humanize(ms), window.console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+                } : function() {};
+            }
+            function coerce(val) {
+                return val instanceof Error ? val.stack || val.message : val;
+            }
+            module.exports = debug, debug.names = [], debug.skips = [], debug.enable = function(name) {
+                try {
+                    localStorage.debug = name;
+                } catch (e) {}
+                for (var split = (name || "").split(/[\s,]+/), len = split.length, i = 0; len > i; i++) name = split[i].replace("*", ".*?"), 
+                "-" === name[0] ? debug.skips.push(new RegExp("^" + name.substr(1) + "$")) : debug.names.push(new RegExp("^" + name + "$"));
+            }, debug.disable = function() {
+                debug.enable("");
+            }, debug.humanize = function(ms) {
+                var sec = 1e3, min = 6e4, hour = 60 * min;
+                return ms >= hour ? (ms / hour).toFixed(1) + "h" : ms >= min ? (ms / min).toFixed(1) + "m" : ms >= sec ? (ms / sec | 0) + "s" : ms + "ms";
+            }, debug.enabled = function(name) {
+                for (var i = 0, len = debug.skips.length; len > i; i++) if (debug.skips[i].test(name)) return !1;
+                for (var i = 0, len = debug.names.length; len > i; i++) if (debug.names[i].test(name)) return !0;
+                return !1;
+            };
+            try {
+                window.localStorage && debug.enable(localStorage.debug);
+            } catch (e) {}
+        }, {} ],
+        9: [ function(require, module) {
+            function Emitter(obj) {
+                return obj ? mixin(obj) : void 0;
+            }
+            function mixin(obj) {
+                for (var key in Emitter.prototype) obj[key] = Emitter.prototype[key];
+                return obj;
+            }
+            var index = require("indexof");
+            module.exports = Emitter, Emitter.prototype.on = function(event, fn) {
+                return this._callbacks = this._callbacks || {}, (this._callbacks[event] = this._callbacks[event] || []).push(fn), 
+                this;
+            }, Emitter.prototype.once = function(event, fn) {
+                function on() {
+                    self.off(event, on), fn.apply(this, arguments);
+                }
+                var self = this;
+                return this._callbacks = this._callbacks || {}, fn._off = on, this.on(event, on), 
+                this;
+            }, Emitter.prototype.off = Emitter.prototype.removeListener = Emitter.prototype.removeAllListeners = function(event, fn) {
+                if (this._callbacks = this._callbacks || {}, 0 == arguments.length) return this._callbacks = {}, 
+                this;
+                var callbacks = this._callbacks[event];
+                if (!callbacks) return this;
+                if (1 == arguments.length) return delete this._callbacks[event], this;
+                var i = index(callbacks, fn._off || fn);
+                return ~i && callbacks.splice(i, 1), this;
+            }, Emitter.prototype.emit = function(event) {
+                this._callbacks = this._callbacks || {};
+                var args = [].slice.call(arguments, 1), callbacks = this._callbacks[event];
+                if (callbacks) {
+                    callbacks = callbacks.slice(0);
+                    for (var i = 0, len = callbacks.length; len > i; ++i) callbacks[i].apply(this, args);
+                }
+                return this;
+            }, Emitter.prototype.listeners = function(event) {
+                return this._callbacks = this._callbacks || {}, this._callbacks[event] || [];
+            }, Emitter.prototype.hasListeners = function(event) {
+                return !!this.listeners(event).length;
+            };
+        }, {
+            indexof: 35
+        } ],
+        10: [ function(require, module) {
+            module.exports = require("./lib/");
+        }, {
+            "./lib/": 11
+        } ],
+        11: [ function(require, module) {
+            module.exports = require("./socket"), module.exports.parser = require("engine.io-parser");
+        }, {
+            "./socket": 12,
+            "engine.io-parser": 20
+        } ],
+        12: [ function(require, module) {
+            function Socket(uri, opts) {
+                if (!(this instanceof Socket)) return new Socket(uri, opts);
+                if (opts = opts || {}, uri && "object" == typeof uri && (opts = uri, uri = null), 
+                uri && (uri = parseuri(uri), opts.host = uri.host, opts.secure = "https" == uri.protocol || "wss" == uri.protocol, 
+                opts.port = uri.port, uri.query && (opts.query = uri.query)), this.secure = null != opts.secure ? opts.secure : global.location && "https:" == location.protocol, 
+                opts.host) {
+                    var pieces = opts.host.split(":");
+                    opts.hostname = pieces.shift(), pieces.length && (opts.port = pieces.pop());
+                }
+                this.agent = opts.agent || !1, this.hostname = opts.hostname || (global.location ? location.hostname : "localhost"), 
+                this.port = opts.port || (global.location && location.port ? location.port : this.secure ? 443 : 80), 
+                this.query = opts.query || {}, "string" == typeof this.query && (this.query = parseqs.decode(this.query)), 
+                this.upgrade = !1 !== opts.upgrade, this.path = (opts.path || "/engine.io").replace(/\/$/, "") + "/", 
+                this.forceJSONP = !!opts.forceJSONP, this.forceBase64 = !!opts.forceBase64, this.timestampParam = opts.timestampParam || "t", 
+                this.timestampRequests = opts.timestampRequests, this.transports = opts.transports || [ "polling", "websocket" ], 
+                this.readyState = "", this.writeBuffer = [], this.callbackBuffer = [], this.policyPort = opts.policyPort || 843, 
+                this.rememberUpgrade = opts.rememberUpgrade || !1, this.open(), this.binaryType = null, 
+                this.onlyBinaryUpgrades = opts.onlyBinaryUpgrades;
+            }
+            function clone(obj) {
+                var o = {};
+                for (var i in obj) obj.hasOwnProperty(i) && (o[i] = obj[i]);
+                return o;
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, transports = require("./transports"), Emitter = require("emitter"), debug = require("debug")("engine.io-client:socket"), index = require("indexof"), parser = require("engine.io-parser"), parseuri = require("parseuri"), parsejson = require("parsejson"), parseqs = require("parseqs");
+            module.exports = Socket, Socket.priorWebsocketSuccess = !1, Emitter(Socket.prototype), 
+            Socket.protocol = parser.protocol, Socket.Socket = Socket, Socket.Transport = require("./transport"), 
+            Socket.transports = require("./transports"), Socket.parser = require("engine.io-parser"), 
+            Socket.prototype.createTransport = function(name) {
+                debug('creating transport "%s"', name);
+                var query = clone(this.query);
+                query.EIO = parser.protocol, query.transport = name, this.id && (query.sid = this.id);
+                var transport = new transports[name]({
+                    agent: this.agent,
+                    hostname: this.hostname,
+                    port: this.port,
+                    secure: this.secure,
+                    path: this.path,
+                    query: query,
+                    forceJSONP: this.forceJSONP,
+                    forceBase64: this.forceBase64,
+                    timestampRequests: this.timestampRequests,
+                    timestampParam: this.timestampParam,
+                    policyPort: this.policyPort,
+                    socket: this
+                });
+                return transport;
+            }, Socket.prototype.open = function() {
+                var transport;
+                transport = this.rememberUpgrade && Socket.priorWebsocketSuccess && -1 != this.transports.indexOf("websocket") ? "websocket" : this.transports[0], 
+                this.readyState = "opening";
+                var transport = this.createTransport(transport);
+                transport.open(), this.setTransport(transport);
+            }, Socket.prototype.setTransport = function(transport) {
+                debug("setting transport %s", transport.name);
+                var self = this;
+                this.transport && (debug("clearing existing transport %s", this.transport.name), 
+                this.transport.removeAllListeners()), this.transport = transport, transport.on("drain", function() {
+                    self.onDrain();
+                }).on("packet", function(packet) {
+                    self.onPacket(packet);
+                }).on("error", function(e) {
+                    self.onError(e);
+                }).on("close", function() {
+                    self.onClose("transport close");
+                });
+            }, Socket.prototype.probe = function(name) {
+                function onTransportOpen() {
+                    if (self.onlyBinaryUpgrades) {
+                        var upgradeLosesBinary = !this.supportsBinary && self.transport.supportsBinary;
+                        failed = failed || upgradeLosesBinary;
+                    }
+                    failed || (debug('probe transport "%s" opened', name), transport.send([ {
+                        type: "ping",
+                        data: "probe"
+                    } ]), transport.once("packet", function(msg) {
+                        if (!failed) if ("pong" == msg.type && "probe" == msg.data) debug('probe transport "%s" pong', name), 
+                        self.upgrading = !0, self.emit("upgrading", transport), Socket.priorWebsocketSuccess = "websocket" == transport.name, 
+                        debug('pausing current transport "%s"', self.transport.name), self.transport.pause(function() {
+                            failed || "closed" != self.readyState && "closing" != self.readyState && (debug("changing transport and sending upgrade packet"), 
+                            cleanup(), self.setTransport(transport), transport.send([ {
+                                type: "upgrade"
+                            } ]), self.emit("upgrade", transport), transport = null, self.upgrading = !1, self.flush());
+                        }); else {
+                            debug('probe transport "%s" failed', name);
+                            var err = new Error("probe error");
+                            err.transport = transport.name, self.emit("upgradeError", err);
+                        }
+                    }));
+                }
+                function freezeTransport() {
+                    failed || (failed = !0, cleanup(), transport.close(), transport = null);
+                }
+                function onerror(err) {
+                    var error = new Error("probe error: " + err);
+                    error.transport = transport.name, freezeTransport(), debug('probe transport "%s" failed because of error: %s', name, err), 
+                    self.emit("upgradeError", error);
+                }
+                function onTransportClose() {
+                    onerror("transport closed");
+                }
+                function onclose() {
+                    onerror("socket closed");
+                }
+                function onupgrade(to) {
+                    transport && to.name != transport.name && (debug('"%s" works - aborting "%s"', to.name, transport.name), 
+                    freezeTransport());
+                }
+                function cleanup() {
+                    transport.removeListener("open", onTransportOpen), transport.removeListener("error", onerror), 
+                    transport.removeListener("close", onTransportClose), self.removeListener("close", onclose), 
+                    self.removeListener("upgrading", onupgrade);
+                }
+                debug('probing transport "%s"', name);
+                var transport = this.createTransport(name, {
+                    probe: 1
+                }), failed = !1, self = this;
+                Socket.priorWebsocketSuccess = !1, transport.once("open", onTransportOpen), transport.once("error", onerror), 
+                transport.once("close", onTransportClose), this.once("close", onclose), this.once("upgrading", onupgrade), 
+                transport.open();
+            }, Socket.prototype.onOpen = function() {
+                if (debug("socket open"), this.readyState = "open", Socket.priorWebsocketSuccess = "websocket" == this.transport.name, 
+                this.emit("open"), this.flush(), "open" == this.readyState && this.upgrade && this.transport.pause) {
+                    debug("starting upgrade probes");
+                    for (var i = 0, l = this.upgrades.length; l > i; i++) this.probe(this.upgrades[i]);
+                }
+            }, Socket.prototype.onPacket = function(packet) {
+                if ("opening" == this.readyState || "open" == this.readyState) switch (debug('socket receive: type "%s", data "%s"', packet.type, packet.data), 
+                this.emit("packet", packet), this.emit("heartbeat"), packet.type) {
+                  case "open":
+                    this.onHandshake(parsejson(packet.data));
+                    break;
+
+                  case "pong":
+                    this.setPing();
+                    break;
+
+                  case "error":
+                    var err = new Error("server error");
+                    err.code = packet.data, this.emit("error", err);
+                    break;
+
+                  case "message":
+                    this.emit("data", packet.data), this.emit("message", packet.data);
+                } else debug('packet received with socket readyState "%s"', this.readyState);
+            }, Socket.prototype.onHandshake = function(data) {
+                this.emit("handshake", data), this.id = data.sid, this.transport.query.sid = data.sid, 
+                this.upgrades = this.filterUpgrades(data.upgrades), this.pingInterval = data.pingInterval, 
+                this.pingTimeout = data.pingTimeout, this.onOpen(), "closed" != this.readyState && (this.setPing(), 
+                this.removeListener("heartbeat", this.onHeartbeat), this.on("heartbeat", this.onHeartbeat));
+            }, Socket.prototype.onHeartbeat = function(timeout) {
+                clearTimeout(this.pingTimeoutTimer);
+                var self = this;
+                self.pingTimeoutTimer = setTimeout(function() {
+                    "closed" != self.readyState && self.onClose("ping timeout");
+                }, timeout || self.pingInterval + self.pingTimeout);
+            }, Socket.prototype.setPing = function() {
+                var self = this;
+                clearTimeout(self.pingIntervalTimer), self.pingIntervalTimer = setTimeout(function() {
+                    debug("writing ping packet - expecting pong within %sms", self.pingTimeout), self.ping(), 
+                    self.onHeartbeat(self.pingTimeout);
+                }, self.pingInterval);
+            }, Socket.prototype.ping = function() {
+                this.sendPacket("ping");
+            }, Socket.prototype.onDrain = function() {
+                for (var i = 0; i < this.prevBufferLen; i++) this.callbackBuffer[i] && this.callbackBuffer[i]();
+                this.writeBuffer.splice(0, this.prevBufferLen), this.callbackBuffer.splice(0, this.prevBufferLen), 
+                this.prevBufferLen = 0, 0 == this.writeBuffer.length ? this.emit("drain") : this.flush();
+            }, Socket.prototype.flush = function() {
+                "closed" != this.readyState && this.transport.writable && !this.upgrading && this.writeBuffer.length && (debug("flushing %d packets in socket", this.writeBuffer.length), 
+                this.transport.send(this.writeBuffer), this.prevBufferLen = this.writeBuffer.length, 
+                this.emit("flush"));
+            }, Socket.prototype.write = Socket.prototype.send = function(msg, fn) {
+                return this.sendPacket("message", msg, fn), this;
+            }, Socket.prototype.sendPacket = function(type, data, fn) {
+                var packet = {
+                    type: type,
+                    data: data
+                };
+                this.emit("packetCreate", packet), this.writeBuffer.push(packet), this.callbackBuffer.push(fn), 
+                this.flush();
+            }, Socket.prototype.close = function() {
+                return ("opening" == this.readyState || "open" == this.readyState) && (this.onClose("forced close"), 
+                debug("socket closing - telling transport to close"), this.transport.close()), this;
+            }, Socket.prototype.onError = function(err) {
+                debug("socket error %j", err), Socket.priorWebsocketSuccess = !1, this.emit("error", err), 
+                this.onClose("transport error", err);
+            }, Socket.prototype.onClose = function(reason, desc) {
+                if ("opening" == this.readyState || "open" == this.readyState) {
+                    debug('socket close with reason: "%s"', reason);
+                    var self = this;
+                    clearTimeout(this.pingIntervalTimer), clearTimeout(this.pingTimeoutTimer), setTimeout(function() {
+                        self.writeBuffer = [], self.callbackBuffer = [], self.prevBufferLen = 0;
+                    }, 0), this.transport.removeAllListeners("close"), this.transport.close(), this.transport.removeAllListeners(), 
+                    this.readyState = "closed", this.id = null, this.emit("close", reason, desc);
+                }
+            }, Socket.prototype.filterUpgrades = function(upgrades) {
+                for (var filteredUpgrades = [], i = 0, j = upgrades.length; j > i; i++) ~index(this.transports, upgrades[i]) && filteredUpgrades.push(upgrades[i]);
+                return filteredUpgrades;
+            };
+        }, {
+            "./transport": 13,
+            "./transports": 14,
+            debug: 8,
+            emitter: 9,
+            "engine.io-parser": 20,
+            indexof: 35,
+            parsejson: 28,
+            parseqs: 29,
+            parseuri: 37
+        } ],
+        13: [ function(require, module) {
+            function Transport(opts) {
+                this.path = opts.path, this.hostname = opts.hostname, this.port = opts.port, this.secure = opts.secure, 
+                this.query = opts.query, this.timestampParam = opts.timestampParam, this.timestampRequests = opts.timestampRequests, 
+                this.readyState = "", this.agent = opts.agent || !1, this.socket = opts.socket;
+            }
+            var parser = require("engine.io-parser"), Emitter = require("emitter");
+            module.exports = Transport, Emitter(Transport.prototype), Transport.timestamps = 0, 
+            Transport.prototype.onError = function(msg, desc) {
+                var err = new Error(msg);
+                return err.type = "TransportError", err.description = desc, this.emit("error", err), 
+                this;
+            }, Transport.prototype.open = function() {
+                return ("closed" == this.readyState || "" == this.readyState) && (this.readyState = "opening", 
+                this.doOpen()), this;
+            }, Transport.prototype.close = function() {
+                return ("opening" == this.readyState || "open" == this.readyState) && (this.doClose(), 
+                this.onClose()), this;
+            }, Transport.prototype.send = function(packets) {
+                if ("open" != this.readyState) throw new Error("Transport not open");
+                this.write(packets);
+            }, Transport.prototype.onOpen = function() {
+                this.readyState = "open", this.writable = !0, this.emit("open");
+            }, Transport.prototype.onData = function(data) {
+                this.onPacket(parser.decodePacket(data, this.socket.binaryType));
+            }, Transport.prototype.onPacket = function(packet) {
+                this.emit("packet", packet);
+            }, Transport.prototype.onClose = function() {
+                this.readyState = "closed", this.emit("close");
+            };
+        }, {
+            emitter: 9,
+            "engine.io-parser": 20
+        } ],
+        14: [ function(require, module, exports) {
+            function polling(opts) {
+                var xhr, xd = !1;
+                if (global.location) {
+                    var isSSL = "https:" == location.protocol, port = location.port;
+                    port || (port = isSSL ? 443 : 80), xd = opts.hostname != location.hostname || port != opts.port;
+                }
+                return opts.xdomain = xd, xhr = new XMLHttpRequest(opts), "open" in xhr && !opts.forceJSONP ? new XHR(opts) : new JSONP(opts);
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, XMLHttpRequest = require("xmlhttprequest"), XHR = require("./polling-xhr"), JSONP = require("./polling-jsonp"), websocket = require("./websocket");
+            exports.polling = polling, exports.websocket = websocket;
+        }, {
+            "./polling-jsonp": 15,
+            "./polling-xhr": 16,
+            "./websocket": 18,
+            xmlhttprequest: 19
+        } ],
+        15: [ function(require, module) {
+            function empty() {}
+            function JSONPPolling(opts) {
+                Polling.call(this, opts), this.query = this.query || {}, callbacks || (global.___eio || (global.___eio = []), 
+                callbacks = global.___eio), this.index = callbacks.length;
+                var self = this;
+                callbacks.push(function(msg) {
+                    self.onData(msg);
+                }), this.query.j = this.index, global.document && global.addEventListener && global.addEventListener("beforeunload", function() {
+                    self.script && (self.script.onerror = empty);
+                });
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, Polling = require("./polling"), inherit = require("inherits");
+            module.exports = JSONPPolling;
+            var callbacks, rNewline = /\n/g, rEscapedNewline = /\\n/g;
+            inherit(JSONPPolling, Polling), JSONPPolling.prototype.supportsBinary = !1, JSONPPolling.prototype.doClose = function() {
+                this.script && (this.script.parentNode.removeChild(this.script), this.script = null), 
+                this.form && (this.form.parentNode.removeChild(this.form), this.form = null), Polling.prototype.doClose.call(this);
+            }, JSONPPolling.prototype.doPoll = function() {
+                var self = this, script = document.createElement("script");
+                this.script && (this.script.parentNode.removeChild(this.script), this.script = null), 
+                script.async = !0, script.src = this.uri(), script.onerror = function(e) {
+                    self.onError("jsonp poll error", e);
+                };
+                var insertAt = document.getElementsByTagName("script")[0];
+                insertAt.parentNode.insertBefore(script, insertAt), this.script = script;
+                var isUAgecko = "undefined" != typeof navigator && /gecko/i.test(navigator.userAgent);
+                isUAgecko && setTimeout(function() {
+                    var iframe = document.createElement("iframe");
+                    document.body.appendChild(iframe), document.body.removeChild(iframe);
+                }, 100);
+            }, JSONPPolling.prototype.doWrite = function(data, fn) {
+                function complete() {
+                    initIframe(), fn();
+                }
+                function initIframe() {
+                    if (self.iframe) try {
+                        self.form.removeChild(self.iframe);
+                    } catch (e) {
+                        self.onError("jsonp polling iframe removal error", e);
+                    }
+                    try {
+                        var html = '<iframe src="javascript:0" name="' + self.iframeId + '">';
+                        iframe = document.createElement(html);
+                    } catch (e) {
+                        iframe = document.createElement("iframe"), iframe.name = self.iframeId, iframe.src = "javascript:0";
+                    }
+                    iframe.id = self.iframeId, self.form.appendChild(iframe), self.iframe = iframe;
+                }
+                var self = this;
+                if (!this.form) {
+                    var iframe, form = document.createElement("form"), area = document.createElement("textarea"), id = this.iframeId = "eio_iframe_" + this.index;
+                    form.className = "socketio", form.style.position = "absolute", form.style.top = "-1000px", 
+                    form.style.left = "-1000px", form.target = id, form.method = "POST", form.setAttribute("accept-charset", "utf-8"), 
+                    area.name = "d", form.appendChild(area), document.body.appendChild(form), this.form = form, 
+                    this.area = area;
+                }
+                this.form.action = this.uri(), initIframe(), data = data.replace(rEscapedNewline, "\\\n"), 
+                this.area.value = data.replace(rNewline, "\\n");
+                try {
+                    this.form.submit();
+                } catch (e) {}
+                this.iframe.attachEvent ? this.iframe.onreadystatechange = function() {
+                    "complete" == self.iframe.readyState && complete();
+                } : this.iframe.onload = complete;
+            };
+        }, {
+            "./polling": 17,
+            inherits: 27
+        } ],
+        16: [ function(require, module) {
+            function empty() {}
+            function XHR(opts) {
+                if (Polling.call(this, opts), global.location) {
+                    var isSSL = "https:" == location.protocol, port = location.port;
+                    port || (port = isSSL ? 443 : 80), this.xd = opts.hostname != global.location.hostname || port != opts.port;
+                }
+            }
+            function Request(opts) {
+                this.method = opts.method || "GET", this.uri = opts.uri, this.xd = !!opts.xd, this.async = !1 !== opts.async, 
+                this.data = void 0 != opts.data ? opts.data : null, this.agent = opts.agent, this.create(opts.isBinary, opts.supportsBinary);
+            }
+            function unloadHandler() {
+                for (var i in Request.requests) Request.requests.hasOwnProperty(i) && Request.requests[i].abort();
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, XMLHttpRequest = require("xmlhttprequest"), Polling = require("./polling"), Emitter = require("emitter"), debug = require("debug")("engine.io-client:polling-xhr"), inherit = require("inherits");
+            module.exports = XHR, module.exports.Request = Request, inherit(XHR, Polling), XHR.prototype.supportsBinary = !0, 
+            XHR.prototype.request = function(opts) {
+                return opts = opts || {}, opts.uri = this.uri(), opts.xd = this.xd, opts.agent = this.agent || !1, 
+                opts.supportsBinary = this.supportsBinary, new Request(opts);
+            }, XHR.prototype.doWrite = function(data, fn) {
+                var isBinary = "string" != typeof data && void 0 !== data, req = this.request({
+                    method: "POST",
+                    data: data,
+                    isBinary: isBinary
+                }), self = this;
+                req.on("success", fn), req.on("error", function(err) {
+                    self.onError("xhr post error", err);
+                }), this.sendXhr = req;
+            }, XHR.prototype.doPoll = function() {
+                debug("xhr poll");
+                var req = this.request(), self = this;
+                req.on("data", function(data) {
+                    self.onData(data);
+                }), req.on("error", function(err) {
+                    self.onError("xhr poll error", err);
+                }), this.pollXhr = req;
+            }, Emitter(Request.prototype), Request.prototype.create = function(isBinary, supportsBinary) {
+                var xhr = this.xhr = new XMLHttpRequest({
+                    agent: this.agent,
+                    xdomain: this.xd
+                }), self = this;
+                try {
+                    if (debug("xhr open %s: %s", this.method, this.uri), xhr.open(this.method, this.uri, this.async), 
+                    supportsBinary && (xhr.responseType = "arraybuffer"), "POST" == this.method) try {
+                        isBinary ? xhr.setRequestHeader("Content-type", "application/octet-stream") : xhr.setRequestHeader("Content-type", "text/plain;charset=UTF-8");
+                    } catch (e) {}
+                    "withCredentials" in xhr && (xhr.withCredentials = !0), xhr.onreadystatechange = function() {
+                        var data;
+                        try {
+                            if (4 != xhr.readyState) return;
+                            if (200 == xhr.status || 1223 == xhr.status) {
+                                var contentType = xhr.getResponseHeader("Content-Type");
+                                data = "application/octet-stream" === contentType ? xhr.response : supportsBinary ? "ok" : xhr.responseText;
+                            } else setTimeout(function() {
+                                self.onError(xhr.status);
+                            }, 0);
+                        } catch (e) {
+                            self.onError(e);
+                        }
+                        null != data && self.onData(data);
+                    }, debug("xhr data %s", this.data), xhr.send(this.data);
+                } catch (e) {
+                    return void setTimeout(function() {
+                        self.onError(e);
+                    }, 0);
+                }
+                global.document && (this.index = Request.requestsCount++, Request.requests[this.index] = this);
+            }, Request.prototype.onSuccess = function() {
+                this.emit("success"), this.cleanup();
+            }, Request.prototype.onData = function(data) {
+                this.emit("data", data), this.onSuccess();
+            }, Request.prototype.onError = function(err) {
+                this.emit("error", err), this.cleanup();
+            }, Request.prototype.cleanup = function() {
+                if ("undefined" != typeof this.xhr && null !== this.xhr) {
+                    this.xhr.onreadystatechange = empty;
+                    try {
+                        this.xhr.abort();
+                    } catch (e) {}
+                    global.document && delete Request.requests[this.index], this.xhr = null;
+                }
+            }, Request.prototype.abort = function() {
+                this.cleanup();
+            }, global.document && (Request.requestsCount = 0, Request.requests = {}, global.attachEvent ? global.attachEvent("onunload", unloadHandler) : global.addEventListener && global.addEventListener("beforeunload", unloadHandler));
+        }, {
+            "./polling": 17,
+            debug: 8,
+            emitter: 9,
+            inherits: 27,
+            xmlhttprequest: 19
+        } ],
+        17: [ function(require, module) {
+            function Polling(opts) {
+                var forceBase64 = opts && opts.forceBase64;
+                (!hasXHR2 || forceBase64) && (this.supportsBinary = !1), Transport.call(this, opts);
+            }
+            var Transport = require("../transport"), parseqs = require("parseqs"), parser = require("engine.io-parser"), debug = require("debug")("engine.io-client:polling"), inherit = require("inherits");
+            module.exports = Polling;
+            var hasXHR2 = function() {
+                var XMLHttpRequest = require("xmlhttprequest"), xhr = new XMLHttpRequest({
+                    agent: this.agent,
+                    xdomain: !1
+                });
+                return null != xhr.responseType;
+            }();
+            inherit(Polling, Transport), Polling.prototype.name = "polling", Polling.prototype.doOpen = function() {
+                this.poll();
+            }, Polling.prototype.pause = function(onPause) {
+                function pause() {
+                    debug("paused"), self.readyState = "paused", onPause();
+                }
+                var self = this;
+                if (this.readyState = "pausing", this.polling || !this.writable) {
+                    var total = 0;
+                    this.polling && (debug("we are currently polling - waiting to pause"), total++, 
+                    this.once("pollComplete", function() {
+                        debug("pre-pause polling complete"), --total || pause();
+                    })), this.writable || (debug("we are currently writing - waiting to pause"), total++, 
+                    this.once("drain", function() {
+                        debug("pre-pause writing complete"), --total || pause();
+                    }));
+                } else pause();
+            }, Polling.prototype.poll = function() {
+                debug("polling"), this.polling = !0, this.doPoll(), this.emit("poll");
+            }, Polling.prototype.onData = function(data) {
+                var self = this;
+                debug("polling got data %s", data);
+                var callback = function(packet) {
+                    return "opening" == self.readyState && self.onOpen(), "close" == packet.type ? (self.onClose(), 
+                    !1) : void self.onPacket(packet);
+                };
+                parser.decodePayload(data, this.socket.binaryType, callback), "closed" != this.readyState && (this.polling = !1, 
+                this.emit("pollComplete"), "open" == this.readyState ? this.poll() : debug('ignoring poll - transport state "%s"', this.readyState));
+            }, Polling.prototype.doClose = function() {
+                function close() {
+                    debug("writing close packet"), self.write([ {
+                        type: "close"
+                    } ]);
+                }
+                var self = this;
+                "open" == this.readyState ? (debug("transport open - closing"), close()) : (debug("transport not open - deferring close"), 
+                this.once("open", close));
+            }, Polling.prototype.write = function(packets) {
+                var self = this;
+                this.writable = !1;
+                var callbackfn = function() {
+                    self.writable = !0, self.emit("drain");
+                }, self = this;
+                parser.encodePayload(packets, this.supportsBinary, function(data) {
+                    self.doWrite(data, callbackfn);
+                });
+            }, Polling.prototype.uri = function() {
+                var query = this.query || {}, schema = this.secure ? "https" : "http", port = "";
+                return !1 !== this.timestampRequests && (query[this.timestampParam] = +new Date() + "-" + Transport.timestamps++), 
+                this.supportsBinary || query.sid || (query.b64 = 1), query = parseqs.encode(query), 
+                this.port && ("https" == schema && 443 != this.port || "http" == schema && 80 != this.port) && (port = ":" + this.port), 
+                query.length && (query = "?" + query), schema + "://" + this.hostname + port + this.path + query;
+            };
+        }, {
+            "../transport": 13,
+            debug: 8,
+            "engine.io-parser": 20,
+            inherits: 27,
+            parseqs: 29,
+            xmlhttprequest: 19
+        } ],
+        18: [ function(require, module) {
+            function WS(opts) {
+                var forceBase64 = opts && opts.forceBase64;
+                forceBase64 && (this.supportsBinary = !1), Transport.call(this, opts);
+            }
+            var Transport = require("../transport"), parser = require("engine.io-parser"), parseqs = require("parseqs"), debug = require("debug")("engine.io-client:websocket"), inherit = require("inherits"), WebSocket = require("ws");
+            module.exports = WS, inherit(WS, Transport), WS.prototype.name = "websocket", WS.prototype.supportsBinary = !0, 
+            WS.prototype.doOpen = function() {
+                if (this.check()) {
+                    var uri = this.uri(), protocols = void 0, opts = {
+                        agent: this.agent
+                    };
+                    this.ws = new WebSocket(uri, protocols, opts), void 0 === this.ws.binaryType && (this.supportsBinary = !1), 
+                    this.ws.binaryType = "arraybuffer", this.addEventListeners();
+                }
+            }, WS.prototype.addEventListeners = function() {
+                var self = this;
+                this.ws.onopen = function() {
+                    self.onOpen();
+                }, this.ws.onclose = function() {
+                    self.onClose();
+                }, this.ws.onmessage = function(ev) {
+                    self.onData(ev.data);
+                }, this.ws.onerror = function(e) {
+                    self.onError("websocket error", e);
+                };
+            }, "undefined" != typeof navigator && /iPad|iPhone|iPod/i.test(navigator.userAgent) && (WS.prototype.onData = function(data) {
+                var self = this;
+                setTimeout(function() {
+                    Transport.prototype.onData.call(self, data);
+                }, 0);
+            }), WS.prototype.write = function(packets) {
+                function ondrain() {
+                    self.writable = !0, self.emit("drain");
+                }
+                var self = this;
+                this.writable = !1;
+                for (var i = 0, l = packets.length; l > i; i++) parser.encodePacket(packets[i], this.supportsBinary, function(data) {
+                    try {
+                        self.ws.send(data);
+                    } catch (e) {
+                        debug("websocket closed before onclose event");
+                    }
+                });
+                setTimeout(ondrain, 0);
+            }, WS.prototype.onClose = function() {
+                Transport.prototype.onClose.call(this);
+            }, WS.prototype.doClose = function() {
+                "undefined" != typeof this.ws && this.ws.close();
+            }, WS.prototype.uri = function() {
+                var query = this.query || {}, schema = this.secure ? "wss" : "ws", port = "";
+                return this.port && ("wss" == schema && 443 != this.port || "ws" == schema && 80 != this.port) && (port = ":" + this.port), 
+                this.timestampRequests && (query[this.timestampParam] = +new Date()), this.supportsBinary || (query.b64 = 1), 
+                query = parseqs.encode(query), query.length && (query = "?" + query), schema + "://" + this.hostname + port + this.path + query;
+            }, WS.prototype.check = function() {
+                return !(!WebSocket || "__initialize" in WebSocket && this.name === WS.prototype.name);
+            };
+        }, {
+            "../transport": 13,
+            debug: 8,
+            "engine.io-parser": 20,
+            inherits: 27,
+            parseqs: 29,
+            ws: 30
+        } ],
+        19: [ function(require, module) {
+            var hasCORS = require("has-cors");
+            module.exports = function(opts) {
+                var xdomain = opts.xdomain;
+                try {
+                    if ("undefined" != typeof XMLHttpRequest && (!xdomain || hasCORS)) return new XMLHttpRequest();
+                } catch (e) {}
+                if (!xdomain) try {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {}
+            };
+        }, {
+            "has-cors": 33
+        } ],
+        20: [ function(require, module, exports) {
+            function encodeArrayBuffer(packet, supportsBinary, callback) {
+                if (!supportsBinary) return exports.encodeBase64Packet(packet, callback);
+                var data = packet.data, contentArray = new Uint8Array(data), resultBuffer = new Uint8Array(1 + data.byteLength);
+                resultBuffer[0] = packets[packet.type];
+                for (var i = 0; i < contentArray.length; i++) resultBuffer[i + 1] = contentArray[i];
+                return callback(resultBuffer.buffer);
+            }
+            function encodeBlobAsArrayBuffer(packet, supportsBinary, callback) {
+                if (!supportsBinary) return exports.encodeBase64Packet(packet, callback);
+                var fr = new FileReader();
+                return fr.onload = function() {
+                    packet.data = fr.result, exports.encodePacket(packet, supportsBinary, callback);
+                }, fr.readAsArrayBuffer(packet.data);
+            }
+            function encodeBlob(packet, supportsBinary, callback) {
+                if (!supportsBinary) return exports.encodeBase64Packet(packet, callback);
+                if (isAndroid) return encodeBlobAsArrayBuffer(packet, supportsBinary, callback);
+                var length = new Uint8Array(1);
+                length[0] = packets[packet.type];
+                var blob = new Blob([ length.buffer, packet.data ]);
+                return callback(blob);
+            }
+            function map(ary, each, done) {
+                for (var result = new Array(ary.length), next = after(ary.length, done), eachWithIndex = function(i, el, cb) {
+                    each(el, function(error, msg) {
+                        result[i] = msg, cb(error, result);
+                    });
+                }, i = 0; i < ary.length; i++) eachWithIndex(i, ary[i], next);
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, keys = require("./keys"), sliceBuffer = require("arraybuffer.slice"), base64encoder = require("base64-arraybuffer"), after = require("after"), utf8 = require("utf8"), isAndroid = navigator.userAgent.match(/Android/i);
+            exports.protocol = 2;
+            var packets = exports.packets = {
+                open: 0,
+                close: 1,
+                ping: 2,
+                pong: 3,
+                message: 4,
+                upgrade: 5,
+                noop: 6
+            }, packetslist = keys(packets), err = {
+                type: "error",
+                data: "parser error"
+            }, Blob = require("blob");
+            exports.encodePacket = function(packet, supportsBinary, callback) {
+                "function" == typeof supportsBinary && (callback = supportsBinary, supportsBinary = !1);
+                var data = void 0 === packet.data ? void 0 : packet.data.buffer || packet.data;
+                if (global.ArrayBuffer && data instanceof ArrayBuffer) return encodeArrayBuffer(packet, supportsBinary, callback);
+                if (Blob && data instanceof global.Blob) return encodeBlob(packet, supportsBinary, callback);
+                var encoded = packets[packet.type];
+                return void 0 !== packet.data && (encoded += utf8.encode(String(packet.data))), 
+                callback("" + encoded);
+            }, exports.encodeBase64Packet = function(packet, callback) {
+                var message = "b" + exports.packets[packet.type];
+                if (Blob && packet.data instanceof Blob) {
+                    var fr = new FileReader();
+                    return fr.onload = function() {
+                        var b64 = fr.result.split(",")[1];
+                        callback(message + b64);
+                    }, fr.readAsDataURL(packet.data);
+                }
+                var b64data;
+                try {
+                    b64data = String.fromCharCode.apply(null, new Uint8Array(packet.data));
+                } catch (e) {
+                    for (var typed = new Uint8Array(packet.data), basic = new Array(typed.length), i = 0; i < typed.length; i++) basic[i] = typed[i];
+                    b64data = String.fromCharCode.apply(null, basic);
+                }
+                return message += global.btoa(b64data), callback(message);
+            }, exports.decodePacket = function(data, binaryType) {
+                if ("string" == typeof data || void 0 === data) {
+                    if ("b" == data.charAt(0)) return exports.decodeBase64Packet(data.substr(1), binaryType);
+                    data = utf8.decode(data);
+                    var type = data.charAt(0);
+                    return Number(type) == type && packetslist[type] ? data.length > 1 ? {
+                        type: packetslist[type],
+                        data: data.substring(1)
+                    } : {
+                        type: packetslist[type]
+                    } : err;
+                }
+                var asArray = new Uint8Array(data), type = asArray[0], rest = sliceBuffer(data, 1);
+                return Blob && "blob" === binaryType && (rest = new Blob([ rest ])), {
+                    type: packetslist[type],
+                    data: rest
+                };
+            }, exports.decodeBase64Packet = function(msg, binaryType) {
+                var type = packetslist[msg.charAt(0)];
+                if (!global.ArrayBuffer) return {
+                    type: type,
+                    data: {
+                        base64: !0,
+                        data: msg.substr(1)
+                    }
+                };
+                var data = base64encoder.decode(msg.substr(1));
+                return "blob" === binaryType && Blob && (data = new Blob([ data ])), {
+                    type: type,
+                    data: data
+                };
+            }, exports.encodePayload = function(packets, supportsBinary, callback) {
+                function setLengthHeader(message) {
+                    return message.length + ":" + message;
+                }
+                function encodeOne(packet, doneCallback) {
+                    exports.encodePacket(packet, supportsBinary, function(message) {
+                        doneCallback(null, setLengthHeader(message));
+                    });
+                }
+                return "function" == typeof supportsBinary && (callback = supportsBinary, supportsBinary = null), 
+                supportsBinary ? Blob && !isAndroid ? exports.encodePayloadAsBlob(packets, callback) : exports.encodePayloadAsArrayBuffer(packets, callback) : packets.length ? void map(packets, encodeOne, function(err, results) {
+                    return callback(results.join(""));
+                }) : callback("0:");
+            }, exports.decodePayload = function(data, binaryType, callback) {
+                if ("string" != typeof data) return exports.decodePayloadAsBinary(data, binaryType, callback);
+                "function" == typeof binaryType && (callback = binaryType, binaryType = null);
+                var packet;
+                if ("" == data) return callback(err, 0, 1);
+                for (var n, msg, length = "", i = 0, l = data.length; l > i; i++) {
+                    var chr = data.charAt(i);
+                    if (":" != chr) length += chr; else {
+                        if ("" == length || length != (n = Number(length))) return callback(err, 0, 1);
+                        if (msg = data.substr(i + 1, n), length != msg.length) return callback(err, 0, 1);
+                        if (msg.length) {
+                            if (packet = exports.decodePacket(msg, binaryType), err.type == packet.type && err.data == packet.data) return callback(err, 0, 1);
+                            var ret = callback(packet, i + n, l);
+                            if (!1 === ret) return;
+                        }
+                        i += n, length = "";
+                    }
+                }
+                return "" != length ? callback(err, 0, 1) : void 0;
+            }, exports.encodePayloadAsArrayBuffer = function(packets, callback) {
+                function encodeOne(packet, doneCallback) {
+                    exports.encodePacket(packet, !0, function(data) {
+                        return doneCallback(null, data);
+                    });
+                }
+                return packets.length ? void map(packets, encodeOne, function(err, encodedPackets) {
+                    var totalLength = encodedPackets.reduce(function(acc, p) {
+                        var len;
+                        return len = "string" == typeof p ? p.length : p.byteLength, acc + len.toString().length + len + 2;
+                    }, 0), resultArray = new Uint8Array(totalLength), bufferIndex = 0;
+                    return encodedPackets.forEach(function(p) {
+                        var isString = "string" == typeof p, ab = p;
+                        if (isString) {
+                            for (var view = new Uint8Array(p.length), i = 0; i < p.length; i++) view[i] = p.charCodeAt(i);
+                            ab = view.buffer;
+                        }
+                        resultArray[bufferIndex++] = isString ? 0 : 1;
+                        for (var lenStr = ab.byteLength.toString(), i = 0; i < lenStr.length; i++) resultArray[bufferIndex++] = parseInt(lenStr[i]);
+                        resultArray[bufferIndex++] = 255;
+                        for (var view = new Uint8Array(ab), i = 0; i < view.length; i++) resultArray[bufferIndex++] = view[i];
+                    }), callback(resultArray.buffer);
+                }) : callback(new ArrayBuffer(0));
+            }, exports.encodePayloadAsBlob = function(packets, callback) {
+                function encodeOne(packet, doneCallback) {
+                    exports.encodePacket(packet, !0, function(encoded) {
+                        var binaryIdentifier = new Uint8Array(1);
+                        if (binaryIdentifier[0] = 1, "string" == typeof encoded) {
+                            for (var view = new Uint8Array(encoded.length), i = 0; i < encoded.length; i++) view[i] = encoded.charCodeAt(i);
+                            encoded = view.buffer, binaryIdentifier[0] = 0;
+                        }
+                        for (var len = encoded instanceof ArrayBuffer ? encoded.byteLength : encoded.size, lenStr = len.toString(), lengthAry = new Uint8Array(lenStr.length + 1), i = 0; i < lenStr.length; i++) lengthAry[i] = parseInt(lenStr[i]);
+                        if (lengthAry[lenStr.length] = 255, Blob) {
+                            var blob = new Blob([ binaryIdentifier.buffer, lengthAry.buffer, encoded ]);
+                            doneCallback(null, blob);
+                        }
+                    });
+                }
+                map(packets, encodeOne, function(err, results) {
+                    return callback(new Blob(results));
+                });
+            }, exports.decodePayloadAsBinary = function(data, binaryType, callback) {
+                "function" == typeof binaryType && (callback = binaryType, binaryType = null);
+                for (var bufferTail = data, buffers = []; bufferTail.byteLength > 0; ) {
+                    for (var tailArray = new Uint8Array(bufferTail), isString = 0 === tailArray[0], msgLength = "", i = 1; 255 != tailArray[i]; i++) msgLength += tailArray[i];
+                    bufferTail = sliceBuffer(bufferTail, 2 + msgLength.length), msgLength = parseInt(msgLength);
+                    var msg = sliceBuffer(bufferTail, 0, msgLength);
+                    if (isString) try {
+                        msg = String.fromCharCode.apply(null, new Uint8Array(msg));
+                    } catch (e) {
+                        var typed = new Uint8Array(msg);
+                        msg = "";
+                        for (var i = 0; i < typed.length; i++) msg += String.fromCharCode(typed[i]);
+                    }
+                    buffers.push(msg), bufferTail = sliceBuffer(bufferTail, msgLength);
+                }
+                var total = buffers.length;
+                buffers.forEach(function(buffer, i) {
+                    callback(exports.decodePacket(buffer, binaryType), i, total);
+                });
+            };
+        }, {
+            "./keys": 21,
+            after: 22,
+            "arraybuffer.slice": 23,
+            "base64-arraybuffer": 24,
+            blob: 25,
+            utf8: 26
+        } ],
+        21: [ function(require, module) {
+            module.exports = Object.keys || function(obj) {
+                var arr = [], has = Object.prototype.hasOwnProperty;
+                for (var i in obj) has.call(obj, i) && arr.push(i);
+                return arr;
+            };
+        }, {} ],
+        22: [ function(require, module) {
+            function after(count, callback, err_cb) {
+                function proxy(err, result) {
+                    if (proxy.count <= 0) throw new Error("after called too many times");
+                    --proxy.count, err ? (bail = !0, callback(err), callback = err_cb) : 0 !== proxy.count || bail || callback(null, result);
+                }
+                var bail = !1;
+                return err_cb = err_cb || noop, proxy.count = count, 0 === count ? callback() : proxy;
+            }
+            function noop() {}
+            module.exports = after;
+        }, {} ],
+        23: [ function(require, module) {
+            module.exports = function(arraybuffer, start, end) {
+                var bytes = arraybuffer.byteLength;
+                if (start = start || 0, end = end || bytes, arraybuffer.slice) return arraybuffer.slice(start, end);
+                if (0 > start && (start += bytes), 0 > end && (end += bytes), end > bytes && (end = bytes), 
+                start >= bytes || start >= end || 0 === bytes) return new ArrayBuffer(0);
+                for (var abv = new Uint8Array(arraybuffer), result = new Uint8Array(end - start), i = start, ii = 0; end > i; i++, 
+                ii++) result[ii] = abv[i];
+                return result.buffer;
+            };
+        }, {} ],
+        24: [ function(require, module, exports) {
+            !function(chars) {
+                "use strict";
+                exports.encode = function(arraybuffer) {
+                    var i, bytes = new Uint8Array(arraybuffer), len = bytes.length, base64 = "";
+                    for (i = 0; len > i; i += 3) base64 += chars[bytes[i] >> 2], base64 += chars[(3 & bytes[i]) << 4 | bytes[i + 1] >> 4], 
+                    base64 += chars[(15 & bytes[i + 1]) << 2 | bytes[i + 2] >> 6], base64 += chars[63 & bytes[i + 2]];
+                    return len % 3 === 2 ? base64 = base64.substring(0, base64.length - 1) + "=" : len % 3 === 1 && (base64 = base64.substring(0, base64.length - 2) + "=="), 
+                    base64;
+                }, exports.decode = function(base64) {
+                    var i, encoded1, encoded2, encoded3, encoded4, bufferLength = .75 * base64.length, len = base64.length, p = 0;
+                    "=" === base64[base64.length - 1] && (bufferLength--, "=" === base64[base64.length - 2] && bufferLength--);
+                    var arraybuffer = new ArrayBuffer(bufferLength), bytes = new Uint8Array(arraybuffer);
+                    for (i = 0; len > i; i += 4) encoded1 = chars.indexOf(base64[i]), encoded2 = chars.indexOf(base64[i + 1]), 
+                    encoded3 = chars.indexOf(base64[i + 2]), encoded4 = chars.indexOf(base64[i + 3]), 
+                    bytes[p++] = encoded1 << 2 | encoded2 >> 4, bytes[p++] = (15 & encoded2) << 4 | encoded3 >> 2, 
+                    bytes[p++] = (3 & encoded3) << 6 | 63 & encoded4;
+                    return arraybuffer;
+                };
+            }("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+        }, {} ],
+        25: [ function(require, module) {
+            function BlobBuilderConstructor(ary, options) {
+                options = options || {};
+                for (var bb = new BlobBuilder(), i = 0; i < ary.length; i++) bb.append(ary[i]);
+                return options.type ? bb.getBlob(options.type) : bb.getBlob();
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, BlobBuilder = global.BlobBuilder || global.WebKitBlobBuilder || global.MSBlobBuilder || global.MozBlobBuilder, blobSupported = function() {
+                try {
+                    var b = new Blob([ "hi" ]);
+                    return 2 == b.size;
+                } catch (e) {
+                    return !1;
+                }
+            }(), blobBuilderSupported = BlobBuilder && BlobBuilder.prototype.append && BlobBuilder.prototype.getBlob;
+            module.exports = function() {
+                return blobSupported ? global.Blob : blobBuilderSupported ? BlobBuilderConstructor : void 0;
+            }();
+        }, {} ],
+        26: [ function(require, module, exports) {
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {};
+            !function(root) {
+                function ucs2decode(string) {
+                    for (var value, extra, output = [], counter = 0, length = string.length; length > counter; ) value = string.charCodeAt(counter++), 
+                    value >= 55296 && 56319 >= value && length > counter ? (extra = string.charCodeAt(counter++), 
+                    56320 == (64512 & extra) ? output.push(((1023 & value) << 10) + (1023 & extra) + 65536) : (output.push(value), 
+                    counter--)) : output.push(value);
+                    return output;
+                }
+                function ucs2encode(array) {
+                    for (var value, length = array.length, index = -1, output = ""; ++index < length; ) value = array[index], 
+                    value > 65535 && (value -= 65536, output += stringFromCharCode(value >>> 10 & 1023 | 55296), 
+                    value = 56320 | 1023 & value), output += stringFromCharCode(value);
+                    return output;
+                }
+                function createByte(codePoint, shift) {
+                    return stringFromCharCode(codePoint >> shift & 63 | 128);
+                }
+                function encodeCodePoint(codePoint) {
+                    if (0 == (4294967168 & codePoint)) return stringFromCharCode(codePoint);
+                    var symbol = "";
+                    return 0 == (4294965248 & codePoint) ? symbol = stringFromCharCode(codePoint >> 6 & 31 | 192) : 0 == (4294901760 & codePoint) ? (symbol = stringFromCharCode(codePoint >> 12 & 15 | 224), 
+                    symbol += createByte(codePoint, 6)) : 0 == (4292870144 & codePoint) && (symbol = stringFromCharCode(codePoint >> 18 & 7 | 240), 
+                    symbol += createByte(codePoint, 12), symbol += createByte(codePoint, 6)), symbol += stringFromCharCode(63 & codePoint | 128);
+                }
+                function utf8encode(string) {
+                    for (var codePoint, codePoints = ucs2decode(string), length = codePoints.length, index = -1, byteString = ""; ++index < length; ) codePoint = codePoints[index], 
+                    byteString += encodeCodePoint(codePoint);
+                    return byteString;
+                }
+                function readContinuationByte() {
+                    if (byteIndex >= byteCount) throw Error("Invalid byte index");
+                    var continuationByte = 255 & byteArray[byteIndex];
+                    if (byteIndex++, 128 == (192 & continuationByte)) return 63 & continuationByte;
+                    throw Error("Invalid continuation byte");
+                }
+                function decodeSymbol() {
+                    var byte1, byte2, byte3, byte4, codePoint;
+                    if (byteIndex > byteCount) throw Error("Invalid byte index");
+                    if (byteIndex == byteCount) return !1;
+                    if (byte1 = 255 & byteArray[byteIndex], byteIndex++, 0 == (128 & byte1)) return byte1;
+                    if (192 == (224 & byte1)) {
+                        var byte2 = readContinuationByte();
+                        if (codePoint = (31 & byte1) << 6 | byte2, codePoint >= 128) return codePoint;
+                        throw Error("Invalid continuation byte");
+                    }
+                    if (224 == (240 & byte1)) {
+                        if (byte2 = readContinuationByte(), byte3 = readContinuationByte(), codePoint = (15 & byte1) << 12 | byte2 << 6 | byte3, 
+                        codePoint >= 2048) return codePoint;
+                        throw Error("Invalid continuation byte");
+                    }
+                    if (240 == (248 & byte1) && (byte2 = readContinuationByte(), byte3 = readContinuationByte(), 
+                    byte4 = readContinuationByte(), codePoint = (15 & byte1) << 18 | byte2 << 12 | byte3 << 6 | byte4, 
+                    codePoint >= 65536 && 1114111 >= codePoint)) return codePoint;
+                    throw Error("Invalid UTF-8 detected");
+                }
+                function utf8decode(byteString) {
+                    byteArray = ucs2decode(byteString), byteCount = byteArray.length, byteIndex = 0;
+                    for (var tmp, codePoints = []; (tmp = decodeSymbol()) !== !1; ) codePoints.push(tmp);
+                    return ucs2encode(codePoints);
+                }
+                var freeExports = "object" == typeof exports && exports, freeModule = "object" == typeof module && module && module.exports == freeExports && module, freeGlobal = "object" == typeof global && global;
+                (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) && (root = freeGlobal);
+                var byteArray, byteCount, byteIndex, stringFromCharCode = String.fromCharCode, utf8 = {
+                    version: "2.0.0",
+                    encode: utf8encode,
+                    decode: utf8decode
+                };
+                if ("function" == typeof define && "object" == typeof define.amd && define.amd) define(function() {
+                    return utf8;
+                }); else if (freeExports && !freeExports.nodeType) if (freeModule) freeModule.exports = utf8; else {
+                    var object = {}, hasOwnProperty = object.hasOwnProperty;
+                    for (var key in utf8) hasOwnProperty.call(utf8, key) && (freeExports[key] = utf8[key]);
+                } else root.utf8 = utf8;
+            }(this);
+        }, {} ],
+        27: [ function(require, module) {
+            module.exports = "function" == typeof Object.create ? function(ctor, superCtor) {
+                ctor.super_ = superCtor, ctor.prototype = Object.create(superCtor.prototype, {
+                    constructor: {
+                        value: ctor,
+                        enumerable: !1,
+                        writable: !0,
+                        configurable: !0
+                    }
+                });
+            } : function(ctor, superCtor) {
+                ctor.super_ = superCtor;
+                var TempCtor = function() {};
+                TempCtor.prototype = superCtor.prototype, ctor.prototype = new TempCtor(), ctor.prototype.constructor = ctor;
+            };
+        }, {} ],
+        28: [ function(require, module) {
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, rvalidchars = /^[\],:{}\s]*$/, rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g, rtrimLeft = /^\s+/, rtrimRight = /\s+$/;
+            module.exports = function(data) {
+                return "string" == typeof data && data ? (data = data.replace(rtrimLeft, "").replace(rtrimRight, ""), 
+                global.JSON && JSON.parse ? JSON.parse(data) : rvalidchars.test(data.replace(rvalidescape, "@").replace(rvalidtokens, "]").replace(rvalidbraces, "")) ? new Function("return " + data)() : void 0) : null;
+            };
+        }, {} ],
+        29: [ function(require, module, exports) {
+            exports.encode = function(obj) {
+                var str = "";
+                for (var i in obj) obj.hasOwnProperty(i) && (str.length && (str += "&"), str += encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+                return str;
+            }, exports.decode = function(qs) {
+                for (var qry = {}, pairs = qs.split("&"), i = 0, l = pairs.length; l > i; i++) {
+                    var pair = pairs[i].split("=");
+                    qry[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+                return qry;
+            };
+        }, {} ],
+        30: [ function(require, module) {
+            function ws(uri, protocols) {
+                var instance;
+                return instance = protocols ? new WebSocket(uri, protocols) : new WebSocket(uri);
+            }
+            var global = function() {
+                return this;
+            }(), WebSocket = global.WebSocket || global.MozWebSocket;
+            module.exports = WebSocket ? ws : null, WebSocket && (ws.prototype = WebSocket.prototype);
+        }, {} ],
+        31: [ function(require, module) {
+            function hasBinary(data) {
+                function recursiveCheckForBinary(obj) {
+                    if (!obj) return !1;
+                    if (global.Buffer && Buffer.isBuffer(obj) || global.ArrayBuffer && obj instanceof ArrayBuffer || global.Blob && obj instanceof Blob || global.File && obj instanceof File) return !0;
+                    if (isArray(obj)) {
+                        for (var i = 0; i < obj.length; i++) if (recursiveCheckForBinary(obj[i])) return !0;
+                    } else if (obj && "object" == typeof obj) {
+                        obj.toJSON && (obj = obj.toJSON());
+                        for (var key in obj) if (recursiveCheckForBinary(obj[key])) return !0;
+                    }
+                    return !1;
+                }
+                return recursiveCheckForBinary(data);
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, isArray = require("isarray");
+            module.exports = hasBinary;
+        }, {
+            isarray: 32
+        } ],
+        32: [ function(require, module) {
+            module.exports = Array.isArray || function(arr) {
+                return "[object Array]" == Object.prototype.toString.call(arr);
+            };
+        }, {} ],
+        33: [ function(require, module) {
+            var global = require("global");
+            try {
+                module.exports = "XMLHttpRequest" in global && "withCredentials" in new global.XMLHttpRequest();
+            } catch (err) {
+                module.exports = !1;
+            }
+        }, {
+            global: 34
+        } ],
+        34: [ function(require, module) {
+            module.exports = function() {
+                return this;
+            }();
+        }, {} ],
+        35: [ function(require, module) {
+            var indexOf = [].indexOf;
+            module.exports = function(arr, obj) {
+                if (indexOf) return arr.indexOf(obj);
+                for (var i = 0; i < arr.length; ++i) if (arr[i] === obj) return i;
+                return -1;
+            };
+        }, {} ],
+        36: [ function(require, module, exports) {
+            var has = Object.prototype.hasOwnProperty;
+            exports.keys = Object.keys || function(obj) {
+                var keys = [];
+                for (var key in obj) has.call(obj, key) && keys.push(key);
+                return keys;
+            }, exports.values = function(obj) {
+                var vals = [];
+                for (var key in obj) has.call(obj, key) && vals.push(obj[key]);
+                return vals;
+            }, exports.merge = function(a, b) {
+                for (var key in b) has.call(b, key) && (a[key] = b[key]);
+                return a;
+            }, exports.length = function(obj) {
+                return exports.keys(obj).length;
+            }, exports.isEmpty = function(obj) {
+                return 0 == exports.length(obj);
+            };
+        }, {} ],
+        37: [ function(require, module) {
+            var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, parts = [ "source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor" ];
+            module.exports = function(str) {
+                for (var m = re.exec(str || ""), uri = {}, i = 14; i--; ) uri[parts[i]] = m[i] || "";
+                return uri;
+            };
+        }, {} ],
+        38: [ function(require, module, exports) {
+            function isBuf(obj) {
+                return global.Buffer && Buffer.isBuffer(obj) || global.ArrayBuffer && obj instanceof ArrayBuffer;
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, isArray = require("isarray");
+            exports.deconstructPacket = function(packet) {
+                function deconstructBinPackRecursive(data) {
+                    if (!data) return data;
+                    if (global.Buffer && Buffer.isBuffer(data) || global.ArrayBuffer && data instanceof ArrayBuffer) {
+                        var placeholder = {
+                            _placeholder: !0,
+                            num: buffers.length
+                        };
+                        return buffers.push(data), placeholder;
+                    }
+                    if (isArray(data)) {
+                        for (var newData = new Array(data.length), i = 0; i < data.length; i++) newData[i] = deconstructBinPackRecursive(data[i]);
+                        return newData;
+                    }
+                    if ("object" == typeof data && !(data instanceof Date)) {
+                        var newData = {};
+                        for (var key in data) newData[key] = deconstructBinPackRecursive(data[key]);
+                        return newData;
+                    }
+                    return data;
+                }
+                var buffers = [], packetData = packet.data, pack = packet;
+                return pack.data = deconstructBinPackRecursive(packetData), pack.attachments = buffers.length, 
+                {
+                    packet: pack,
+                    buffers: buffers
+                };
+            }, exports.reconstructPacket = function(packet, buffers) {
+                function reconstructBinPackRecursive(data) {
+                    if (data && data._placeholder) {
+                        var buf = buffers[data.num];
+                        return buf;
+                    }
+                    if (isArray(data)) {
+                        for (var i = 0; i < data.length; i++) data[i] = reconstructBinPackRecursive(data[i]);
+                        return data;
+                    }
+                    if (data && "object" == typeof data) {
+                        for (var key in data) data[key] = reconstructBinPackRecursive(data[key]);
+                        return data;
+                    }
+                    return data;
+                }
+                return packet.data = reconstructBinPackRecursive(packet.data), packet.attachments = void 0, 
+                packet;
+            }, exports.removeBlobs = function(data, callback) {
+                function removeBlobsRecursive(obj, curKey, containingObject) {
+                    if (!obj) return obj;
+                    if (global.Blob && obj instanceof Blob || global.File && obj instanceof File) {
+                        pendingBlobs++;
+                        var fileReader = new FileReader();
+                        fileReader.onload = function() {
+                            containingObject ? containingObject[curKey] = this.result : bloblessData = this.result, 
+                            --pendingBlobs || callback(bloblessData);
+                        }, fileReader.readAsArrayBuffer(obj);
+                    }
+                    if (isArray(obj)) for (var i = 0; i < obj.length; i++) removeBlobsRecursive(obj[i], i, obj); else if (obj && "object" == typeof obj && !isBuf(obj)) for (var key in obj) removeBlobsRecursive(obj[key], key, obj);
+                }
+                var pendingBlobs = 0, bloblessData = data;
+                removeBlobsRecursive(bloblessData), pendingBlobs || callback(bloblessData);
+            };
+        }, {
+            isarray: 40
+        } ],
+        39: [ function(require, module, exports) {
+            function Encoder() {}
+            function encodeAsString(obj) {
+                var str = "", nsp = !1;
+                return str += obj.type, (exports.BINARY_EVENT == obj.type || exports.BINARY_ACK == obj.type) && (str += obj.attachments, 
+                str += "-"), obj.nsp && "/" != obj.nsp && (nsp = !0, str += obj.nsp), null != obj.id && (nsp && (str += ",", 
+                nsp = !1), str += obj.id), null != obj.data && (nsp && (str += ","), str += json.stringify(obj.data)), 
+                debug("encoded %j as %s", obj, str), str;
+            }
+            function encodeAsBinary(obj, callback) {
+                function writeEncoding(bloblessData) {
+                    var deconstruction = binary.deconstructPacket(bloblessData), pack = encodeAsString(deconstruction.packet), buffers = deconstruction.buffers;
+                    buffers.unshift(pack), callback(buffers);
+                }
+                binary.removeBlobs(obj, writeEncoding);
+            }
+            function Decoder() {
+                this.reconstructor = null;
+            }
+            function decodeString(str) {
+                var p = {}, i = 0;
+                if (p.type = Number(str.charAt(0)), null == exports.types[p.type]) return error();
+                if (exports.BINARY_EVENT == p.type || exports.BINARY_ACK == p.type) {
+                    for (p.attachments = ""; "-" != str.charAt(++i); ) p.attachments += str.charAt(i);
+                    p.attachments = Number(p.attachments);
+                }
+                if ("/" == str.charAt(i + 1)) for (p.nsp = ""; ++i; ) {
+                    var c = str.charAt(i);
+                    if ("," == c) break;
+                    if (p.nsp += c, i + 1 == str.length) break;
+                } else p.nsp = "/";
+                var next = str.charAt(i + 1);
+                if ("" != next && Number(next) == next) {
+                    for (p.id = ""; ++i; ) {
+                        var c = str.charAt(i);
+                        if (null == c || Number(c) != c) {
+                            --i;
+                            break;
+                        }
+                        if (p.id += str.charAt(i), i + 1 == str.length) break;
+                    }
+                    p.id = Number(p.id);
+                }
+                if (str.charAt(++i)) try {
+                    p.data = json.parse(str.substr(i));
+                } catch (e) {
+                    return error();
+                }
+                return debug("decoded %s as %j", str, p), p;
+            }
+            function BinaryReconstructor(packet) {
+                this.reconPack = packet, this.buffers = [];
+            }
+            function error() {
+                return {
+                    type: exports.ERROR,
+                    data: "parser error"
+                };
+            }
+            var global = "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, debug = require("debug")("socket.io-parser"), json = require("json3"), Emitter = (require("isarray"), 
+            require("emitter")), binary = require("./binary");
+            exports.protocol = 3, exports.types = [ "CONNECT", "DISCONNECT", "EVENT", "BINARY_EVENT", "ACK", "BINARY_ACK", "ERROR" ], 
+            exports.CONNECT = 0, exports.DISCONNECT = 1, exports.EVENT = 2, exports.ACK = 3, 
+            exports.ERROR = 4, exports.BINARY_EVENT = 5, exports.BINARY_ACK = 6, exports.Encoder = Encoder, 
+            Encoder.prototype.encode = function(obj, callback) {
+                if (debug("encoding packet %j", obj), exports.BINARY_EVENT == obj.type || exports.BINARY_ACK == obj.type) encodeAsBinary(obj, callback); else {
+                    var encoding = encodeAsString(obj);
+                    callback([ encoding ]);
+                }
+            }, exports.Decoder = Decoder, Emitter(Decoder.prototype), Decoder.prototype.add = function(obj) {
+                var packet;
+                if ("string" == typeof obj) packet = decodeString(obj), exports.BINARY_EVENT == packet.type || exports.BINARY_ACK == packet.type ? (this.reconstructor = new BinaryReconstructor(packet), 
+                0 == this.reconstructor.reconPack.attachments && this.emit("decoded", packet)) : this.emit("decoded", packet); else {
+                    if (!(global.Buffer && Buffer.isBuffer(obj) || global.ArrayBuffer && obj instanceof ArrayBuffer || obj.base64)) throw new Error("Unknown type: " + obj);
+                    if (!this.reconstructor) throw new Error("got binary data when not reconstructing a packet");
+                    packet = this.reconstructor.takeBinaryData(obj), packet && (this.reconstructor = null, 
+                    this.emit("decoded", packet));
+                }
+            }, Decoder.prototype.destroy = function() {
+                this.reconstructor && this.reconstructor.finishedReconstruction();
+            }, BinaryReconstructor.prototype.takeBinaryData = function(binData) {
+                if (this.buffers.push(binData), this.buffers.length == this.reconPack.attachments) {
+                    var packet = binary.reconstructPacket(this.reconPack, this.buffers);
+                    return this.finishedReconstruction(), packet;
+                }
+                return null;
+            }, BinaryReconstructor.prototype.finishedReconstruction = function() {
+                this.reconPack = null, this.buffers = [];
+            };
+        }, {
+            "./binary": 38,
+            debug: 8,
+            emitter: 9,
+            isarray: 40,
+            json3: 41
+        } ],
+        40: [ function(require, module) {
+            module.exports = require(32);
+        }, {} ],
+        41: [ function(require, module, exports) {
+            !function(window) {
+                function has(name) {
+                    if (has[name] !== undef) return has[name];
+                    var isSupported;
+                    if ("bug-string-char-index" == name) isSupported = "a" != "a"[0]; else if ("json" == name) isSupported = has("json-stringify") && has("json-parse"); else {
+                        var value, serialized = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
+                        if ("json-stringify" == name) {
+                            var stringify = JSON3.stringify, stringifySupported = "function" == typeof stringify && isExtended;
+                            if (stringifySupported) {
+                                (value = function() {
+                                    return 1;
+                                }).toJSON = value;
+                                try {
+                                    stringifySupported = "0" === stringify(0) && "0" === stringify(new Number()) && '""' == stringify(new String()) && stringify(getClass) === undef && stringify(undef) === undef && stringify() === undef && "1" === stringify(value) && "[1]" == stringify([ value ]) && "[null]" == stringify([ undef ]) && "null" == stringify(null) && "[null,null,null]" == stringify([ undef, getClass, null ]) && stringify({
+                                        a: [ value, !0, !1, null, "\x00\b\n\f\r	" ]
+                                    }) == serialized && "1" === stringify(null, value) && "[\n 1,\n 2\n]" == stringify([ 1, 2 ], null, 1) && '"-271821-04-20T00:00:00.000Z"' == stringify(new Date(-864e13)) && '"+275760-09-13T00:00:00.000Z"' == stringify(new Date(864e13)) && '"-000001-01-01T00:00:00.000Z"' == stringify(new Date(-621987552e5)) && '"1969-12-31T23:59:59.999Z"' == stringify(new Date(-1));
+                                } catch (exception) {
+                                    stringifySupported = !1;
+                                }
+                            }
+                            isSupported = stringifySupported;
+                        }
+                        if ("json-parse" == name) {
+                            var parse = JSON3.parse;
+                            if ("function" == typeof parse) try {
+                                if (0 === parse("0") && !parse(!1)) {
+                                    value = parse(serialized);
+                                    var parseSupported = 5 == value.a.length && 1 === value.a[0];
+                                    if (parseSupported) {
+                                        try {
+                                            parseSupported = !parse('"	"');
+                                        } catch (exception) {}
+                                        if (parseSupported) try {
+                                            parseSupported = 1 !== parse("01");
+                                        } catch (exception) {}
+                                        if (parseSupported) try {
+                                            parseSupported = 1 !== parse("1.");
+                                        } catch (exception) {}
+                                    }
+                                }
+                            } catch (exception) {
+                                parseSupported = !1;
+                            }
+                            isSupported = parseSupported;
+                        }
+                    }
+                    return has[name] = !!isSupported;
+                }
+                var isProperty, forEach, undef, getClass = {}.toString, isLoader = "function" == typeof define && define.amd, nativeJSON = "object" == typeof JSON && JSON, JSON3 = "object" == typeof exports && exports && !exports.nodeType && exports;
+                JSON3 && nativeJSON ? (JSON3.stringify = nativeJSON.stringify, JSON3.parse = nativeJSON.parse) : JSON3 = window.JSON = nativeJSON || {};
+                var isExtended = new Date(-0xc782b5b800cec);
+                try {
+                    isExtended = -109252 == isExtended.getUTCFullYear() && 0 === isExtended.getUTCMonth() && 1 === isExtended.getUTCDate() && 10 == isExtended.getUTCHours() && 37 == isExtended.getUTCMinutes() && 6 == isExtended.getUTCSeconds() && 708 == isExtended.getUTCMilliseconds();
+                } catch (exception) {}
+                if (!has("json")) {
+                    var functionClass = "[object Function]", dateClass = "[object Date]", numberClass = "[object Number]", stringClass = "[object String]", arrayClass = "[object Array]", booleanClass = "[object Boolean]", charIndexBuggy = has("bug-string-char-index");
+                    if (!isExtended) var floor = Math.floor, Months = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ], getDay = function(year, month) {
+                        return Months[month] + 365 * (year - 1970) + floor((year - 1969 + (month = +(month > 1))) / 4) - floor((year - 1901 + month) / 100) + floor((year - 1601 + month) / 400);
+                    };
+                    (isProperty = {}.hasOwnProperty) || (isProperty = function(property) {
+                        var constructor, members = {};
+                        return (members.__proto__ = null, members.__proto__ = {
+                            toString: 1
+                        }, members).toString != getClass ? isProperty = function(property) {
+                            var original = this.__proto__, result = property in (this.__proto__ = null, this);
+                            return this.__proto__ = original, result;
+                        } : (constructor = members.constructor, isProperty = function(property) {
+                            var parent = (this.constructor || constructor).prototype;
+                            return property in this && !(property in parent && this[property] === parent[property]);
+                        }), members = null, isProperty.call(this, property);
+                    });
+                    var PrimitiveTypes = {
+                        "boolean": 1,
+                        number: 1,
+                        string: 1,
+                        undefined: 1
+                    }, isHostType = function(object, property) {
+                        var type = typeof object[property];
+                        return "object" == type ? !!object[property] : !PrimitiveTypes[type];
+                    };
+                    if (forEach = function(object, callback) {
+                        var Properties, members, property, size = 0;
+                        (Properties = function() {
+                            this.valueOf = 0;
+                        }).prototype.valueOf = 0, members = new Properties();
+                        for (property in members) isProperty.call(members, property) && size++;
+                        return Properties = members = null, size ? forEach = 2 == size ? function(object, callback) {
+                            var property, members = {}, isFunction = getClass.call(object) == functionClass;
+                            for (property in object) isFunction && "prototype" == property || isProperty.call(members, property) || !(members[property] = 1) || !isProperty.call(object, property) || callback(property);
+                        } : function(object, callback) {
+                            var property, isConstructor, isFunction = getClass.call(object) == functionClass;
+                            for (property in object) isFunction && "prototype" == property || !isProperty.call(object, property) || (isConstructor = "constructor" === property) || callback(property);
+                            (isConstructor || isProperty.call(object, property = "constructor")) && callback(property);
+                        } : (members = [ "valueOf", "toString", "toLocaleString", "propertyIsEnumerable", "isPrototypeOf", "hasOwnProperty", "constructor" ], 
+                        forEach = function(object, callback) {
+                            var property, length, isFunction = getClass.call(object) == functionClass, hasProperty = !isFunction && "function" != typeof object.constructor && isHostType(object, "hasOwnProperty") ? object.hasOwnProperty : isProperty;
+                            for (property in object) isFunction && "prototype" == property || !hasProperty.call(object, property) || callback(property);
+                            for (length = members.length; property = members[--length]; hasProperty.call(object, property) && callback(property)) ;
+                        }), forEach(object, callback);
+                    }, !has("json-stringify")) {
+                        var Escapes = {
+                            92: "\\\\",
+                            34: '\\"',
+                            8: "\\b",
+                            12: "\\f",
+                            10: "\\n",
+                            13: "\\r",
+                            9: "\\t"
+                        }, leadingZeroes = "000000", toPaddedString = function(width, value) {
+                            return (leadingZeroes + (value || 0)).slice(-width);
+                        }, unicodePrefix = "\\u00", quote = function(value) {
+                            var symbols, result = '"', index = 0, length = value.length, isLarge = length > 10 && charIndexBuggy;
+                            for (isLarge && (symbols = value.split("")); length > index; index++) {
+                                var charCode = value.charCodeAt(index);
+                                switch (charCode) {
+                                  case 8:
+                                  case 9:
+                                  case 10:
+                                  case 12:
+                                  case 13:
+                                  case 34:
+                                  case 92:
+                                    result += Escapes[charCode];
+                                    break;
+
+                                  default:
+                                    if (32 > charCode) {
+                                        result += unicodePrefix + toPaddedString(2, charCode.toString(16));
+                                        break;
+                                    }
+                                    result += isLarge ? symbols[index] : charIndexBuggy ? value.charAt(index) : value[index];
+                                }
+                            }
+                            return result + '"';
+                        }, serialize = function(property, object, callback, properties, whitespace, indentation, stack) {
+                            var value, className, year, month, date, time, hours, minutes, seconds, milliseconds, results, element, index, length, prefix, result;
+                            try {
+                                value = object[property];
+                            } catch (exception) {}
+                            if ("object" == typeof value && value) if (className = getClass.call(value), className != dateClass || isProperty.call(value, "toJSON")) "function" == typeof value.toJSON && (className != numberClass && className != stringClass && className != arrayClass || isProperty.call(value, "toJSON")) && (value = value.toJSON(property)); else if (value > -1 / 0 && 1 / 0 > value) {
+                                if (getDay) {
+                                    for (date = floor(value / 864e5), year = floor(date / 365.2425) + 1970 - 1; getDay(year + 1, 0) <= date; year++) ;
+                                    for (month = floor((date - getDay(year, 0)) / 30.42); getDay(year, month + 1) <= date; month++) ;
+                                    date = 1 + date - getDay(year, month), time = (value % 864e5 + 864e5) % 864e5, hours = floor(time / 36e5) % 24, 
+                                    minutes = floor(time / 6e4) % 60, seconds = floor(time / 1e3) % 60, milliseconds = time % 1e3;
+                                } else year = value.getUTCFullYear(), month = value.getUTCMonth(), date = value.getUTCDate(), 
+                                hours = value.getUTCHours(), minutes = value.getUTCMinutes(), seconds = value.getUTCSeconds(), 
+                                milliseconds = value.getUTCMilliseconds();
+                                value = (0 >= year || year >= 1e4 ? (0 > year ? "-" : "+") + toPaddedString(6, 0 > year ? -year : year) : toPaddedString(4, year)) + "-" + toPaddedString(2, month + 1) + "-" + toPaddedString(2, date) + "T" + toPaddedString(2, hours) + ":" + toPaddedString(2, minutes) + ":" + toPaddedString(2, seconds) + "." + toPaddedString(3, milliseconds) + "Z";
+                            } else value = null;
+                            if (callback && (value = callback.call(object, property, value)), null === value) return "null";
+                            if (className = getClass.call(value), className == booleanClass) return "" + value;
+                            if (className == numberClass) return value > -1 / 0 && 1 / 0 > value ? "" + value : "null";
+                            if (className == stringClass) return quote("" + value);
+                            if ("object" == typeof value) {
+                                for (length = stack.length; length--; ) if (stack[length] === value) throw TypeError();
+                                if (stack.push(value), results = [], prefix = indentation, indentation += whitespace, 
+                                className == arrayClass) {
+                                    for (index = 0, length = value.length; length > index; index++) element = serialize(index, value, callback, properties, whitespace, indentation, stack), 
+                                    results.push(element === undef ? "null" : element);
+                                    result = results.length ? whitespace ? "[\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "]" : "[" + results.join(",") + "]" : "[]";
+                                } else forEach(properties || value, function(property) {
+                                    var element = serialize(property, value, callback, properties, whitespace, indentation, stack);
+                                    element !== undef && results.push(quote(property) + ":" + (whitespace ? " " : "") + element);
+                                }), result = results.length ? whitespace ? "{\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "}" : "{" + results.join(",") + "}" : "{}";
+                                return stack.pop(), result;
+                            }
+                        };
+                        JSON3.stringify = function(source, filter, width) {
+                            var whitespace, callback, properties, className;
+                            if ("function" == typeof filter || "object" == typeof filter && filter) if ((className = getClass.call(filter)) == functionClass) callback = filter; else if (className == arrayClass) {
+                                properties = {};
+                                for (var value, index = 0, length = filter.length; length > index; value = filter[index++], 
+                                className = getClass.call(value), (className == stringClass || className == numberClass) && (properties[value] = 1)) ;
+                            }
+                            if (width) if ((className = getClass.call(width)) == numberClass) {
+                                if ((width -= width % 1) > 0) for (whitespace = "", width > 10 && (width = 10); whitespace.length < width; whitespace += " ") ;
+                            } else className == stringClass && (whitespace = width.length <= 10 ? width : width.slice(0, 10));
+                            return serialize("", (value = {}, value[""] = source, value), callback, properties, whitespace, "", []);
+                        };
+                    }
+                    if (!has("json-parse")) {
+                        var Index, Source, fromCharCode = String.fromCharCode, Unescapes = {
+                            92: "\\",
+                            34: '"',
+                            47: "/",
+                            98: "\b",
+                            116: "	",
+                            110: "\n",
+                            102: "\f",
+                            114: "\r"
+                        }, abort = function() {
+                            throw Index = Source = null, SyntaxError();
+                        }, lex = function() {
+                            for (var value, begin, position, isSigned, charCode, source = Source, length = source.length; length > Index; ) switch (charCode = source.charCodeAt(Index)) {
+                              case 9:
+                              case 10:
+                              case 13:
+                              case 32:
+                                Index++;
+                                break;
+
+                              case 123:
+                              case 125:
+                              case 91:
+                              case 93:
+                              case 58:
+                              case 44:
+                                return value = charIndexBuggy ? source.charAt(Index) : source[Index], Index++, value;
+
+                              case 34:
+                                for (value = "@", Index++; length > Index; ) if (charCode = source.charCodeAt(Index), 
+                                32 > charCode) abort(); else if (92 == charCode) switch (charCode = source.charCodeAt(++Index)) {
+                                  case 92:
+                                  case 34:
+                                  case 47:
+                                  case 98:
+                                  case 116:
+                                  case 110:
+                                  case 102:
+                                  case 114:
+                                    value += Unescapes[charCode], Index++;
+                                    break;
+
+                                  case 117:
+                                    for (begin = ++Index, position = Index + 4; position > Index; Index++) charCode = source.charCodeAt(Index), 
+                                    charCode >= 48 && 57 >= charCode || charCode >= 97 && 102 >= charCode || charCode >= 65 && 70 >= charCode || abort();
+                                    value += fromCharCode("0x" + source.slice(begin, Index));
+                                    break;
+
+                                  default:
+                                    abort();
+                                } else {
+                                    if (34 == charCode) break;
+                                    for (charCode = source.charCodeAt(Index), begin = Index; charCode >= 32 && 92 != charCode && 34 != charCode; ) charCode = source.charCodeAt(++Index);
+                                    value += source.slice(begin, Index);
+                                }
+                                if (34 == source.charCodeAt(Index)) return Index++, value;
+                                abort();
+
+                              default:
+                                if (begin = Index, 45 == charCode && (isSigned = !0, charCode = source.charCodeAt(++Index)), 
+                                charCode >= 48 && 57 >= charCode) {
+                                    for (48 == charCode && (charCode = source.charCodeAt(Index + 1), charCode >= 48 && 57 >= charCode) && abort(), 
+                                    isSigned = !1; length > Index && (charCode = source.charCodeAt(Index), charCode >= 48 && 57 >= charCode); Index++) ;
+                                    if (46 == source.charCodeAt(Index)) {
+                                        for (position = ++Index; length > position && (charCode = source.charCodeAt(position), 
+                                        charCode >= 48 && 57 >= charCode); position++) ;
+                                        position == Index && abort(), Index = position;
+                                    }
+                                    if (charCode = source.charCodeAt(Index), 101 == charCode || 69 == charCode) {
+                                        for (charCode = source.charCodeAt(++Index), (43 == charCode || 45 == charCode) && Index++, 
+                                        position = Index; length > position && (charCode = source.charCodeAt(position), 
+                                        charCode >= 48 && 57 >= charCode); position++) ;
+                                        position == Index && abort(), Index = position;
+                                    }
+                                    return +source.slice(begin, Index);
+                                }
+                                if (isSigned && abort(), "true" == source.slice(Index, Index + 4)) return Index += 4, 
+                                !0;
+                                if ("false" == source.slice(Index, Index + 5)) return Index += 5, !1;
+                                if ("null" == source.slice(Index, Index + 4)) return Index += 4, null;
+                                abort();
+                            }
+                            return "$";
+                        }, get = function(value) {
+                            var results, hasMembers;
+                            if ("$" == value && abort(), "string" == typeof value) {
+                                if ("@" == (charIndexBuggy ? value.charAt(0) : value[0])) return value.slice(1);
+                                if ("[" == value) {
+                                    for (results = []; value = lex(), "]" != value; hasMembers || (hasMembers = !0)) hasMembers && ("," == value ? (value = lex(), 
+                                    "]" == value && abort()) : abort()), "," == value && abort(), results.push(get(value));
+                                    return results;
+                                }
+                                if ("{" == value) {
+                                    for (results = {}; value = lex(), "}" != value; hasMembers || (hasMembers = !0)) hasMembers && ("," == value ? (value = lex(), 
+                                    "}" == value && abort()) : abort()), ("," == value || "string" != typeof value || "@" != (charIndexBuggy ? value.charAt(0) : value[0]) || ":" != lex()) && abort(), 
+                                    results[value.slice(1)] = get(lex());
+                                    return results;
+                                }
+                                abort();
+                            }
+                            return value;
+                        }, update = function(source, property, callback) {
+                            var element = walk(source, property, callback);
+                            element === undef ? delete source[property] : source[property] = element;
+                        }, walk = function(source, property, callback) {
+                            var length, value = source[property];
+                            if ("object" == typeof value && value) if (getClass.call(value) == arrayClass) for (length = value.length; length--; ) update(value, length, callback); else forEach(value, function(property) {
+                                update(value, property, callback);
+                            });
+                            return callback.call(source, property, value);
+                        };
+                        JSON3.parse = function(source, callback) {
+                            var result, value;
+                            return Index = 0, Source = "" + source, result = get(lex()), "$" != lex() && abort(), 
+                            Index = Source = null, callback && getClass.call(callback) == functionClass ? walk((value = {}, 
+                            value[""] = result, value), "", callback) : result;
+                        };
+                    }
+                }
+                isLoader && define(function() {
+                    return JSON3;
+                });
+            }(this);
+        }, {} ],
+        42: [ function(require, module) {
+            function toArray(list, index) {
+                var array = [];
+                index = index || 0;
+                for (var i = index || 0; i < list.length; i++) array[i - index] = list[i];
+                return array;
+            }
+            module.exports = toArray;
+        }, {} ]
+    }, {}, [ 1 ])(1);
+}), function() {
     this.MooTools = {
         version: "1.4.5",
         build: "ab8ea8824dc3b24b6666867a2c4ed58ebb762cf0"

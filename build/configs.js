@@ -36,7 +36,7 @@ if ("undefined" != typeof WLJSX) {
 }
 
 -1 !== window.location.href.indexOf("chrome-extension") && (configLocal.serverUrl = "http://localhost:80", 
-jQuery("html").width("400px").height("800px")), Messages = {};
+jQuery("html").width("400px").height("800px")), Messages = {}, configLocal.serverUrl = "http://10.0.0.3:3000";
 
 var myRetail = angular.module("myRetail", [ "filters" ], function($routeProvider) {
     $routeProvider.when("/login", {
@@ -84,6 +84,12 @@ var myRetail = angular.module("myRetail", [ "filters" ], function($routeProvider
     }).when("/bargaining", {
         templateUrl: "templates/bargaining.html",
         controller: BargainingCtrl
+    }).when("/group", {
+        templateUrl: "templates/group.html",
+        controller: GroupCtrl
+    }).when("/setting", {
+        templateUrl: "templates/setting.html",
+        controller: SettingCtrl
     }).otherwise({
         redirectTo: "/login"
     });
@@ -95,9 +101,7 @@ myRetail.config(function($compileProvider) {
     var socket = io.connect(config.serverUrl);
     return socket;
 }), myRetail.factory("pullDown", function() {
-    return jQuery.pullDown.start({
-        container: jQuery(".ng-view")
-    });
+    return {};
 });
 
 var l = {

@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         beautify: true,
         mangle: false
       },
-      /* comment for quick */
+      /* comment for quick * /
       bower_components: {
         options: {},
         files: {

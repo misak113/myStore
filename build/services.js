@@ -33,20 +33,14 @@ myRetail.factory("authDisp", function($route, $timeout, userModel, $location, me
     return instance;
 });
 
-var LoadingDisp = function(pullDown) {
+var LoadingDisp = function() {
     var loading = !1;
     this.loading = function(status, abortCallback) {
         if (status === !0) {
             if (loading === !0) return abortCallback();
-            loading = !0, pullDown.loading(!0), pullDown.element.bind("pullDownStopWorking", function() {
-                loading = !1, pullDown.element.unbind("pullDownStopWorking"), abortCallback();
-            });
-        } else loading = !1, pullDown.loading(!1);
-    }, this.onReload = function(callback) {
-        pullDown.container.off("pullDown").on("pullDown", function() {
-            callback();
-        });
-    };
+            loading = !0;
+        } else loading = !1;
+    }, this.onReload = function() {};
 };
 
 myRetail.factory("loadingDisp", function(pullDown) {

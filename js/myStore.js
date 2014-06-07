@@ -68,6 +68,14 @@ var myRetail = angular.module('myRetail', ['filters']
 				templateUrl: 'templates/bargaining.html',
 				controller: BargainingCtrl
 			}).
+			when('/group', {
+				templateUrl: 'templates/group.html', 
+				controller: GroupCtrl
+			}).
+			when('/setting', {
+				templateUrl: 'templates/setting.html', 
+				controller: SettingCtrl
+			}).
 			otherwise({redirectTo: '/login'});
 		//$locationProvider.html5Mode(true);
 	});

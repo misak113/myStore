@@ -97,6 +97,8 @@ function ExitCtrl($scope, native, offlineStorage) {
     native.ready() && (offlineStorage.set("app-lastVisitedPageRoute", null), native.WL.App.close());
 }
 
+function GroupCtrl() {}
+
 function HomeCtrl($scope, offerModel, loyaltyModel) {
     offerModel.getOffers(function(offers) {
         $scope.countOffers = offers.length, $scope.countNewOffers = _.filter(offers, function(offer) {
@@ -286,6 +288,11 @@ function PurchaseListCtrl($scope, purchaseModel) {
     purchaseModel.getPurchases(function(purchases) {
         $scope.purchases = purchases;
     }), $scope.shoppingCartListTemplate = "templates/shoppingCartList.html";
+}
+
+function SettingCtrl($scope) {
+    $scope.sound = !0, $scope.vibration = !1, $scope.light = !1, $scope.notification = !0, 
+    $scope.wifi = !0, $scope.bluetooth = !1, $scope.gps = !0, $scope.bts = !0;
 }
 
 function ShoppingCartCtrl($scope, $routeParams, shoppingCartModel, ShoppingCart) {
