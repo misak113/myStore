@@ -2,6 +2,7 @@
 
 
 function OfferCtrl ($scope, $routeParams, offerModel, $window) {
+	$scope.message = '';
 	
 	var id = $routeParams.offerId;
 	
@@ -12,5 +13,13 @@ function OfferCtrl ($scope, $routeParams, offerModel, $window) {
 	
 	$scope.goBack = function() {
 		$window.history.back(); // @todo předělat na angular $location
+	};
+
+	$scope.addComment = function () {
+		offerModel.addComment(id, $scope.message, function (comment) {
+			$scope.message = '';
+			$scope.offer.comments.unshift(comment);
+			$scope.apply();
+		});
 	};
 };

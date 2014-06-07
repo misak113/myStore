@@ -18,4 +18,21 @@
 		</div>
 		<div class="category-label"></div>
 	</div>
+	<div class="comments">
+		<h3>Komentáře</h3>
+		<table class="table">
+			<tr>
+				<td>
+					<textarea ng-model="message"></textarea>
+					<button class="btn" ng-click="addComment()">Odeslat</button>
+				</td>
+			</tr>
+			<tr ng-repeat="comment in offer.comments">
+				<td>
+					<h4 ng-bind="comment.author"></h4>
+					<span ng-bind="comment.text"></span>
+				</td>
+			</tr>
+		</ul>
+	</div>
 </section>

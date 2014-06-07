@@ -146,6 +146,17 @@ var OfferModel = function(socket, memoryCache) {
         cached || (cache.set("getOffer-called-" + id, !0), socket.emit("/offer", {
             offerId: id
         }));
+    }, this.addComment = function(offerId, message, cb) {
+        var comment = {
+            text: message,
+            author: "franta"
+        }, data = {
+            offerId: offerId,
+            comment: comment
+        };
+        socket.emit("/offer/add-comment", data, function(comment) {
+            cb(comment);
+        });
     };
 };
 

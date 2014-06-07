@@ -31,6 +31,14 @@ var OfferModel = function (socket, memoryCache) {
         cache.set('getOffer-called-'+id, true);
 		socket.emit('/offer', { offerId: id });
 	};
+
+	this.addComment = function (offerId, message, cb) {
+		var comment = { text: message, author: 'franta' }; // TODO
+		var data = { offerId: offerId, comment: comment };
+		socket.emit('/offer/add-comment', data, function (comment) {
+			cb(comment);
+		});
+	};
 };
 
 myRetail.factory('offerModel', function (socket, memoryCache) {
