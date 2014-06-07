@@ -9,22 +9,22 @@ var LoadingDisp = function (pullDown) {
 			if (loading === true) return abortCallback();
 			
 			loading = true;
-			pullDown.loading(true);
+			/*pullDown.loading(true);
 			pullDown.element.bind('pullDownStopWorking', function (ev) {
 				loading = false;
 				pullDown.element.unbind('pullDownStopWorking');
 				abortCallback();
-			})
+			})*/
 		} else {
 			loading = false;
-			pullDown.loading(false);
+			//pullDown.loading(false);
 		}
 	};
 
 	this.onReload = function (callback) {
-		pullDown.container.off('pullDown').on('pullDown', function (ev) {
+		/*pullDown.container.off('pullDown').on('pullDown', function (ev) {
 			callback();
-		});
+		});*/
 	};
 
 };

@@ -83,6 +83,7 @@ myRetail.factory('socket', function (config) {
 });
 // pullDown service
 myRetail.factory('pullDown', function () {
+	return {};
 	return jQuery.pullDown.start({container: jQuery('.ng-view')});
 });
 
