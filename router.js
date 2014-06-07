@@ -40,14 +40,15 @@ exports.route = function (app) {
 
 	// Websocket support
 	var server = http.createServer(app);
-	var io = socketio.listen(server);
-	io.sockets.on('connection', function (socket) {
+	var io = socketio(server);
+	io.on('connection', function (socket) {
 		// vytvoří socket pro každého uživatele a naslouchá
 		socket.emit('connection', { status: 'connected' });
 		var shoppingCartCtrl = ShoppingCartCtrl(socket);
 		var notificationCtrl = NotificationCtrl(socket);
 		var offerCtrl = OfferCtrl(socket);
 		var customerCtrl = CustomerCtrl(socket);
+		var purchaseCtrl = PurchaseCtrl(socket);
 	});
 
 	// nastaví server a socket.io do globálníh kontextu app
@@ -59,13 +60,13 @@ exports.route = function (app) {
 	};
 
 	// options socket.io
-	io.set('log level', config.debug.logLevel);
+	//io.set('log level', config.debug.logLevel);
 	//io.set("origins", [config.server.host+':'+config.server.port]);
-	io.set('transports', [
+	/*io.set('transports', [
 		'websocket'
 		, 'flashsocket'
 		, 'htmlfile'
 		, 'xhr-polling'
 		, 'jsonp-polling'
-	]);
+	]);*/
 };

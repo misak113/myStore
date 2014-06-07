@@ -36,6 +36,7 @@ var OfferCtrl = function (socket) {
 	// notifier.get(socket).on('/shoppingCarts', self.shoppingCarts);
 	socket.on('/offers', get(self.offers));
 	socket.on('/offer', get(self.offer));
+	socket.on('/offer/add-comment', put(self.addComment));
 
 	// PUT
 	// notifier.put(socket).tags(['/shopping-carts', '/shopping-cart']).on('/shoppingCarts', self.shoppingCarts);
@@ -60,5 +61,15 @@ OfferCtrl.prototype.offer = function (data, cb) {
 
 		l.d('returned offer');
 		self.emit('/offer', offer);
+	});
+};
+
+OfferCtrl.prototype.addComment = function (data, cb) {
+	var self = this;
+	Offer.addComment(data.offerId, data.comment, function (e, comment) {
+		if (e) return cb({ status: 'error', error: e.message });
+
+		l.d('offer added comment');
+		cb(comment);
 	});
 };

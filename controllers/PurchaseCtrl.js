@@ -4,11 +4,43 @@ var l = require('log-dispatch');
 
 var Purchase = require('../models/Purchase');
 
+module.exports = exports = function (socket) {
+	return new PurchaseCtrl(socket);
+};
+
+var gets = {};
+
+var PurchaseCtrl = function (socket) {
+	// no use this for context, use self OR this.self
+	var self = socket.self = this;
+
+	// store for notify
+	var put = function (putFn) {
+		return function () {
+			putFn.apply(this, arguments);
+			_.keys(gets).forEach(function (key) {
+				var get = gets[key];
+				l.d('call get by put', get.self._id);
+				get.fn.apply(get.self, get.args);
+			});
+		};
+	};
+	var get = function (getFn) {
+		return function () {
+			gets[this._id] = ({fn: getFn, args: arguments, self: this});
+			getFn.apply(this, arguments);
+		};
+	};
+
+	// GET
+	// notifier.get(socket).on('/shoppingCarts', self.shoppingCarts);
+	socket.on('/purchases', get(self.purchases));
+};
 
 
-exports.purchases = function (data, cb) {
+PurchaseCtrl.prototype.purchases = function (data, cb) {
 	l.d('purchases');
-	cb(purchases);
+	this.emit('/purchases', purchases);
 };
 
 

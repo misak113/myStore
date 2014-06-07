@@ -4,7 +4,8 @@ var l = require('log-dispatch');
 
 var schema = mongoose.Schema({
 	name: String, 
-	price: Number
+	price: Number,
+	comments: [{ text: String, author: String }]
 });
 
 var Offer = mongoose.model('Offer', schema);
@@ -29,6 +30,16 @@ Offer.getOffer = function (id, cb) {
 		if (e) return cb(e);
 
 		cb(null, offer.toObject());
+	});
+};
+
+Offer.addComment = function (id, comment, cb) {
+	Offer.findOne({ _id: id }, function (e, offer) {
+		offer.comments.push(comment);
+		offer.save(function () {
+			if (e) return cb(e);
+			cb(null, comment);
+		});
 	});
 };
 
