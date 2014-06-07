@@ -178,11 +178,13 @@ myRetail.factory("productModel", function($http, config) {
     return productModel;
 });
 
-var PurchaseModel = function(socket) {
+var PurchaseModel = function(socket, cache) {
     this.className = "PurchaseModel", this.getPurchases = function(cb) {
-        socket.on("/purchases", {}), socket.emit("/purchases", function() {
-            cb(res);
+        socket.on("/purchases", function(data) {
+            cb(data);
         });
+        var cached = cache.get("getPurchases-called");
+        cached || (cache.set("getPurchases-called", !0), socket.emit("/purchases"));
     }, this.getPurchase = function(id, cb) {
         this.getPurchases(function(purchases) {
             var returnPurchase = null;
@@ -197,8 +199,8 @@ var PurchaseModel = function(socket) {
     };
 };
 
-myRetail.factory("purchaseModel", function(socket) {
-    var purchaseModel = new PurchaseModel(socket);
+myRetail.factory("purchaseModel", function(socket, memoryCache) {
+    var purchaseModel = new PurchaseModel(socket, memoryCache);
     return purchaseModel;
 });
 

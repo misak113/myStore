@@ -2,15 +2,18 @@
  * 
  */
 
-var PurchaseModel = function (socket) {
+var PurchaseModel = function (socket, cache) {
 	this.className = 'PurchaseModel';
 	
 	this.getPurchases = function (cb) {
-		socket.on('/purchases', {});
+		socket.on('/purchases', function (data) {
+			cb(data);
+		});
 
-		socket.emit('/purchases', function(data) {
-            cb(res);
-        });
+		var cached = cache.get('getPurchases-called');
+		if (cached) return;
+        cache.set('getPurchases-called', true);
+		socket.emit('/purchases');
 	};
 	
 	this.getPurchase = function (id, cb) {
@@ -34,7 +37,7 @@ var PurchaseModel = function (socket) {
 	};
 };
 
-myRetail.factory('purchaseModel', function (socket) {
-	var purchaseModel = new PurchaseModel(socket);
+myRetail.factory('purchaseModel', function (socket, memoryCache) {
+	var purchaseModel = new PurchaseModel(socket, memoryCache);
 	return purchaseModel;
 });
