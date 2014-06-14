@@ -62,7 +62,8 @@ if (typeof WLJSX !== 'undefined') {
     } else if (window.attachEvent) {
     	window.attachEvent('onload',  function() { WL.Client.init(wlInitOptions); });
     }
-    configLocal.serverUrl = 'http://localhost:80';
+    configLocal.serverUrl = 'http://asimplia-stage.cloudapp.net:3000';
+    console.log('Setup WL socket.io server to '+configLocal.serverUrl);
 
     function wlCommonInit() {
         // Common initialization code goes here
@@ -70,7 +71,10 @@ if (typeof WLJSX !== 'undefined') {
 }
 
 if (window.location.href.indexOf('chrome-extension') !== -1) {
-    configLocal.serverUrl = 'http://localhost:80';
+    configLocal.serverUrl = 'http://asimplia-stage.cloudapp.net:3000';
     jQuery('html').width('400px').height('800px');
 }
 
+if (window.location.href.indexOf('android_asset') !== -1) {
+    configLocal.serverUrl = 'http://asimplia-stage.cloudapp.net:3000';
+}

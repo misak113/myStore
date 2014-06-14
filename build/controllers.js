@@ -1,48 +1,98 @@
-/*! myStore-client, version: 1.1.4, 2014-06-07 */
-function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp, $location) {
-    offlineStorage.storeAll(), authDisp.startControl(), $scope.$on("$routeChangeStart", function(ngEv, next, current) {
+/*! myStore-client, version: 1.1.4, 2014-06-14 */
+function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp, $location, locationDispatcher, $window) {
+    offlineStorage.storeAll();
+    authDisp.startControl();
+    $scope.$on("$routeChangeStart", function(ngEv, next, current) {
         authDisp.control(next, current);
-    }), $scope.$on("$routeChangeSuccess", function() {
+    });
+    $scope.$on("$routeChangeSuccess", function(ngEv, current, previous) {
         offlineStorage.set("app-lastVisitedPageRoute", $location.$$path);
-    }), $scope.init = function() {
+    });
+    $scope.init = function() {
         var url = offlineStorage.get("app-lastVisitedPageRoute");
-        url && $location.path(url);
-    }, loadingDisp.onReload(function() {
+        if (url) $location.path(url);
+    };
+    loadingDisp.onReload(function() {
         $timeout(function() {
-            $route.reload(), loadingDisp.loading(!1);
+            $route.reload();
+            loadingDisp.loading(false);
         }, 1e3);
-    }), $scope.navTemplate = "templates/nav.html", $scope.pulldownTemplate = "templates/pulldown.html";
+    });
+    var continualProcess = function() {
+        locationDispatcher.storeLocation(function() {});
+        $timeout(continualProcess, 2e3);
+    };
+    document.addEventListener("deviceready", function() {
+        continualProcess();
+    }, false);
+    $scope.navTemplate = "templates/nav.html";
+    $scope.pulldownTemplate = "templates/pulldown.html";
 }
 
 function BargainingCtrl($scope, customerModel, loadingDisp, messageDisp, shoppingCartModel, ShoppingCart) {
-    $scope.customerId = "", $scope.customer = null, $scope.shoppingCart = null, $scope.findCustomer = function() {
-        $scope.customer = null, $scope.shoppingCart = null, loadingDisp.loading(!0, function() {}), 
+    $scope.customerId = "";
+    $scope.customer = null;
+    $scope.shoppingCart = null;
+    $scope.findCustomer = function() {
+        $scope.customer = null;
+        $scope.shoppingCart = null;
+        loadingDisp.loading(true, function() {});
         customerModel.getCustomer($scope.customerId, function(customer) {
-            $scope.customer || ($scope.customer = customer, shoppingCartModel.getByCustomerId(customer.id, function(shoppingCart) {
-                $scope.shoppingCart || (loadingDisp.loading(!1), $scope.shoppingCart = new ShoppingCart(shoppingCart), 
-                $scope.shoppingCart.customerId = $scope.customer.id, $scope.$apply());
-            }));
+            if ($scope.customer) {
+                return;
+            }
+            $scope.customer = customer;
+            shoppingCartModel.getByCustomerId(customer.id, function(shoppingCart) {
+                if ($scope.shoppingCart) {
+                    return;
+                }
+                loadingDisp.loading(false);
+                $scope.shoppingCart = new ShoppingCart(shoppingCart);
+                $scope.shoppingCart.customerId = $scope.customer.id;
+                $scope.$apply();
+            });
         });
-    }, $scope.removeItem = function(itemToRemove) {
-        itemToRemove.active = !1, $scope.save();
-    }, $scope.save = function() {
-        shoppingCartModel.saveShoppingCart($scope.shoppingCart.toObject(), function() {});
-    }, $scope.addProduct = function() {
-        loadingDisp.loading(!0, function() {}), shoppingCartModel.addByProductId($scope.shoppingCart.toObject(), $scope.productId, function(e, shoppingCart) {
-            e || (loadingDisp.loading(!1), $scope.productId = null, $scope.shoppingCart = new ShoppingCart(shoppingCart), 
-            $scope.$apply());
+    };
+    $scope.removeItem = function(itemToRemove) {
+        itemToRemove.active = false;
+        $scope.save();
+    };
+    $scope.save = function() {
+        shoppingCartModel.saveShoppingCart($scope.shoppingCart.toObject(), function(e, shoppingCart) {});
+    };
+    $scope.addProduct = function() {
+        loadingDisp.loading(true, function() {});
+        shoppingCartModel.addByProductId($scope.shoppingCart.toObject(), $scope.productId, function(e, shoppingCart) {
+            if (e) {
+                return;
+            }
+            loadingDisp.loading(false);
+            $scope.productId = null;
+            $scope.shoppingCart = new ShoppingCart(shoppingCart);
+            $scope.$apply();
         });
-    }, $scope.approve = function() {
+    };
+    $scope.approve = function() {
         messageDisp.flash("Smlouvání pro zákazníka bylo schváleno");
-    }, $scope.addComplement = function() {
-        loadingDisp.loading(!0, function() {}), shoppingCartModel.addComplement($scope.shoppingCart.toObject(), function(e, shoppingCart) {
-            e || (loadingDisp.loading(!1), $scope.shoppingCart = new ShoppingCart(shoppingCart), 
-            $scope.$apply());
+    };
+    $scope.addComplement = function() {
+        loadingDisp.loading(true, function() {});
+        shoppingCartModel.addComplement($scope.shoppingCart.toObject(), function(e, shoppingCart) {
+            if (e) {
+                return;
+            }
+            loadingDisp.loading(false);
+            $scope.shoppingCart = new ShoppingCart(shoppingCart);
+            $scope.$apply();
         });
-    }, $scope.getTotalEarningPrice = function(membershipLevelId) {
+    };
+    $scope.getTotalEarningPrice = function(membershipLevelId) {
         return $scope.shoppingCart.getTotalAskingPrice() - $scope.shoppingCart.getTotalAcquisitionPrice(membershipLevelId);
-    }, $scope.getClassByMembershipLevel = function() {
-        if (!$scope.customer) return "";
+    };
+    $scope.getClassByMembershipLevel = function() {
+        if (!$scope.customer) {
+            return "";
+        }
         switch ($scope.customer.membershipLevel.id) {
           case 6:
             return "label-important";
@@ -65,83 +115,131 @@ function BargainingCtrl($scope, customerModel, loadingDisp, messageDisp, shoppin
           default:
             return "";
         }
-    }, $scope.getClassByShoppingCartPrice = function() {
+    };
+    $scope.getClassByShoppingCartPrice = function() {
         var totalEarningPrice = $scope.getTotalEarningPrice($scope.customer.membershipLevel.id);
-        return 0 > totalEarningPrice ? "badge-important" : totalEarningPrice > 0 ? "badge-success" : "";
+        if (totalEarningPrice < 0) {
+            return "badge-important";
+        }
+        if (totalEarningPrice > 0) {
+            return "badge-success";
+        }
+        return "";
     };
 }
 
 function EditShoppingCartCtrl($scope, $routeParams, shoppingCartModel, ShoppingCart) {
-    $scope.newItem = new ShoppingCart.Item({}), $scope.newItemId = null, $scope.shoppingCart = new ShoppingCart({}), 
-    "undefined" != typeof $routeParams.shoppingCartId && shoppingCartModel.getShoppingCart($routeParams.shoppingCartId, function(shoppingCart) {
-        $scope.shoppingCart = new ShoppingCart(shoppingCart), $scope.$apply();
-    }), $scope.addItem = function() {
-        $scope.shoppingCart.items.unshift($scope.newItem), $scope.newItem = new ShoppingCart.Item({}), 
+    $scope.newItem = new ShoppingCart.Item({});
+    $scope.newItemId = null;
+    $scope.shoppingCart = new ShoppingCart({});
+    if (typeof $routeParams.shoppingCartId !== "undefined") {
+        shoppingCartModel.getShoppingCart($routeParams.shoppingCartId, function(shoppingCart) {
+            $scope.shoppingCart = new ShoppingCart(shoppingCart);
+            $scope.$apply();
+        });
+    }
+    $scope.addItem = function() {
+        $scope.shoppingCart.items.unshift($scope.newItem);
+        $scope.newItem = new ShoppingCart.Item({});
         $scope.save();
-    }, $scope.removeItem = function(itemToRemove) {
-        itemToRemove.active = !1, $scope.save();
-    }, $scope.unremoveItem = function(itemToUnremove) {
-        itemToUnremove.active = !0, $scope.save();
-    }, $scope.countAdd = function(item) {
-        item.qty++, $scope.save();
-    }, $scope.countSub = function(item) {
-        item.qty--, $scope.save();
-    }, $scope.save = function() {
+    };
+    $scope.removeItem = function(itemToRemove) {
+        itemToRemove.active = false;
+        $scope.save();
+    };
+    $scope.unremoveItem = function(itemToUnremove) {
+        itemToUnremove.active = true;
+        $scope.save();
+    };
+    $scope.countAdd = function(item) {
+        item.qty++;
+        $scope.save();
+    };
+    $scope.countSub = function(item) {
+        item.qty--;
+        $scope.save();
+    };
+    $scope.save = function() {
         shoppingCartModel.saveShoppingCart($scope.shoppingCart.toObject(), function(e, shoppingCart) {
-            e || ($scope.shoppingCart = new ShoppingCart(shoppingCart), $scope.$apply());
+            if (e) return;
+            $scope.shoppingCart = new ShoppingCart(shoppingCart);
+            $scope.$apply();
         });
     };
 }
 
 function ExitCtrl($scope, native, offlineStorage) {
-    native.ready() && (offlineStorage.set("app-lastVisitedPageRoute", null), native.WL.App.close());
+    if (!native.ready()) return;
+    offlineStorage.set("app-lastVisitedPageRoute", null);
+    native.WL.App.close();
 }
 
-function GroupCtrl() {}
+function GroupCtrl($scope) {}
 
 function HomeCtrl($scope, offerModel, loyaltyModel) {
     offerModel.getOffers(function(offers) {
-        $scope.countOffers = offers.length, $scope.countNewOffers = _.filter(offers, function(offer) {
+        $scope.countOffers = offers.length;
+        $scope.countNewOffers = _.filter(offers, function(offer) {
             return !offer.viewed;
-        }).length, $scope.$apply();
-    }), loyaltyModel.getPoints(function(loyaltyPoints) {
+        }).length;
+        $scope.$apply();
+    });
+    loyaltyModel.getPoints(function(loyaltyPoints) {
         var edges = [ 40, 50, 60 ];
-        $scope.loyaltyPoints = loyaltyPoints, $scope.estPercent = [], $scope.levelPercent = [];
+        $scope.loyaltyPoints = loyaltyPoints;
+        $scope.estPercent = [];
+        $scope.levelPercent = [];
         var maxEdge = _.reduce(edges, function(memo, num) {
             return memo + num;
         }, 0);
-        _.forEach(edges, function(edge) {
+        _.forEach(edges, function(edge, i) {
             var est = edge / maxEdge * 100;
             $scope.estPercent.push(est);
-            var percent = (edge > loyaltyPoints ? loyaltyPoints : edge) / maxEdge * 100;
-            $scope.levelPercent.push(percent), loyaltyPoints -= edge;
+            var percent = (loyaltyPoints < edge ? loyaltyPoints : edge) / maxEdge * 100;
+            $scope.levelPercent.push(percent);
+            loyaltyPoints -= edge;
         });
-    }), $scope.nextQR = function() {
+    });
+    $scope.nextQR = function($event) {
         alert("next QR");
     };
 }
 
-function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage) {
-    $scope.loading = !1, $scope.login = function() {
-        $scope.loading = !0, loadingDisp.loading(!0, function() {
-            $scope.loading = !1, $scope.$apply();
-        }), userModel.login($scope.username, $scope.password, $scope.remember, function(e) {
-            if ($scope.loading !== !1) {
-                if (loadingDisp.loading(!1), e) return e.code === userModel.WRONG_CREDENTIALS ? messageDisp.flash("Zadal jste nesprávné jméno nebo heslo. Zkontrolujte a opakujte.", "error") : messageDisp.flash("Při přihlašování nastala chyba, zkuste znovu později.", "error");
-                messageDisp.flash("Byl jste úspěšně přihlášen.", "success"), $location.path("/home"), 
-                $scope.$apply();
+function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage, authDisp) {
+    $scope.loading = false;
+    $scope.login = function() {
+        $scope.loading = true;
+        loadingDisp.loading(true, function() {
+            $scope.loading = false;
+            $scope.$apply();
+        });
+        userModel.login($scope.username, $scope.password, $scope.remember, function(e, verificationHash) {
+            if ($scope.loading === false) return;
+            loadingDisp.loading(false);
+            $scope.loading = false;
+            if (e) {
+                if (e.code === userModel.WRONG_CREDENTIALS) return messageDisp.flash("Zadal jste nesprávné jméno nebo heslo. Zkontrolujte a opakujte.", "error");
+                return messageDisp.flash("Při přihlašování nastala chyba, zkuste znovu později.", "error");
             }
+            authDisp.setVerificationHash(verificationHash);
+            messageDisp.flash("Byl jste úspěšně přihlášen.", "success");
+            $location.path("/home");
+            $scope.$apply();
         });
     };
     var userLogin = offlineStorage.get("user-login", {});
-    $scope.username = userLogin.username ? userLogin.username : "", $scope.remember = userLogin.remember ? !0 : !1;
+    $scope.username = userLogin.username ? userLogin.username : "";
+    $scope.remember = userLogin.remember ? true : false;
     var changeUserLogin = function() {
         var userLogin = offlineStorage.get("user-login", {});
-        userLogin.username = $scope.username, userLogin.password = $scope.password, userLogin.remember = $scope.remember, 
+        userLogin.username = $scope.username;
+        userLogin.password = $scope.password;
+        userLogin.remember = $scope.remember;
         offlineStorage.set("user-login", userLogin);
     };
-    $scope.$watch("username", changeUserLogin, !0), $scope.$watch("password", changeUserLogin, !0), 
-    $scope.$watch("remember", changeUserLogin, !0);
+    $scope.$watch("username", changeUserLogin, true);
+    $scope.$watch("password", changeUserLogin, true);
+    $scope.$watch("remember", changeUserLogin, true);
 }
 
 function LogoutCtrl($scope, userModel, $location) {
@@ -181,55 +279,77 @@ function MenuCtrl($scope, native) {
         controller: "LogoutCtrl",
         url: "/logout",
         icon: "delete"
-    } ], native.ready() && $scope.items.push({
-        name: "Zavřít",
-        controller: "ExitCtrl",
-        url: "/exit",
-        icon: "power"
-    });
+    } ];
+    if (native.ready()) {
+        $scope.items.push({
+            name: "Zavřít",
+            controller: "ExitCtrl",
+            url: "/exit",
+            icon: "power"
+        });
+    }
 }
 
 function MessagesCtrl($scope, notificationModel, $timeout, $controller) {
     var self = this;
-    $scope.messages = [], $scope.notReadMessages = [], notificationModel.getNotifications(function(notifications) {
-        $scope.messages = notifications, $scope.$apply();
-    }), notificationModel.bindNotRead(function(notifications) {
-        $scope.notReadMessages = notifications, $scope.$apply();
-    }), $scope.$on("$viewContentLoaded", function() {
+    $scope.messages = [];
+    $scope.notReadMessages = [];
+    notificationModel.getNotifications(function(notifications) {
+        $scope.messages = notifications;
+        $scope.$apply();
+    });
+    notificationModel.bindNotRead(function(notifications) {
+        $scope.notReadMessages = notifications;
+        $scope.$apply();
+    });
+    $scope.$on("$viewContentLoaded", function() {
         $timeout(function() {
-            0 !== $scope.notReadMessages.length && notificationModel.setAsRead($scope.notReadMessages);
+            if ($scope.notReadMessages.length === 0) return;
+            notificationModel.setAsRead($scope.notReadMessages);
         }, 4e3);
-    }), $scope.callButton = function(message) {
-        {
-            var $ctrlScope = $scope;
-            $controller(message.settings.ctrl, {
-                $scope: $ctrlScope
-            });
-        }
+    });
+    $scope.callButton = function(message) {
+        var $ctrlScope = $scope;
+        var ctrl = $controller(message.settings.ctrl, {
+            $scope: $ctrlScope
+        });
         $ctrlScope[message.settings.fn].apply(self, message.settings.args);
     };
 }
 
 function NavCtrl($scope, $window, notificationModel, $timeout) {
     notificationModel.bindNotRead(function(notRead) {
-        $scope.countNotReadMessages = notRead.length, $scope.typeMessagesInfo = _.all(notRead, function(n) {
-            return "info" === n.type;
-        }), $scope.typeMessagesError = _.all(notRead, function(n) {
-            return "error" === n.type;
-        }), $scope.typeMessagesWarning = _.all(notRead, function(n) {
-            return "warning" === n.type;
-        }), $scope.$apply();
-    }), notificationModel.bindNewNotifications(function(notifications) {
-        $scope.newMessages = [], _.forEach(notifications, function(not) {
-            not.isError = "error" === not.type, not.isInfo = "info" === not.type, not.isSuccess = "success" === not.type, 
-            _.contains([ "error", "warning", "success" ], not.type) && $scope.newMessages.push(not);
-        }), notifications.length > 0 && $timeout(function() {
+        $scope.countNotReadMessages = notRead.length;
+        $scope.typeMessagesInfo = _.all(notRead, function(n) {
+            return n.type === "info";
+        });
+        $scope.typeMessagesError = _.all(notRead, function(n) {
+            return n.type === "error";
+        });
+        $scope.typeMessagesWarning = _.all(notRead, function(n) {
+            return n.type === "warning";
+        });
+        $scope.$apply();
+    });
+    notificationModel.bindNewNotifications(function(notifications) {
+        $scope.newMessages = [];
+        _.forEach(notifications, function(not) {
+            not.isError = not.type === "error";
+            not.isInfo = not.type === "info";
+            not.isSuccess = not.type === "success";
+            if (_.contains([ "error", "warning", "success" ], not.type)) $scope.newMessages.push(not);
+        });
+        if (notifications.length > 0) $timeout(function() {
             notificationModel.setAsOld(notifications);
-        }, 5e3), $scope.$apply();
-    }), $scope.setMessageAsOld = function(message) {
+        }, 5e3);
+        $scope.$apply();
+    });
+    $scope.setMessageAsOld = function(message) {
         notificationModel.setAsOld(message);
-    }, $scope.goBack = function($event) {
-        $event.preventDefault(), $window.history.back();
+    };
+    $scope.goBack = function($event) {
+        $event.preventDefault();
+        $window.history.back();
     };
 }
 
@@ -237,22 +357,30 @@ function OfferCtrl($scope, $routeParams, offerModel, $window) {
     $scope.message = "";
     var id = $routeParams.offerId;
     offerModel.getOffer(id, function(offer) {
-        $scope.offer = offer, $scope.$apply();
-    }), $scope.goBack = function() {
+        $scope.offer = offer;
+        $scope.$apply();
+    });
+    $scope.goBack = function() {
         $window.history.back();
-    }, $scope.addComment = function() {
+    };
+    $scope.addComment = function() {
         offerModel.addComment(id, $scope.message, function(comment) {
-            $scope.message = "", $scope.offer.comments.unshift(comment), $scope.apply();
+            $scope.message = "";
+            $scope.offer.comments.unshift(comment);
+            $scope.apply();
         });
     };
 }
 
 function OfferListCtrl($scope, offerModel) {
     offerModel.getOffers(function(offers) {
-        $scope.offers = offers, $scope.$apply();
-    }), $scope.unwanted = function(offer) {
+        $scope.offers = offers;
+        $scope.$apply();
+    });
+    $scope.unwanted = function(offer) {
         var index = $scope.offers.indexOf(offer);
-        $scope.offers.splice(index, 1), offerModel.markAsUnwanted(offer);
+        $scope.offers.splice(index, 1);
+        offerModel.markAsUnwanted(offer);
     };
 }
 
@@ -260,7 +388,8 @@ function ProductCtrl($scope, $routeParams, productModel) {
     var id = $routeParams.productId;
     productModel.getProduct(id, function(product) {
         $scope.product = product;
-    }), $scope.goBack = function() {
+    });
+    $scope.goBack = function() {
         window.history.back();
     };
 }
@@ -268,18 +397,32 @@ function ProductCtrl($scope, $routeParams, productModel) {
 function PurchaseCtrl($scope, $routeParams, purchaseModel, _t, config) {
     var id = $routeParams.purchaseId;
     purchaseModel.getPurchase(id, function(purchase) {
-        $scope.purchase = purchase, angular.forEach(purchase.items, function(item, key) {
-            $scope.purchase.items[key].detailHref = "#", null !== item.product && ($scope.purchase.items[key].detailHref = "#/product/" + item.product._id), 
-            null !== item.offer ? ($scope.purchase.items[key].additionalClass = "reduced", $scope.purchase.items[key].detailHref = "#/offer/" + item.offer._id) : $scope.purchase.items[key].hideSalePrice = !0, 
-            null === item.offer && null === item.product && ($scope.purchase.items[key].additionalClass = "summed-discounts"), 
-            null === item.product && item.price < 0 && ($scope.purchase.items[key].product = {
-                name: _t("Odečtení slevy"),
-                image: {
-                    small: config.baseUrl + "/images/sale.png"
-                }
-            });
+        $scope.purchase = purchase;
+        angular.forEach(purchase.items, function(item, key) {
+            $scope.purchase.items[key].detailHref = "#";
+            if (item.product !== null) {
+                $scope.purchase.items[key].detailHref = "#/product/" + item.product._id;
+            }
+            if (item.offer !== null) {
+                $scope.purchase.items[key].additionalClass = "reduced";
+                $scope.purchase.items[key].detailHref = "#/offer/" + item.offer._id;
+            } else {
+                $scope.purchase.items[key].hideSalePrice = true;
+            }
+            if (item.offer === null && item.product === null) {
+                $scope.purchase.items[key].additionalClass = "summed-discounts";
+            }
+            if (item.product === null && item.price < 0) {
+                $scope.purchase.items[key].product = {
+                    name: _t("Odečtení slevy"),
+                    image: {
+                        small: config.baseUrl + "/images/sale.png"
+                    }
+                };
+            }
         });
-    }), $scope.paymentTypes = {
+    });
+    $scope.paymentTypes = {
         visa: {
             image: config.baseUrl + "/images/paymentType/visa.png"
         },
@@ -289,41 +432,62 @@ function PurchaseCtrl($scope, $routeParams, purchaseModel, _t, config) {
     };
 }
 
-function PurchaseListCtrl($scope, purchaseModel) {
+function PurchaseListCtrl($scope, purchaseModel, shoppingCartModel) {
     purchaseModel.getPurchases(function(purchases) {
         $scope.purchases = purchases;
-    }), $scope.shoppingCartListTemplate = "templates/shoppingCartList.html";
+    });
+    $scope.shoppingCartListTemplate = "templates/shoppingCartList.html";
 }
 
 function SettingCtrl($scope) {
-    $scope.sound = !0, $scope.vibration = !1, $scope.light = !1, $scope.notification = !0, 
-    $scope.wifi = !0, $scope.bluetooth = !1, $scope.gps = !0, $scope.bts = !0;
+    $scope.sound = true;
+    $scope.vibration = false;
+    $scope.light = false;
+    $scope.notification = true;
+    $scope.wifi = true;
+    $scope.bluetooth = false;
+    $scope.gps = true;
+    $scope.bts = true;
 }
 
 function ShoppingCartCtrl($scope, $routeParams, shoppingCartModel, ShoppingCart) {
-    $scope.shoppingCart = new ShoppingCart({}), shoppingCartModel.getShoppingCart($routeParams.shoppingCartId, function(shoppingCart) {
-        $scope.shoppingCart = new ShoppingCart(shoppingCart), $scope.$apply();
-    }), $scope.getItemClass = function(item) {
+    $scope.shoppingCart = new ShoppingCart({});
+    shoppingCartModel.getShoppingCart($routeParams.shoppingCartId, function(shoppingCart) {
+        $scope.shoppingCart = new ShoppingCart(shoppingCart);
+        $scope.$apply();
+    });
+    $scope.getItemClass = function(item) {
         return item.checked ? "checked" : "";
-    }, $scope.save = function(item) {
-        item.check_date = moment().format("YYYY-MM-DD HH:mm:ss"), shoppingCartModel.saveShoppingCart($scope.shoppingCart.toObject(), function() {});
+    };
+    $scope.save = function(item) {
+        item.check_date = moment().format("YYYY-MM-DD HH:mm:ss");
+        shoppingCartModel.saveShoppingCart($scope.shoppingCart.toObject(), function(e, shoppingCart) {});
     };
 }
 
 function ShoppingCartListCtrl($scope, shoppingCartModel, ShoppingCart, messageDisp) {
-    $scope.shoppingCarts = [], shoppingCartModel.getShoppingCarts(function(shoppingCarts) {
-        $scope.shoppingCarts = [], _.forEach(shoppingCarts, function(shoppingCart) {
+    $scope.shoppingCarts = [];
+    shoppingCartModel.getShoppingCarts(function(shoppingCarts) {
+        $scope.shoppingCarts = [];
+        _.forEach(shoppingCarts, function(shoppingCart) {
             $scope.shoppingCarts.push(new ShoppingCart(shoppingCart));
-        }), $scope.$apply();
-    }), $scope.getClass = function(shoppingCart) {
-        return shoppingCart.allChecked() ? "all-checked" : "";
-    }, $scope.removeShoppingCart = function(shoppingCartToRemove) {
-        shoppingCartModel.removeShoppingCart(shoppingCartToRemove.toObject(), function(e) {
-            e || messageDisp.undo('Byl odstraněn nákupní seznam "' + shoppingCartToRemove.name + '". Kliknutím na tlačítko vraťte zpět.', "ShoppingCartListCtrl", "unremoveShoppingCart", [ shoppingCartToRemove._id ]);
         });
-    }, $scope.unremoveShoppingCart = function(shoppingCartId) {
+        $scope.$apply();
+    });
+    $scope.getClass = function(shoppingCart) {
+        return shoppingCart.allChecked() ? "all-checked" : "";
+    };
+    $scope.removeShoppingCart = function(shoppingCartToRemove) {
+        shoppingCartModel.removeShoppingCart(shoppingCartToRemove.toObject(), function(e) {
+            if (e) return;
+            messageDisp.undo('Byl odstraněn nákupní seznam "' + shoppingCartToRemove.name + '". Kliknutím na tlačítko vraťte zpět.', "ShoppingCartListCtrl", "unremoveShoppingCart", [ shoppingCartToRemove._id ]);
+        });
+    };
+    $scope.unremoveShoppingCart = function(shoppingCartId) {
         shoppingCartModel.unremoveShoppingCart(shoppingCartId, function(e) {
-            e || messageDisp.flash("Nákupní seznam byl znovu obnoven.", "info");
+            if (e) return;
+            messageDisp.flash("Nákupní seznam byl znovu obnoven.", "info");
         });
     };
 }
+

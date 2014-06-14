@@ -1,6 +1,6 @@
 
 // tento controller je spuštěn vždy, proto je využíván jako spouštěč všech must-run služeb
-function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp, $location) {
+function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp, $location, locationDispatcher, $window) {
 
 	// store defined methods to local storage
 	offlineStorage.storeAll();
@@ -34,6 +34,15 @@ function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp
 		}, 1000);
 	});
 
+	var continualProcess = function () {
+		locationDispatcher.storeLocation(function () {
+			
+		});
+		$timeout(continualProcess, 2000);
+	};
+	document.addEventListener('deviceready', function () {
+		continualProcess();
+	}, false);
 
 	// main templates
 	$scope.navTemplate = 'templates/nav.html';

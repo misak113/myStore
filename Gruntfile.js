@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %>, version: <%= pkg.version %>, <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-        //compress: false,
+        compress: false,
         beautify: true,
         mangle: false
       },
@@ -41,7 +41,14 @@ module.exports = function(grunt) {
           'build/configs.js': [
             "js/config/initOptions.js",
             "js/config/messages.js",
-            "js/config/config.local.js",
+            "js/config/config.local.js"
+          ]
+        }
+      },
+      myStore: {
+        options: {},
+        files: {
+          'build/myStore.js': [
             "js/myStore.js"
           ]
         }

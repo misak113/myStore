@@ -1,6 +1,6 @@
 
 
-function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage) {
+function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage, authDisp) {
 	$scope.loading = false;
 
 	$scope.login = function () {
@@ -10,17 +10,20 @@ function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offl
 			$scope.$apply();
 		});
 
-		userModel.login($scope.username, $scope.password, $scope.remember, function (e) {
+		userModel.login($scope.username, $scope.password, $scope.remember, function (e, verificationHash) {
 			// pokud bylo zastaveno uživatelem
 			if ($scope.loading === false) return;
 
 			loadingDisp.loading(false);
+			$scope.loading = false;
 			if (e) {
-				if (e.code === userModel.WRONG_CREDENTIALS)
+				if (e.code === userModel.WRONG_CREDENTIALS) {
 					return messageDisp.flash('Zadal jste nesprávné jméno nebo heslo. Zkontrolujte a opakujte.', 'error');
+				}
 				return messageDisp.flash('Při přihlašování nastala chyba, zkuste znovu později.', 'error');
 			}
 
+			authDisp.setVerificationHash(verificationHash);
 			messageDisp.flash('Byl jste úspěšně přihlášen.', 'success')
 			$location.path('/home');
 			$scope.$apply();

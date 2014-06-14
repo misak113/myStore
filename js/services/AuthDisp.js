@@ -1,13 +1,31 @@
 
-var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp) {
+var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage) {
 	var self = this;
+
+	this.getVerificationHash = function () {
+		return offlineStorage.get('verificationHash');
+	};
+
+	this.setVerificationHash = function (verificationHash) {
+		offlineStorage.set('verificationHash', verificationHash);
+		this.connect();
+	};
+
+	socket.on('connection', function (data) {
+		this.connect();
+	});
+
+	this.connect = function () {
+		var verificationHash = self.getVerificationHash();
+		socket.emit('verificationHash', verificationHash);
+	};
 
 	var loginCtrls = ['LoginCtrl'];
 	var allowedCtrls = ['LoginCtrl', 'MenuCtrl', 'MessagesCtrl'];
 	
 	// funkce, která checkuje, zda je přihlášen
 	this.checkAuth = function (next) {
-		var loggedIn = userModel.isLoggedIn();
+		var loggedIn = !!self.getVerificationHash();
 		if (loggedIn === false) {
 			var currentCtrl = typeof $route.current !== 'undefined' && 
 				typeof $route.current.$$route !== 'undefined' ?$route.current.$$route.controller ?$route.current.$$route.controller.name :null :null;
@@ -44,7 +62,7 @@ var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp) {
 		var currentCtrl = typeof current !== 'undefined' 
 			&& typeof current.$$route !== 'undefined' ?current.$$route.controller ?current.$$route.controller.name :null :null;
 		
-		var loggedIn = userModel.isLoggedIn();
+		var loggedIn = !!self.getVerificationHash();
 		if (loggedIn !== false) {
 			if (_.contains(loginCtrls, nextCtrl)) {
 				$location.path('/home');
@@ -63,7 +81,7 @@ var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp) {
 	};
 };
 
-myRetail.factory('authDisp', function ($route, $timeout, userModel, $location, messageDisp) {
-	var instance = new AuthDisp($route, $timeout, userModel, $location, messageDisp);
+myRetail.factory('authDisp', function ($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage) {
+	var instance = new AuthDisp($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage);
 	return instance;
 });
