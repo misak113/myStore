@@ -15,9 +15,15 @@ var PurchaseCtrl = require('./controllers/PurchaseCtrl');
 var ShoppingCartCtrl = require('./controllers/ShoppingCartCtrl');
 var NotificationCtrl = require('./controllers/NotificationCtrl');
 var CustomerCtrl = require('./controllers/CustomerCtrl');
+var GeolocationCtrl = require('./controllers/GeolocationCtrl');
+var LoginCtrl = require('./controllers/LoginCtrl');
 
+// models
+var Geolocation = require('./models/Geolocation');
+var User = require('./models/User');
 
 exports.route = function (app) {
+	Geolocation.setConnection(app.get('connection'));
 
 	var staticPath = path.normalize(config.path.frontendBasePath);
 
@@ -43,12 +49,21 @@ exports.route = function (app) {
 	var io = socketio(server);
 	io.on('connection', function (socket) {
 		// vytvoří socket pro každého uživatele a naslouchá
+		socket.on('verificationHash', function (verificationHash) {
+			User.getByVerificationHash(verificationHash, function (e, user) {
+				if (e) {
+					return;
+				}
+				var shoppingCartCtrl = ShoppingCartCtrl(socket);
+				var notificationCtrl = NotificationCtrl(socket);
+				var offerCtrl = OfferCtrl(socket);
+				var customerCtrl = CustomerCtrl(socket);
+				var purchaseCtrl = PurchaseCtrl(socket);
+				var geolocationCtrl = GeolocationCtrl(socket, user);
+			});
+		});
+		var loginCtrl = LoginCtrl(socket);
 		socket.emit('connection', { status: 'connected' });
-		var shoppingCartCtrl = ShoppingCartCtrl(socket);
-		var notificationCtrl = NotificationCtrl(socket);
-		var offerCtrl = OfferCtrl(socket);
-		var customerCtrl = CustomerCtrl(socket);
-		var purchaseCtrl = PurchaseCtrl(socket);
 	});
 
 	// nastaví server a socket.io do globálníh kontextu app
@@ -58,15 +73,4 @@ exports.route = function (app) {
 	app.listen = function (port) {
 		return app.server.listen.apply(app.server, arguments);
 	};
-
-	// options socket.io
-	//io.set('log level', config.debug.logLevel);
-	//io.set("origins", [config.server.host+':'+config.server.port]);
-	/*io.set('transports', [
-		'websocket'
-		, 'flashsocket'
-		, 'htmlfile'
-		, 'xhr-polling'
-		, 'jsonp-polling'
-	]);*/
 };

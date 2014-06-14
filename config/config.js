@@ -20,6 +20,13 @@ var config = {
 	},
 	debug: {
 		logLevel: 2
+	},
+	postgres: {
+		host: 'localhost',
+		user: 'postgres',
+		password: 'misak',
+		database: 'Geoanalysis',
+		schema: 'mobile'
 	}
 };
 

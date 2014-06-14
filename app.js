@@ -1,5 +1,6 @@
 // Dependencies
 var mongoose = require('mongoose');
+var Client = require('pg').Client;
 var express = require('express');
 var l = require('log-dispatch');
 
@@ -47,13 +48,24 @@ var delayedDbReconnect = function () {
 	setTimeout(dbReconnect, 2000);
 };
 
-
+var postgresConnect = function () {
+	var client = new Client(config.postgres);
+	client.on('error', function (e) {
+		l.error('Nepodařilo se připojit k databázi mysql', e);
+	}).on('connect', function () {
+		l.info('Postgres database was connected');
+	});
+	client.connect();
+	client.query('SET search_path TO '+config.postgres.schema+';');
+	return client;
+};
 
 // Routing application
 router.route(app);
 // Start application by connect to database
 var db = dbConnect();
-
+var connection = postgresConnect();
+app.set('connection', connection);
 
 
 // Events
@@ -79,7 +91,7 @@ db.on('close', function () {
 // exporting application for other services
 module.exports = app;
 
-process.on('uncaughtException', function(err) {
+process.on('_uncaughtException', function(err) {
     // handle the error safely
     l.error(err);
 });
