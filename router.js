@@ -49,10 +49,11 @@ exports.route = function (app) {
 	var io = socketio(server);
 	io.on('connection', function (socket) {
 		// vytvoří socket pro každého uživatele a naslouchá
-		socket.on('verificationHash', function (verificationHash) {
+		socket.on('verificationHash', function (verificationHash, callback) {
+			l.d('verificationHash');
 			User.getByVerificationHash(verificationHash, function (e, user) {
-				if (e) {
-					return;
+				if (e || !user) {
+					return callback(new Error('Logged out. Login again'));
 				}
 				var shoppingCartCtrl = ShoppingCartCtrl(socket);
 				var notificationCtrl = NotificationCtrl(socket);
@@ -60,9 +61,11 @@ exports.route = function (app) {
 				var customerCtrl = CustomerCtrl(socket);
 				var purchaseCtrl = PurchaseCtrl(socket);
 				var geolocationCtrl = GeolocationCtrl(socket, user);
+				callback();
 			});
 		});
 		var loginCtrl = LoginCtrl(socket);
+		l.d('emit connection');
 		socket.emit('connection', { status: 'connected' });
 	});
 

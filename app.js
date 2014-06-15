@@ -60,13 +60,13 @@ var postgresConnect = function () {
 	return client;
 };
 
-// Routing application
-router.route(app);
 // Start application by connect to database
 var db = dbConnect();
 var connection = postgresConnect();
 app.set('connection', connection);
 
+// Routing application
+router.route(app);
 
 // Events
 // database connection cannot connect, try reconnect in timeout
@@ -91,7 +91,7 @@ db.on('close', function () {
 // exporting application for other services
 module.exports = app;
 
-process.on('_uncaughtException', function(err) {
+process.on('uncaughtException', function(err) {
     // handle the error safely
     l.error(err);
 });

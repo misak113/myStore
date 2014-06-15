@@ -12,9 +12,16 @@ module.exports = exports = function (socket, user) {
 var gets = {};
 
 var GeolocationCtrl = function (socket, user) {
+	var self = this;
 	this.user = user;
 
-	socket.on('/geolocation/add-ap-list', this.addApList);
+	socket.on('/geolocation/add-ap-list', function (data, callback) { 
+		self.addApList(data, function (e) {
+			if (e) {
+				l.error(e);
+			}
+		}); 
+	});
 };
 
 GeolocationCtrl.prototype.addApList = function (data, callback) {
