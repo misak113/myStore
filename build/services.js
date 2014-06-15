@@ -1,4 +1,4 @@
-/*! myStore-client, version: 1.1.4, 2014-06-14 */
+/*! myStore-client, version: 1.1.4, 2014-06-15 */
 var AuthDisp = function($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage) {
     var self = this;
     this.getVerificationHash = function() {
@@ -6,14 +6,19 @@ var AuthDisp = function($route, $timeout, userModel, $location, messageDisp, soc
     };
     this.setVerificationHash = function(verificationHash) {
         offlineStorage.set("verificationHash", verificationHash);
-        this.connect();
+        connect();
     };
     socket.on("connection", function(data) {
-        this.connect();
+        connect();
     });
-    this.connect = function() {
+    var connect = function() {
+        l.log("connect");
         var verificationHash = self.getVerificationHash();
-        socket.emit("verificationHash", verificationHash);
+        socket.emit("verificationHash", verificationHash, function(e) {
+            if (e) {
+                offlineStorage.set("verificationHash", null);
+            }
+        });
     };
     var loginCtrls = [ "LoginCtrl" ];
     var allowedCtrls = [ "LoginCtrl", "MenuCtrl", "MessagesCtrl" ];
@@ -22,9 +27,8 @@ var AuthDisp = function($route, $timeout, userModel, $location, messageDisp, soc
         if (loggedIn === false) {
             var currentCtrl = typeof $route.current !== "undefined" && typeof $route.current.$$route !== "undefined" ? $route.current.$$route.controller ? $route.current.$$route.controller.name : null : null;
             if (!_.contains(allowedCtrls, currentCtrl)) {
-                $location.path("/login");
                 messageDisp.flash("Byl jste automaticky odhlášen. Přihlaste se znovu.", "warning");
-                $scope.$apply();
+                $location.path("/login");
             }
         }
         if (typeof next === "function") next(loggedIn);

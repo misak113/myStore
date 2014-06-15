@@ -1,4 +1,4 @@
-/*! myStore-client, version: 1.1.4, 2014-06-14 */
+/*! myStore-client, version: 1.1.4, 2014-06-15 */
 function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp, $location, locationDispatcher, $window) {
     offlineStorage.storeAll();
     authDisp.startControl();
@@ -218,7 +218,9 @@ function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offli
             loadingDisp.loading(false);
             $scope.loading = false;
             if (e) {
-                if (e.code === userModel.WRONG_CREDENTIALS) return messageDisp.flash("Zadal jste nesprávné jméno nebo heslo. Zkontrolujte a opakujte.", "error");
+                if (e.code === userModel.WRONG_CREDENTIALS) {
+                    return messageDisp.flash("Zadal jste nesprávné jméno nebo heslo. Zkontrolujte a opakujte.", "error");
+                }
                 return messageDisp.flash("Při přihlašování nastala chyba, zkuste znovu později.", "error");
             }
             authDisp.setVerificationHash(verificationHash);

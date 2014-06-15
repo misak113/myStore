@@ -8,16 +8,21 @@ var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp, so
 
 	this.setVerificationHash = function (verificationHash) {
 		offlineStorage.set('verificationHash', verificationHash);
-		this.connect();
+		connect();
 	};
 
 	socket.on('connection', function (data) {
-		this.connect();
+		connect();
 	});
 
-	this.connect = function () {
+	var connect = function () {
+		l.log('connect');
 		var verificationHash = self.getVerificationHash();
-		socket.emit('verificationHash', verificationHash);
+		socket.emit('verificationHash', verificationHash, function (e) {
+			if (e) {
+				offlineStorage.set('verificationHash', null);
+			}
+		});
 	};
 
 	var loginCtrls = ['LoginCtrl'];
@@ -31,9 +36,8 @@ var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp, so
 				typeof $route.current.$$route !== 'undefined' ?$route.current.$$route.controller ?$route.current.$$route.controller.name :null :null;
 			
 			if (!_.contains(allowedCtrls, currentCtrl)) {
-				$location.path('/login');
 				messageDisp.flash('Byl jste automaticky odhlášen. Přihlaste se znovu.', 'warning');
-				$scope.$apply();
+				$location.path('/login');
 			}
 		}
 		if (typeof next === 'function')

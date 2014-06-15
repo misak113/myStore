@@ -1,4 +1,4 @@
-/*! myStore-client, version: 1.1.4, 2014-06-14 */
+/*! myStore-client, version: 1.1.4, 2014-06-15 */
 var CustomerModel = function(socket, memoryCache) {
     this.className = "CustomerModel";
     this.socket = socket;
