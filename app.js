@@ -91,7 +91,7 @@ db.on('close', function () {
 // exporting application for other services
 module.exports = app;
 
-process.on('_uncaughtException', function(err) {
+process.on('uncaughtException', function(err) {
     // handle the error safely
     l.error(err);
 });
