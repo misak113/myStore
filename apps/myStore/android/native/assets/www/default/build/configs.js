@@ -1,6 +1,6 @@
 
 /* JavaScript content from build/configs.js in folder common */
-/*! myStore-client, version: 1.1.4, 2014-06-15 */
+/*! myStore-client, version: 1.1.4, 2014-06-16 */
 var configLocal = {};
 
 if (typeof WLJSX !== "undefined") {

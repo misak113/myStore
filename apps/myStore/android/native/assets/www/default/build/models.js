@@ -1,6 +1,6 @@
 
 /* JavaScript content from build/models.js in folder common */
-/*! myStore-client, version: 1.1.4, 2014-06-15 */
+/*! myStore-client, version: 1.1.4, 2014-06-16 */
 var CustomerModel = function(socket, memoryCache) {
     this.className = "CustomerModel";
     this.socket = socket;
@@ -32,6 +32,12 @@ GeolocationModel.prototype.addApList = function(date, apList, callback) {
         date: date,
         apList: apList
     }, function() {
+        callback();
+    });
+};
+
+GeolocationModel.prototype.updateDevice = function(device, callback) {
+    this.socket.emit("/geolocation/update-device", device, function() {
         callback();
     });
 };

@@ -1,6 +1,6 @@
 
 /* JavaScript content from build/services.js in folder common */
-/*! myStore-client, version: 1.1.4, 2014-06-15 */
+/*! myStore-client, version: 1.1.4, 2014-06-16 */
 var AuthDisp = function($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage) {
     var self = this;
     this.getVerificationHash = function() {
@@ -68,6 +68,32 @@ var AuthDisp = function($route, $timeout, userModel, $location, messageDisp, soc
 myRetail.factory("authDisp", function($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage) {
     var instance = new AuthDisp($route, $timeout, userModel, $location, messageDisp, socket, offlineStorage);
     return instance;
+});
+
+var DeviceRecorder = function(geolocationModel) {
+    this.geolocationModel = geolocationModel;
+};
+
+DeviceRecorder.prototype.storeDevice = function(callback) {
+    l.log(window.device);
+    if (typeof window.device === "undefined") {
+        return callback(new Error("Not supported operation"));
+    }
+    var appDevice = {
+        mac: "00:00:" + Math.round(Math.random() * 100) + ":" + Math.round(Math.random() * 100) + ":" + Math.round(Math.random() * 100) + ":" + Math.round(Math.random() * 100),
+        uuid: window.device.uuid,
+        imei: Math.round(Math.random() * 1e7),
+        platform: window.device.platform,
+        model: window.device.model
+    };
+    this.geolocationModel.updateDevice(appDevice, function() {
+        callback();
+    });
+};
+
+myRetail.factory("deviceRecorder", function(geolocationModel) {
+    var s = new DeviceRecorder(geolocationModel);
+    return s;
 });
 
 var LoadingDisp = function(pullDown) {
