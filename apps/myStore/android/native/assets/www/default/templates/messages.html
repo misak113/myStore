@@ -1,0 +1,18 @@
+
+<section route-ng-controller="MessagesCtrl" class="container" id="messages-container">
+	<ul class="media-list">
+		<li ng-repeat="message in messages" class="message media {{message.type}}">
+			<div class="message-inner" ng-class="{new: !message.viewed}">
+				<img class="media-object pull-left" alt="{{message.title}}" ng-src="{{message.image}}" />
+				<div class="media-body">
+					<h4>{{message.title}}</h4>
+					{{message.text}}
+					<button class="btn" ng-show="message.settings.type == 'button'"
+						ng-click="callButton(message)">
+						<i ng-class="message.settings.btnIcon"></i>
+					</button>
+				</div>
+			</div>
+		</li>
+	</ul>
+</section>

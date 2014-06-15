@@ -1,0 +1,30 @@
+<section class="container">
+	
+	<div ng-include="shoppingCartListTemplate"></div>
+
+	<section route-ng-controller="PurchaseListCtrl" class="" id="purchaseList-container">
+		
+		<h2>{{'Nákupy'|_}}</h2>
+		<table class="table table-hover table-bordered">
+			<tr ng-repeat="purchase in purchases">
+				<td class="well">
+					<div>
+						<a ng-href="#/purchase/{{purchase._id}}">
+							<h4>
+								{{purchase.branch.name}}
+								<small>{{purchase.date|formatDate:'D. M. YY H:mm'}}</small>
+							</h4>
+						</a>
+					</div>
+					<span class="badge badge-success">
+						{{purchase.totalPrice | price:purchase.currency}}
+					</span>
+					<span class="badge" ng-hide="purchase.totalPrice == purchase.originalPrice">
+						{{purchase.originalPrice | price:purchase.currency}}
+					</span>
+				</td>
+			</tr>
+		</table>
+		
+	</section>
+</section>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>		
+<html ng-app="myRetail" ng-csp="">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+		<title>myStore</title>
+		<!-- Icons -->
+		<link rel="shortcut icon" href="images/favicon.ico" />
+		<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+		<!-- CSS stylesheet -->
+		<link rel="stylesheet" href="build/bower_components.css" />
+		<link rel="stylesheet" href="build/myStore.css" />
+		<!-- Libraries -->
+        <script>
+		// Define WL namespace.
+		var WL = WL ? WL : {};
+		/**
+		 * WLClient configuration variables.
+		 * Values are injected by the deployer that packs the gadget.
+		 */
+		WL.StaticAppProps = {
+   "APP_DISPLAY_NAME": "myStore",
+   "APP_ID": "myStore",
+   "APP_SERVICES_URL": "\/apps\/services\/",
+   "APP_VERSION": "1.0",
+   "ENVIRONMENT": "android",
+   "LOGIN_DISPLAY_TYPE": "embedded",
+   "WORKLIGHT_NATIVE_VERSION": "2900737830",
+   "WORKLIGHT_PLATFORM_VERSION": "6.1.0.01.20140418-0637",
+   "WORKLIGHT_ROOT_URL": "\/apps\/services\/api\/myStore\/android\/"
+};</script>
+		<script src="worklight/cordova.js"></script>
+		<script src="worklight/wljq.js"></script>
+		<script src="worklight/worklight.js"></script>
+		<script src="worklight/checksum.js"></script>
+		<script type="text/javascript" src="build/bower_components.js"></script>
+		<!-- Scripts -->
+		<script type="text/javascript" src="build/configs.js"></script>
+		<script type="text/javascript" src="js/config/config.local.js"></script>
+		<script type="text/javascript" src="build/myStore.js"></script>
+		<script type="text/javascript" src="build/controllers.js"></script>
+		<script type="text/javascript" src="build/models.js"></script>
+		<script type="text/javascript" src="build/services.js"></script>
+		
+	</head>
+	<body ng-controller="AppCtrl" id="content" ng-class="'show'" ng-init="init()">
+
+		<div class="splash-screen"></div>
+
+		<div class="navbar-outer" ng-include="navTemplate"></div>
+		
+		<div class="pull-down" ng-include="pulldownTemplate"></div>
+		
+		<div class="ng-view page-animation-container" ng-view 
+			ng-animate="{enter: 'page-animation-enter', leave: 'page-animation-leave'}"></div>
+	
+	</body>
+</html>
