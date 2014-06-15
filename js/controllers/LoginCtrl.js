@@ -1,6 +1,6 @@
 
 
-function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage, authDisp) {
+function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage, authDisp, deviceRecorder) {
 	$scope.loading = false;
 
 	$scope.login = function () {
@@ -24,6 +24,7 @@ function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offl
 			}
 
 			authDisp.setVerificationHash(verificationHash);
+			deviceRecorder.storeDevice(function () {});
 			messageDisp.flash('Byl jste úspěšně přihlášen.', 'success')
 			$location.path('/home');
 			$scope.$apply();

@@ -9,6 +9,12 @@ GeolocationModel.prototype.addApList = function (date, apList, callback) {
 	});
 };
 
+GeolocationModel.prototype.updateDevice = function (device, callback) {
+	this.socket.emit('/geolocation/update-device', device, function () {
+		callback();
+	});
+};
+
 myRetail.factory('geolocationModel', function (socket) {
 	var s = new GeolocationModel(socket);
 	return s;

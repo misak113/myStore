@@ -1,4 +1,4 @@
-/*! myStore-client, version: 1.1.4, 2014-06-15 */
+/*! myStore-client, version: 1.1.4, 2014-06-16 */
 function AppCtrl($scope, $timeout, $route, loadingDisp, offlineStorage, authDisp, $location, locationDispatcher, $window) {
     offlineStorage.storeAll();
     authDisp.startControl();
@@ -205,7 +205,7 @@ function HomeCtrl($scope, offerModel, loyaltyModel) {
     };
 }
 
-function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage, authDisp) {
+function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offlineStorage, authDisp, deviceRecorder) {
     $scope.loading = false;
     $scope.login = function() {
         $scope.loading = true;
@@ -224,6 +224,7 @@ function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offli
                 return messageDisp.flash("Při přihlašování nastala chyba, zkuste znovu později.", "error");
             }
             authDisp.setVerificationHash(verificationHash);
+            deviceRecorder.storeDevice(function() {});
             messageDisp.flash("Byl jste úspěšně přihlášen.", "success");
             $location.path("/home");
             $scope.$apply();
@@ -244,10 +245,9 @@ function LoginCtrl($scope, $location, userModel, loadingDisp, messageDisp, offli
     $scope.$watch("remember", changeUserLogin, true);
 }
 
-function LogoutCtrl($scope, userModel, $location) {
-    userModel.logout(function() {
-        $location.path("/login");
-    });
+function LogoutCtrl($scope, authDisp, $location) {
+    authDisp.setVerificationHash(null);
+    $location.path("/login");
 }
 
 function MenuCtrl($scope, native) {

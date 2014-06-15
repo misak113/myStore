@@ -1,4 +1,4 @@
-/*! myStore-client, version: 1.1.4, 2014-06-15 */
+/*! myStore-client, version: 1.1.4, 2014-06-16 */
 var myRetail = angular.module("myRetail", [ "filters" ], function($routeProvider) {
     $routeProvider.when("/login", {
         templateUrl: "templates/login.html",

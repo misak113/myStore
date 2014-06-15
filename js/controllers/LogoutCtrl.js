@@ -1,8 +1,6 @@
 
-function LogoutCtrl ($scope, userModel, $location) {
+function LogoutCtrl ($scope, authDisp, $location) {
 	
-	userModel.logout(function () {
-		$location.path('/login');
-		//$scope.$apply();
-	});
+	authDisp.setVerificationHash(null);
+	$location.path('/login');
 };
