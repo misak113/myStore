@@ -22,6 +22,13 @@ var GeolocationCtrl = function (socket, user) {
 			}
 		}); 
 	});
+	socket.on('/geolocation/update-device', function (data, callback) { 
+		self.updateDevice(data, function (e) {
+			if (e) {
+				l.error(e);
+			}
+		}); 
+	});
 };
 
 GeolocationCtrl.prototype.addApList = function (data, callback) {
@@ -39,4 +46,31 @@ GeolocationCtrl.prototype.addApList = function (data, callback) {
 		});
 	});
 
+};
+
+GeolocationCtrl.prototype.updateDevice = function (device, callback) {
+	var self = this;
+	l.d('update-device');
+	l.d(device);
+	var updateUserDevice = function (device_id) {
+		self.user.device_id = device_id;
+		self.user.save(function (e) {
+			if (e) return callback(e);
+			callback();
+		});
+	};
+	Geolocation.getDeviceByUuid(device.uuid, function (e, existingDevice) {
+		if (e) return callback(e);
+		if (existingDevice) {
+			Geolocation.updateDeviceById(existingDevice.device_id, device, function (e, device) {
+				if (e) return callback(e);
+				updateUserDevice(existingDevice.device_id);
+			});
+		} else {
+			Geolocation.insertDevice(device, function (e, device) {
+				if (e) return callback(e);
+				updateUserDevice(device.device_id);
+			});
+		}
+	});
 };
