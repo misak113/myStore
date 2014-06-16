@@ -12,6 +12,10 @@ var myRetail = angular.module('myRetail', ['filters']
 				templateUrl: 'templates/login.html', 
 				controller: LoginCtrl
 			}).
+			when('/register', {
+				templateUrl: 'templates/register.html', 
+				controller: RegisterCtrl
+			}).
 			when('/home', {
 				templateUrl: 'templates/home.html',
 				controller: HomeCtrl

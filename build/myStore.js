@@ -3,6 +3,9 @@ var myRetail = angular.module("myRetail", [ "filters" ], function($routeProvider
     $routeProvider.when("/login", {
         templateUrl: "templates/login.html",
         controller: LoginCtrl
+    }).when("/register", {
+        templateUrl: "templates/register.html",
+        controller: RegisterCtrl
     }).when("/home", {
         templateUrl: "templates/home.html",
         controller: HomeCtrl

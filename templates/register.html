@@ -1,0 +1,24 @@
+
+<section class="container" id="register-container">
+
+	<form>
+	  <div class="control-group">
+	      <input class="text-input" type="text" id="inputEmail" ng-model="email" placeholder="{{'e-mail'|_}}" required="required">
+	  </div>
+	  <div class="control-group">
+	      <input class="text-input" type="text" id="inputFisrtName" ng-model="firstName" placeholder="{{'Jméno'|_}}" required="required">
+	  </div>
+	  <div class="control-group">
+	      <input class="text-input" type="text" id="inputLastName" ng-model="lastName" placeholder="{{'Příjmení'|_}}" required="required">
+	  </div>
+	  <div class="control-group">
+	      <input class="text-input" type="text" id="inputUsername" ng-model="username" placeholder="{{'uživatelské jméno'|_}}" required="required">
+	  </div>
+	  <div class="control-group">
+	      <input class="text-input" type="password" id="inputLoginPassword" ng-model="password" placeholder="{{'heslo'|_}}" required="required">
+	  </div>
+	  <div class="control-group">
+	      <button type="submit" class="btn" ng-click="register()" ng-disabled="loading">Registrovat</button>
+	  </div>
+	</form>
+</section>

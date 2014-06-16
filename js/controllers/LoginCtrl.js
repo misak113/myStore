@@ -25,7 +25,7 @@ function LoginCtrl ($scope, $location, userModel, loadingDisp, messageDisp, offl
 
 			authDisp.setVerificationHash(verificationHash);
 			deviceRecorder.storeDevice(function () {});
-			messageDisp.flash('Byl jste úspěšně přihlášen.', 'success')
+			messageDisp.flash('Byl jste úspěšně přihlášen.', 'success');
 			$location.path('/home');
 			$scope.$apply();
 		});

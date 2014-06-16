@@ -15,6 +15,18 @@ var UserModel = function (socket) {
 		callback();
 	};
 
+	this.register = function (email, username, password, firstName, lastName, callback) {
+		var user = { 
+			email: email, 
+			username: username, 
+			password: password, 
+			firstName: firstName, 
+			lastName: lastName 
+		};
+		socket.emit('/register', user, function (e, user) {
+			callback(e, user);
+		});
+	};
 };
 
 myRetail.factory('userModel', function (socket) {

@@ -21,7 +21,7 @@ var AuthDisp = function($route, $timeout, userModel, $location, messageDisp, soc
         });
     };
     var loginCtrls = [ "LoginCtrl" ];
-    var allowedCtrls = [ "LoginCtrl", "MenuCtrl", "MessagesCtrl" ];
+    var allowedCtrls = [ "LoginCtrl", "MenuCtrl", "MessagesCtrl", "RegisterCtrl" ];
     this.checkAuth = function(next) {
         var loggedIn = !!self.getVerificationHash();
         if (loggedIn === false) {

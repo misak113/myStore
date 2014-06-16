@@ -26,7 +26,7 @@ var AuthDisp = function ($route, $timeout, userModel, $location, messageDisp, so
 	};
 
 	var loginCtrls = ['LoginCtrl'];
-	var allowedCtrls = ['LoginCtrl', 'MenuCtrl', 'MessagesCtrl'];
+	var allowedCtrls = ['LoginCtrl', 'MenuCtrl', 'MessagesCtrl', 'RegisterCtrl'];
 	
 	// funkce, která checkuje, zda je přihlášen
 	this.checkAuth = function (next) {
