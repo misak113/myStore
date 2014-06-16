@@ -12,7 +12,11 @@ var schema = mongoose.Schema({
 	password: String,
 	salt: String,
 	verificationHashes: [String],
-	device_id: Number
+	device_id: Number,
+	deviceLogs: [{ 
+		device_id: Number, 
+		date_recorded: Date
+	}]
 });
 
 var User = mongoose.model('User', schema);

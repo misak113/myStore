@@ -54,6 +54,7 @@ GeolocationCtrl.prototype.updateDevice = function (device, callback) {
 	l.d(device);
 	var updateUserDevice = function (device_id) {
 		self.user.device_id = device_id;
+		self.user.deviceLogs.push({ device_id: device_id, date_recorded: moment().toDate() });
 		self.user.save(function (e) {
 			if (e) return callback(e);
 			callback();

@@ -14,6 +14,7 @@ var gets = {};
 var LoginCtrl = function (socket) {
 
 	socket.on('/login', this.login);
+	socket.on('/register', this.register);
 };
 
 var encryptPassword = function (password, salt) {
@@ -54,6 +55,28 @@ LoginCtrl.prototype.login = function (data, callback) {
 				return callback(e);
 			}
 			callback(null, verificationHash);
+		});
+	});
+};
+
+LoginCtrl.prototype.register = function (data, callback) {
+	User.getByUsername(data.username, function (e, user) {
+		if (user) {
+			var e = new Error();
+			e.message = 'Uživatel s tímto uživatelským jménem již existuje';
+			callback(e);
+			return;
+		}
+		var user = new User();
+		user.firstName = data.firstName;
+		user.lastName = data.lastName;
+		user.email = data.email;
+		user.username = data.username;
+		var salt = randomHash();
+		user.salt = salt;
+		user.password = encryptPassword(data.password, salt);
+		user.save(function (e) {
+			callback(e, user.toObject());
 		});
 	});
 };
